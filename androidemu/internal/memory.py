@@ -9,8 +9,8 @@ class Memory:
     """
     def __init__(self, emu):
         self.emu = emu
-        self.counter_memory = config.CONFIG_BASE_ADDR
-        self.counter_stack = config.CONFIG_STACK_ADDR + config.CONFIG_STACK_SIZE
+        self.counter_memory = config.BASE_ADDR
+        self.counter_stack = config.STACK_ADDR + config.STACK_SIZE
 
     def mem_reserve(self, size):
         ret = self.counter_memory
