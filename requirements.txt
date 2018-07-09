@@ -1,0 +1,2 @@
+unicorn==1.0.1
+pyelftools==0.24
