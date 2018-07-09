@@ -1,7 +1,8 @@
 from elftools.elf.elffile import ELFFile
+from elftools.elf.relocation import RelocationSection
 from unicorn import UC_PROT_ALL
 
-from androidemu.internal import get_segment_protection
+from androidemu.internal import get_segment_protection, arm
 
 
 class Module:
@@ -37,10 +38,6 @@ class Modules:
 
             if not dynamic:
                 raise NotImplementedError("Only ET_DYN is supported at the moment.")
-
-            # Parse section header (Linking view).
-            # for section in elf.iter_sections():
-            #     print(section.name + " " + section.header.sh_type)
 
             # Parse program header (Execution view).
 
@@ -80,3 +77,34 @@ class Modules:
                 self.module_main = module
             else:
                 self.modules.append(module)
+
+            # Parse section header (Linking view).
+            dynsym = elf.get_section_by_name(".dynsym")
+            dynstr = elf.get_section_by_name(".dynstr")
+
+            # Relocate.
+            for section in elf.iter_sections():
+                if not isinstance(section, RelocationSection):
+                    continue
+
+                for rel in section.iter_relocations():
+                    sym = dynsym.get_symbol(rel['r_info_sym'])
+                    sym_value = sym['st_value']
+
+                    rel_addr = load_base + rel['r_offset']  # Location where relocation should happen
+
+                    # Relocation table for ARM
+                    if rel.entry.r_info_type == arm.R_ARM_ABS32:  # Static | Data | Op: (S + A) | T
+                        # Create the new value.
+                        value = load_base + sym_value
+
+                        # Write the new value
+                        self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
+                    elif rel.entry.r_info_type == arm.R_ARM_GLOB_DAT:  # Dyn | Data | Op: (S + A) | T
+                        pass
+                    elif rel.entry.r_info_type == arm.R_ARM_JUMP_SLOT:  # Dyn | Data | Op: (S + A) | T
+                        pass
+                    elif rel.entry.r_info_type == arm.R_ARM_RELATIVE:  # Dyn | Data | Op: B(S) + A[Note: see Table 4-18]
+                        pass
+                    else:
+                        print("Unhandled relocation type %i." % rel.entry.r_info_type)
