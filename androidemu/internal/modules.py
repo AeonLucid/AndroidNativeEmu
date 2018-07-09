@@ -92,19 +92,31 @@ class Modules:
                     sym_value = sym['st_value']
 
                     rel_addr = load_base + rel['r_offset']  # Location where relocation should happen
+                    rel_info_type = rel['r_info_type']
 
                     # Relocation table for ARM
-                    if rel.entry.r_info_type == arm.R_ARM_ABS32:  # Static | Data | Op: (S + A) | T
+                    if rel_info_type == arm.R_ARM_ABS32:
                         # Create the new value.
                         value = load_base + sym_value
 
                         # Write the new value
                         self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
-                    elif rel.entry.r_info_type == arm.R_ARM_GLOB_DAT:  # Dyn | Data | Op: (S + A) | T
+                    elif rel_info_type == arm.R_ARM_GLOB_DAT:  # Dyn | Data | Op: (S + A) | T
                         pass
-                    elif rel.entry.r_info_type == arm.R_ARM_JUMP_SLOT:  # Dyn | Data | Op: (S + A) | T
+                    elif rel_info_type == arm.R_ARM_JUMP_SLOT:  # Dyn | Data | Op: (S + A) | T
                         pass
-                    elif rel.entry.r_info_type == arm.R_ARM_RELATIVE:  # Dyn | Data | Op: B(S) + A[Note: see Table 4-18]
-                        pass
+                    elif rel_info_type == arm.R_ARM_RELATIVE:
+                        if sym_value == 0:
+                            # Load address at which it was linked originally.
+                            value_orig_bytes = self.emu.mu.mem_read(rel_addr, 4)
+                            value_orig = int.from_bytes(value_orig_bytes, byteorder='little')
+
+                            # Create the new value
+                            value = load_base + value_orig
+
+                            # Write the new value
+                            self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
+                        else:
+                            raise NotImplementedError()
                     else:
-                        print("Unhandled relocation type %i." % rel.entry.r_info_type)
+                        print("Unhandled relocation type %i." % rel_info_type)
