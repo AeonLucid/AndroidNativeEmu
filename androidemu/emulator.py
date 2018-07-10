@@ -13,9 +13,7 @@ class Emulator:
     :type mu Uc
     :type memory Memory
     """
-    def __init__(self, filename):
-        self.filename = filename
-
+    def __init__(self):
         # Initialize unicorn.
         self.mu = Uc(UC_ARCH_ARM, UC_MODE_ARM)
 
@@ -26,5 +24,5 @@ class Emulator:
         self.modules = Modules(self)
         self.memory = Memory(self)
 
-    def load(self):
-        self.modules.load_module(self.filename)
+    def load_library(self, filename):
+        return self.modules.load_module(filename)

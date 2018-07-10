@@ -3,34 +3,20 @@ from elftools.elf.relocation import RelocationSection
 from unicorn import UC_PROT_ALL
 
 from androidemu.internal import get_segment_protection, arm
-
-
-class Module:
-
-    """
-    :type filename str
-    :type address int
-    :type size int
-    """
-    def __init__(self, filename, address, size):
-        self.filename = filename
-        self.address = address
-        self.size = size
+from androidemu.internal.module import Module
 
 
 class Modules:
 
     """
     :type emu androidemu.emulator.Emulator
-    :type module_main Module
     :type modules list[Module]
     """
     def __init__(self, emu):
         self.emu = emu
-        self.module_main = None
         self.modules = list()
 
-    def load_module(self, filename, main=True):
+    def load_module(self, filename):
         with open(filename, 'rb') as fstream:
             elf = ELFFile(fstream)
 
@@ -70,14 +56,6 @@ class Modules:
                 self.emu.memory.mem_map(load_base + segment.header.p_vaddr, segment.header.p_memsz, prot)
                 self.emu.memory.mem_write(load_base + segment.header.p_vaddr, segment.data())
 
-            # Store information about loaded module.
-            module = Module(filename, load_base, bound_high - bound_low)
-
-            if main:
-                self.module_main = module
-            else:
-                self.modules.append(module)
-
             # Parse section header (Linking view).
             dynsym = elf.get_section_by_name(".dynsym")
             dynstr = elf.get_section_by_name(".dynstr")
@@ -101,10 +79,19 @@ class Modules:
 
                         # Write the new value
                         self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
-                    elif rel_info_type == arm.R_ARM_GLOB_DAT:  # Dyn | Data | Op: (S + A) | T
-                        pass
-                    elif rel_info_type == arm.R_ARM_JUMP_SLOT:  # Dyn | Data | Op: (S + A) | T
-                        pass
+                    elif rel_info_type == arm.R_ARM_GLOB_DAT or rel_info_type == arm.R_ARM_JUMP_SLOT:
+                        # Resolve the symbol.
+                        (sym_base, resolved_symbol) = self._resolv_symbol(load_base, dynsym, sym)
+
+                        if resolved_symbol is None:
+                            # print("%s symbol was missing." % sym.name)
+                            continue
+
+                        # Create the new value.
+                        value = sym_base + resolved_symbol['st_value']
+
+                        # Write the new value
+                        self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
                     elif rel_info_type == arm.R_ARM_RELATIVE:
                         if sym_value == 0:
                             # Load address at which it was linked originally.
@@ -120,3 +107,33 @@ class Modules:
                             raise NotImplementedError()
                     else:
                         print("Unhandled relocation type %i." % rel_info_type)
+
+            # Store information about loaded module.
+            self.modules.append(Module(filename, load_base, bound_high - bound_low, dynsym))
+
+            return load_base
+
+    def _resolv_symbol(self, load_base, symbol_table, symbol):
+        # First we check our own symbol table.
+        symbols = symbol_table.get_symbol_by_name(symbol.name)
+        symbol = symbols[0]
+
+        if symbol['st_shndx'] != 'SHN_UNDEF':
+            return load_base, symbol
+
+        # Next we check previously discovered symbol tables.
+        for module in self.modules:
+            symbols = module.symbols.get_symbol_by_name(symbol.name)
+
+            if symbols is None:
+                continue
+
+            for symbol in symbols:
+                if symbol['st_shndx'] != 'SHN_UNDEF':
+                    return module.base_addr, symbol
+
+        return None, None
+
+    def __iter__(self):
+        for x in self.modules:
+            yield x

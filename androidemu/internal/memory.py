@@ -13,8 +13,12 @@ class Memory:
         self.counter_stack = config.STACK_ADDR + config.STACK_SIZE
 
     def mem_reserve(self, size):
+        (_, size_aligned) = align(0, size, True)
+
         ret = self.counter_memory
-        self.counter_memory += size
+
+        self.counter_memory += size_aligned
+
         return ret
 
     def mem_map(self, address, size, prot):
