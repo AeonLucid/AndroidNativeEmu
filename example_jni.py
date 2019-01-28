@@ -1,6 +1,9 @@
 import logging
+import os
 import sys
+import posixpath
 
+from unicorn import UC_HOOK_CODE, UcError
 from unicorn.arm_const import *
 
 import debug_utils
@@ -16,7 +19,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Initialize emulator
-emulator = Emulator()
+emulator = Emulator(
+    vfp_inst_set=True,
+    vfs_root=posixpath.join(posixpath.dirname(__file__), "vfs")
+)
 
 # Load all libraries.
 emulator.load_library("example_binaries/libdl.so")
@@ -42,6 +48,10 @@ emulator.mu.reg_write(UC_ARM_REG_R0, emulator.java_vm.address_ptr)  # JavaVM* vm
 emulator.mu.reg_write(UC_ARM_REG_R1, 0x00)  # void* reserved
 
 # Run JNI_OnLoad.
-emulator.mu.emu_start(base_address + 0x7DEC + 1, base_address + 0x7EEA)
+try:
+    emulator.mu.emu_start(base_address + 0x7DEC + 1, base_address + 0x7EEA)
+except UcError as e:
+    print("Exit at %x" % emulator.mu.reg_read(UC_ARM_REG_PC))
+    raise
 
 logger.info("Exited EMU.")

@@ -32,3 +32,5 @@ class Memory:
 
     def mem_write(self, address, data):
         self.emu.mu.mem_write(address, data)
+
+

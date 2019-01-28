@@ -8,8 +8,10 @@ This is an educational project to learn more about the ELF file format and [Unic
 
 - Emulation of the [JNI Invocation API](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/invocation.html) so `JNI_OnLoad` can be called properly.
 - Emulation of native memory for malloc / memcpy.
+- Emulation of syscalls (SVC #0) instruction.
 - Hooking through the symbol table.
 - All JavaVM, JNIEnv and hooked functions are handled by python.
+- Enable VFP support.
 
 > The first two are still being worked on, please contribute if you can! :)
 
@@ -30,3 +32,4 @@ All resources used while developing AndroidNativeEmu.
 
 ### Code sources
 - https://github.com/lunixbochs/usercorn
+- https://github.com/slick1015/pad_unpacker (SVC 0 instruction)

@@ -33,3 +33,8 @@ def hook_mem_write(uc, access, address, size, value, user_data):
 def hook_mem_read(uc, access, address, size, value, user_data):
     pc = uc.reg_read(UC_ARM_REG_PC)
     logger.debug(">>> Memory READ at 0x%x, data size = %u, pc: %x" % (address, size, pc))
+
+
+def hook_interrupt(uc, intno, data):
+    logger.debug(">>> Triggering interrupt %d" % intno)
+    return

@@ -260,11 +260,10 @@ class JNIEnv:
         """
         Returns a class object from a fully-qualified name, or NULL if the class cannot be found.
         """
-
-        # TODO: Actually retrieve a class id from a class map.
         name = memory_helpers.read_utf8(mu, name_ptr)
-        logger.debug(name)
-        return 0xFF
+        logger.debug("JNIEnv->FindClass(%s) was called" % name)
+        # TODO: Actually retrieve a class id from a class map.
+        return 0xFA
 
     @native_method
     def from_reflected_method(self, mu, env):
@@ -323,20 +322,34 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def new_global_ref(self, mu, env):
-        raise NotImplementedError()
+    def new_global_ref(self, mu, env, obj):
+        """
+        Creates a new global reference to the object referred to by the obj argument. The obj argument may be a
+        global or local reference. Global references must be explicitly disposed of by calling DeleteGlobalRef().
+        """
+        logger.debug("JNIEnv->NewGlobalRef(%d) was called" % obj)
+        # TODO: Implement
+        return obj + 1
 
     @native_method
     def delete_global_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def delete_local_ref(self, mu, env):
-        raise NotImplementedError()
+    def delete_local_ref(self, mu, env, local_ref):
+        """
+        Deletes the local reference pointed to by localRef.
+        """
+        logger.debug("JNIEnv->DeleteLocalRef(%d) was called" % local_ref)
+        # TODO: Implement
 
     @native_method
-    def is_same_object(self, mu, env):
-        raise NotImplementedError()
+    def is_same_object(self, mu, env, ref1, ref2):
+        """
+        Returns JNI_TRUE if ref1 and ref2 refer to the same Java object, or are both NULL; otherwise, returns JNI_FALSE.
+        """
+        logger.debug("JNIEnv->IsSameObject(%d, %d) was called" % (ref1, ref2))
+        return JNI_FALSE
 
     @native_method
     def new_local_ref(self, mu, env):
@@ -371,8 +384,16 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_method_id(self, mu, env):
-        raise NotImplementedError()
+    def get_method_id(self, mu, env, clazz, name_ptr, sig_ptr):
+        """
+        Returns the method ID for an instance (nonstatic) method of a class or interface. The method may be defined
+        in one of the clazz’s superclasses and inherited by clazz. The method is determined by its name and signature.
+        """
+        name = memory_helpers.read_utf8(mu, name_ptr)
+        sig = memory_helpers.read_utf8(mu, sig_ptr)
+        logger.debug("JNIEnv->GetMethodId(%d, %s, %s) was called" % (clazz, name, sig))
+        # TODO: Implement
+        return 0xFC
 
     @native_method
     def call_object_method(self, mu, env):
@@ -615,8 +636,17 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_field_id(self, mu, env):
-        raise NotImplementedError()
+    def get_field_id(self, mu, env, clazz, name_ptr, sig_ptr):
+        """
+        Returns the field ID for an instance (nonstatic) field of a class. The field is specified by its name and
+        signature. The Get<type>Field and Set<type>Field families of accessor functions use field IDs to retrieve
+        object fields.
+        """
+        name = memory_helpers.read_utf8(mu, name_ptr)
+        sig = memory_helpers.read_utf8(mu, sig_ptr)
+        logger.debug("JNIEnv->GetFieldId(%d, %s, %s) was called" % (clazz, name, sig))
+        # TODO: Implement
+        return 0xFD
 
     @native_method
     def get_object_field(self, mu, env):
@@ -691,8 +721,15 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_static_method_id(self, mu, env):
-        raise NotImplementedError()
+    def get_static_method_id(self, mu, env, clazz, name_ptr, sig_ptr):
+        """
+        Returns the method ID for a static method of a class. The method is specified by its name and signature.
+        """
+        name = memory_helpers.read_utf8(mu, name_ptr)
+        sig = memory_helpers.read_utf8(mu, sig_ptr)
+        logger.debug("JNIEnv->GetStaticMethodId(%d, %s, %s) was called" % (clazz, name, sig))
+        # TODO: Implement
+        return 0xFB
 
     @native_method
     def call_static_object_method(self, mu, env):
@@ -815,8 +852,17 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_static_field_id(self, mu, env):
-        raise NotImplementedError()
+    def get_static_field_id(self, mu, env, clazz, name_ptr, sig_ptr):
+        """
+        Returns the field ID for a static field of a class. The field is specified by its name and signature. The
+        GetStatic<type>Field and SetStatic<type>Field families of accessor functions use field IDs to retrieve static
+        fields.
+        """
+        name = memory_helpers.read_utf8(mu, name_ptr)
+        sig = memory_helpers.read_utf8(mu, sig_ptr)
+        logger.debug("JNIEnv->GetStaticFieldId(%d, %s, %s) was called" % (clazz, name, sig))
+        # TODO: Implement
+        return 0xFE
 
     @native_method
     def get_static_object_field(self, mu, env):
@@ -1164,7 +1210,13 @@ class JNIEnv:
 
     @native_method
     def exception_check(self, mu, env):
-        raise NotImplementedError()
+        """
+        Returns JNI_TRUE when there is a pending exception; otherwise, returns JNI_FALSE.
+        """
+        logger.debug("JNIEnv->ExceptionCheck() was called")
+        # TODO: Implement
+
+        return JNI_FALSE
 
     @native_method
     def new_direct_byte_buffer(self, mu, env):
