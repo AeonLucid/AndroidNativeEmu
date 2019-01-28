@@ -87,7 +87,7 @@ class Hooker:
         hook_func = self._hooks[hook_id]
 
         # Call hook.
-        hook_func()
+        hook_func(mu)
 
     def enable(self):
         self._mu.hook_add(UC_HOOK_CODE, self._hook, None, self._base_addr, self._current_addr)

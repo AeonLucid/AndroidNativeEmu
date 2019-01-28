@@ -37,7 +37,7 @@ for module in emulator.modules:
 hooker = Hooker(emulator.mu, config.MEMORY_BASE)
 
 # Initialize fake JavaVM.
-java_vm = JavaVM(emulator.mu, hooker)
+java_vm = JavaVM(hooker)
 
 # Enable hooker to catch calls (call after writing all your hooks).
 hooker.enable()

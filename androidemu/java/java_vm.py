@@ -1,23 +1,20 @@
 import logging
 
-from unicorn import Uc
-from unicorn.arm_const import *
 from androidemu.hooker import Hooker
-from androidemu.java.jni_const import JNI_ERR
+from androidemu.java.helpers.native_method import native_method
+from androidemu.java.jni_const import *
 
 logger = logging.getLogger(__name__)
 
 
 # https://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/invocation.html
-# This class attempts to mimic the Invocation API function table.
+# This class attempts to mimic the JNIInvokeInterface table.
 class JavaVM:
 
     """
-    :type mu Uc
     :type hooker Hooker
     """
-    def __init__(self, mu, hooker):
-        self._mu = mu
+    def __init__(self, hooker):
         (self.address_ptr, self.address) = hooker.write_function_table({
             3: self.destroy_java_vm,
             4: self.attach_current_thread,
@@ -26,20 +23,30 @@ class JavaVM:
             7: self.attach_current_thread
         })
 
-    def destroy_java_vm(self):
+    @native_method
+    def destroy_java_vm(self, mu):
         pass
 
-    def attach_current_thread(self):
+    @native_method
+    def attach_current_thread(self, mu):
         pass
 
-    def detach_current_thread(self):
+    @native_method
+    def detach_current_thread(self, mu):
         pass
 
-    def get_env(self):
-        self._mu.mem_write(self._mu.reg_read(UC_ARM_REG_R1), b"\x01")   # Write address of the JEnv
-        self._mu.reg_write(UC_ARM_REG_R0, JNI_ERR)                      # Write 0 to respond succes
+    @native_method
+    def get_env(self, mu, java_vm, env, version):
+        logger.debug("java_vm: 0x%08x" % java_vm)
+        logger.debug("env: 0x%08x" % env)
+        logger.debug("version: 0x%08x" % version)
+
+        mu.mem_write(env, b"\x01")
 
         logger.debug("JavaVM->GetENV() was called!")
 
-    def attach_current_thread_as_daemon(self):
+        return JNI_ERR
+
+    @native_method
+    def attach_current_thread_as_daemon(self, mu):
         pass
