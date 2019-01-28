@@ -9,8 +9,8 @@ from androidemu.internal.modules import Modules
 class Emulator:
 
     """
-    :type filename str
     :type mu Uc
+    :type modules Modules
     :type memory Memory
     """
     def __init__(self):
@@ -19,6 +19,7 @@ class Emulator:
 
         # Initialize stack.
         self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
+        self.mu.mem_map(config.MEMORY_BASE, config.MEMORY_SIZE)
         self.mu.reg_write(UC_ARM_REG_SP, config.STACK_ADDR + config.STACK_SIZE)
 
         self.modules = Modules(self)

@@ -1,12 +1,16 @@
+import logging
+
 from androidemu import config
 from androidemu.internal import align
 
+logger = logging.getLogger(__name__)
+
 
 class Memory:
-
     """
     :type emu androidemu.emulator.Emulator
     """
+
     def __init__(self, emu):
         self.emu = emu
         self.counter_memory = config.BASE_ADDR
@@ -26,7 +30,8 @@ class Memory:
 
         self.emu.mu.mem_map(address, size, prot)
 
-        print("Mapping memory page on addr %02x - %02x size %02x prot %s" % (address, address + size, size, prot))
+        logger.debug("=> Mapping memory page 0x%08x - 0x%08x, size 0x%08x, prot %s" % (address, address + size, size,
+                                                                                       prot))
 
     def mem_write(self, address, data):
         self.emu.mu.mem_write(address, data)

@@ -1,9 +1,13 @@
+import logging
+
 from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
 from unicorn import UC_PROT_ALL
 
 from androidemu.internal import get_segment_protection, arm
 from androidemu.internal.module import Module
+
+logger = logging.getLogger(__name__)
 
 
 class Modules:
@@ -17,6 +21,8 @@ class Modules:
         self.modules = list()
 
     def load_module(self, filename):
+        logger.debug("Loading module '%s'." % filename)
+
         with open(filename, 'rb') as fstream:
             elf = ELFFile(fstream)
 
@@ -84,7 +90,7 @@ class Modules:
                         (sym_base, resolved_symbol) = self._resolv_symbol(load_base, dynsym, sym)
 
                         if resolved_symbol is None:
-                            # print("%s symbol was missing." % sym.name)
+                            logger.debug("=> Unable to resolve symbol: %s" % sym.name)
                             continue
 
                         # Create the new value.
@@ -106,7 +112,7 @@ class Modules:
                         else:
                             raise NotImplementedError()
                     else:
-                        print("Unhandled relocation type %i." % rel_info_type)
+                        logger.error("Unhandled relocation type %i." % rel_info_type)
 
             # Store information about loaded module.
             self.modules.append(Module(filename, load_base, bound_high - bound_low, dynsym))
