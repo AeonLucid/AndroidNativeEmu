@@ -3,6 +3,7 @@ import logging
 from androidemu.hooker import Hooker
 from androidemu.java.helpers.native_method import native_method
 from androidemu.java.jni_const import *
+from androidemu.java.jni_env import JNIEnv
 
 logger = logging.getLogger(__name__)
 
@@ -23,17 +24,19 @@ class JavaVM:
             7: self.attach_current_thread
         })
 
+        self.jni_env = JNIEnv(hooker)
+
     @native_method
     def destroy_java_vm(self, mu):
-        pass
+        raise NotImplementedError()
 
     @native_method
     def attach_current_thread(self, mu):
-        pass
+        raise NotImplementedError()
 
     @native_method
     def detach_current_thread(self, mu):
-        pass
+        raise NotImplementedError()
 
     @native_method
     def get_env(self, mu, java_vm, env, version):
@@ -41,12 +44,12 @@ class JavaVM:
         logger.debug("env: 0x%08x" % env)
         logger.debug("version: 0x%08x" % version)
 
-        mu.mem_write(env, b"\x01")
+        mu.mem_write(env, self.jni_env.address_ptr.to_bytes(4, byteorder='little'))
 
         logger.debug("JavaVM->GetENV() was called!")
 
-        return JNI_ERR
+        return JNI_OK
 
     @native_method
     def attach_current_thread_as_daemon(self, mu):
-        pass
+        raise NotImplementedError()

@@ -6,7 +6,6 @@ from unicorn.arm_const import *
 
 
 def native_method(func):
-
     def native_method_wrapper(self, mu):
         """
         :type self
@@ -36,7 +35,12 @@ def native_method(func):
         if args_count >= 5:
             raise NotImplementedError("We don't support more than 4 args yet, read from the stack.")
 
-        result = func(self, mu, *native_args)
+        try:
+            result = func(self, mu, *native_args)
+        except:
+            # Make sure we catch exceptions inside hooks and stop emulation.
+            mu.emu_stop()
+            raise
 
         if result is not None:
             if isinstance(result, int):
