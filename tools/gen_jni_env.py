@@ -307,5 +307,5 @@ for (index, name) in functions.items():
 for (index, name) in functions.items():
     print("""
     @native_method
-    def %s(self, mu):
+    def %s(self, mu, env):
         raise NotImplementedError()""" % name)

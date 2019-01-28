@@ -247,917 +247,917 @@ class JNIEnv:
         })
 
     @native_method
-    def get_version(self, mu):
+    def get_version(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def define_class(self, mu):
+    def define_class(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def find_class(self, mu):
+    def find_class(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def from_reflected_method(self, mu):
+    def from_reflected_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def from_reflected_field(self, mu):
+    def from_reflected_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def to_reflected_method(self, mu):
+    def to_reflected_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_superclass(self, mu):
+    def get_superclass(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def is_assignable_from(self, mu):
+    def is_assignable_from(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def to_reflected_field(self, mu):
+    def to_reflected_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def throw(self, mu):
+    def throw(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def throw_new(self, mu):
+    def throw_new(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def exception_occurred(self, mu):
+    def exception_occurred(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def exception_describe(self, mu):
+    def exception_describe(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def exception_clear(self, mu):
+    def exception_clear(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def fatal_error(self, mu):
+    def fatal_error(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def push_local_frame(self, mu):
+    def push_local_frame(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def pop_local_frame(self, mu):
+    def pop_local_frame(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_global_ref(self, mu):
+    def new_global_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def delete_global_ref(self, mu):
+    def delete_global_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def delete_local_ref(self, mu):
+    def delete_local_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def is_same_object(self, mu):
+    def is_same_object(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_local_ref(self, mu):
+    def new_local_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def ensure_local_capacity(self, mu):
+    def ensure_local_capacity(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def alloc_object(self, mu):
+    def alloc_object(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_object(self, mu):
+    def new_object(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_object_v(self, mu):
+    def new_object_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_object_a(self, mu):
+    def new_object_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_object_class(self, mu):
+    def get_object_class(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def is_instance_of(self, mu):
+    def is_instance_of(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_method_id(self, mu):
+    def get_method_id(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_object_method(self, mu):
+    def call_object_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_object_method_v(self, mu):
+    def call_object_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_object_method_a(self, mu):
+    def call_object_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_boolean_method(self, mu):
+    def call_boolean_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_boolean_method_v(self, mu):
+    def call_boolean_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_boolean_method_a(self, mu):
+    def call_boolean_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_byte_method(self, mu):
+    def call_byte_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_byte_method_v(self, mu):
+    def call_byte_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_byte_method_a(self, mu):
+    def call_byte_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_char_method(self, mu):
+    def call_char_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_char_method_v(self, mu):
+    def call_char_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_char_method_a(self, mu):
+    def call_char_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_short_method(self, mu):
+    def call_short_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_short_method_v(self, mu):
+    def call_short_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_short_method_a(self, mu):
+    def call_short_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_int_method(self, mu):
+    def call_int_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_int_method_v(self, mu):
+    def call_int_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_int_method_a(self, mu):
+    def call_int_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_long_method(self, mu):
+    def call_long_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_long_method_v(self, mu):
+    def call_long_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_long_method_a(self, mu):
+    def call_long_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_float_method(self, mu):
+    def call_float_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_float_method_v(self, mu):
+    def call_float_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_float_method_a(self, mu):
+    def call_float_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_double_method(self, mu):
+    def call_double_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_double_method_v(self, mu):
+    def call_double_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_double_method_a(self, mu):
+    def call_double_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_void_method(self, mu):
+    def call_void_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_void_method_v(self, mu):
+    def call_void_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_void_method_a(self, mu):
+    def call_void_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_object_method(self, mu):
+    def call_nonvirtual_object_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_object_method_v(self, mu):
+    def call_nonvirtual_object_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_object_method_a(self, mu):
+    def call_nonvirtual_object_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_boolean_method(self, mu):
+    def call_nonvirtual_boolean_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_boolean_method_v(self, mu):
+    def call_nonvirtual_boolean_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_boolean_method_a(self, mu):
+    def call_nonvirtual_boolean_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_byte_method(self, mu):
+    def call_nonvirtual_byte_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_byte_method_v(self, mu):
+    def call_nonvirtual_byte_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_byte_method_a(self, mu):
+    def call_nonvirtual_byte_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_char_method(self, mu):
+    def call_nonvirtual_char_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_char_method_v(self, mu):
+    def call_nonvirtual_char_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_char_method_a(self, mu):
+    def call_nonvirtual_char_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_short_method(self, mu):
+    def call_nonvirtual_short_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_short_method_v(self, mu):
+    def call_nonvirtual_short_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_short_method_a(self, mu):
+    def call_nonvirtual_short_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_int_method(self, mu):
+    def call_nonvirtual_int_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_int_method_v(self, mu):
+    def call_nonvirtual_int_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_int_method_a(self, mu):
+    def call_nonvirtual_int_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_long_method(self, mu):
+    def call_nonvirtual_long_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_long_method_v(self, mu):
+    def call_nonvirtual_long_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_long_method_a(self, mu):
+    def call_nonvirtual_long_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_float_method(self, mu):
+    def call_nonvirtual_float_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_float_method_v(self, mu):
+    def call_nonvirtual_float_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_float_method_a(self, mu):
+    def call_nonvirtual_float_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_double_method(self, mu):
+    def call_nonvirtual_double_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_double_method_v(self, mu):
+    def call_nonvirtual_double_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_double_method_a(self, mu):
+    def call_nonvirtual_double_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_void_method(self, mu):
+    def call_nonvirtual_void_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_void_method_v(self, mu):
+    def call_nonvirtual_void_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_nonvirtual_void_method_a(self, mu):
+    def call_nonvirtual_void_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_field_id(self, mu):
+    def get_field_id(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_object_field(self, mu):
+    def get_object_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_boolean_field(self, mu):
+    def get_boolean_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_byte_field(self, mu):
+    def get_byte_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_char_field(self, mu):
+    def get_char_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_short_field(self, mu):
+    def get_short_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_int_field(self, mu):
+    def get_int_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_long_field(self, mu):
+    def get_long_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_float_field(self, mu):
+    def get_float_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_double_field(self, mu):
+    def get_double_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_object_field(self, mu):
+    def set_object_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_boolean_field(self, mu):
+    def set_boolean_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_byte_field(self, mu):
+    def set_byte_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_char_field(self, mu):
+    def set_char_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_short_field(self, mu):
+    def set_short_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_int_field(self, mu):
+    def set_int_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_long_field(self, mu):
+    def set_long_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_float_field(self, mu):
+    def set_float_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_double_field(self, mu):
+    def set_double_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_method_id(self, mu):
+    def get_static_method_id(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_object_method(self, mu):
+    def call_static_object_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_object_method_v(self, mu):
+    def call_static_object_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_object_method_a(self, mu):
+    def call_static_object_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_boolean_method(self, mu):
+    def call_static_boolean_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_boolean_method_v(self, mu):
+    def call_static_boolean_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_boolean_method_a(self, mu):
+    def call_static_boolean_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_byte_method(self, mu):
+    def call_static_byte_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_byte_method_v(self, mu):
+    def call_static_byte_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_byte_method_a(self, mu):
+    def call_static_byte_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_char_method(self, mu):
+    def call_static_char_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_char_method_v(self, mu):
+    def call_static_char_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_char_method_a(self, mu):
+    def call_static_char_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_short_method(self, mu):
+    def call_static_short_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_short_method_v(self, mu):
+    def call_static_short_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_short_method_a(self, mu):
+    def call_static_short_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_int_method(self, mu):
+    def call_static_int_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_int_method_v(self, mu):
+    def call_static_int_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_int_method_a(self, mu):
+    def call_static_int_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_long_method(self, mu):
+    def call_static_long_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_long_method_v(self, mu):
+    def call_static_long_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_long_method_a(self, mu):
+    def call_static_long_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_float_method(self, mu):
+    def call_static_float_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_float_method_v(self, mu):
+    def call_static_float_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_float_method_a(self, mu):
+    def call_static_float_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_double_method(self, mu):
+    def call_static_double_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_double_method_v(self, mu):
+    def call_static_double_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_double_method_a(self, mu):
+    def call_static_double_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_void_method(self, mu):
+    def call_static_void_method(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_void_method_v(self, mu):
+    def call_static_void_method_v(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def call_static_void_method_a(self, mu):
+    def call_static_void_method_a(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_field_id(self, mu):
+    def get_static_field_id(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_object_field(self, mu):
+    def get_static_object_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_boolean_field(self, mu):
+    def get_static_boolean_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_byte_field(self, mu):
+    def get_static_byte_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_char_field(self, mu):
+    def get_static_char_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_short_field(self, mu):
+    def get_static_short_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_int_field(self, mu):
+    def get_static_int_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_long_field(self, mu):
+    def get_static_long_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_float_field(self, mu):
+    def get_static_float_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_static_double_field(self, mu):
+    def get_static_double_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_object_field(self, mu):
+    def set_static_object_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_boolean_field(self, mu):
+    def set_static_boolean_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_byte_field(self, mu):
+    def set_static_byte_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_char_field(self, mu):
+    def set_static_char_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_short_field(self, mu):
+    def set_static_short_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_int_field(self, mu):
+    def set_static_int_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_long_field(self, mu):
+    def set_static_long_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_float_field(self, mu):
+    def set_static_float_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_static_double_field(self, mu):
+    def set_static_double_field(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_string(self, mu):
+    def new_string(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_string_length(self, mu):
+    def get_string_length(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_string_chars(self, mu):
+    def get_string_chars(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_string_chars(self, mu):
+    def release_string_chars(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_string_utf(self, mu):
+    def new_string_utf(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_string_utf_length(self, mu):
+    def get_string_utf_length(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_string_utf_chars(self, mu):
+    def get_string_utf_chars(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_string_utf_chars(self, mu):
+    def release_string_utf_chars(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_array_length(self, mu):
+    def get_array_length(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_object_array(self, mu):
+    def new_object_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_object_array_element(self, mu):
+    def get_object_array_element(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_object_array_element(self, mu):
+    def set_object_array_element(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_boolean_array(self, mu):
+    def new_boolean_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_byte_array(self, mu):
+    def new_byte_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_char_array(self, mu):
+    def new_char_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_short_array(self, mu):
+    def new_short_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_int_array(self, mu):
+    def new_int_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_long_array(self, mu):
+    def new_long_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_float_array(self, mu):
+    def new_float_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_double_array(self, mu):
+    def new_double_array(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_boolean_array_elements(self, mu):
+    def get_boolean_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_byte_array_elements(self, mu):
+    def get_byte_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_char_array_elements(self, mu):
+    def get_char_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_short_array_elements(self, mu):
+    def get_short_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_int_array_elements(self, mu):
+    def get_int_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_long_array_elements(self, mu):
+    def get_long_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_float_array_elements(self, mu):
+    def get_float_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_double_array_elements(self, mu):
+    def get_double_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_boolean_array_elements(self, mu):
+    def release_boolean_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_byte_array_elements(self, mu):
+    def release_byte_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_char_array_elements(self, mu):
+    def release_char_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_short_array_elements(self, mu):
+    def release_short_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_int_array_elements(self, mu):
+    def release_int_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_long_array_elements(self, mu):
+    def release_long_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_float_array_elements(self, mu):
+    def release_float_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_double_array_elements(self, mu):
+    def release_double_array_elements(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_boolean_array_region(self, mu):
+    def get_boolean_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_byte_array_region(self, mu):
+    def get_byte_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_char_array_region(self, mu):
+    def get_char_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_short_array_region(self, mu):
+    def get_short_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_int_array_region(self, mu):
+    def get_int_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_long_array_region(self, mu):
+    def get_long_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_float_array_region(self, mu):
+    def get_float_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_double_array_region(self, mu):
+    def get_double_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_boolean_array_region(self, mu):
+    def set_boolean_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_byte_array_region(self, mu):
+    def set_byte_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_char_array_region(self, mu):
+    def set_char_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_short_array_region(self, mu):
+    def set_short_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_int_array_region(self, mu):
+    def set_int_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_long_array_region(self, mu):
+    def set_long_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_float_array_region(self, mu):
+    def set_float_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def set_double_array_region(self, mu):
+    def set_double_array_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def register_natives(self, mu):
+    def register_natives(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def unregister_natives(self, mu):
+    def unregister_natives(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def monitor_enter(self, mu):
+    def monitor_enter(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def monitor_exit(self, mu):
+    def monitor_exit(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_java_vm(self, mu):
+    def get_java_vm(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_string_region(self, mu):
+    def get_string_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_string_utf_region(self, mu):
+    def get_string_utf_region(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_primitive_array_critical(self, mu):
+    def get_primitive_array_critical(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_primitive_array_critical(self, mu):
+    def release_primitive_array_critical(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_string_critical(self, mu):
+    def get_string_critical(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def release_string_critical(self, mu):
+    def release_string_critical(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_weak_global_ref(self, mu):
+    def new_weak_global_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def delete_weak_global_ref(self, mu):
+    def delete_weak_global_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def exception_check(self, mu):
+    def exception_check(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def new_direct_byte_buffer(self, mu):
+    def new_direct_byte_buffer(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_direct_buffer_address(self, mu):
+    def get_direct_buffer_address(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_direct_buffer_capacity(self, mu):
+    def get_direct_buffer_capacity(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def get_object_ref_type(self, mu):
+    def get_object_ref_type(self, mu, env):
         raise NotImplementedError()
