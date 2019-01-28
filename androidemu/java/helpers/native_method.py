@@ -4,13 +4,17 @@ import types
 from unicorn import Uc
 from unicorn.arm_const import *
 
+from androidemu.java.jni_const import JNI_ERR
+
 
 def native_method(func):
-    def native_method_wrapper(self, mu):
+    def native_method_wrapper(*argv):
         """
         :type self
         :type mu Uc
         """
+
+        mu = argv[1] if len(argv) == 2 else argv[0]
 
         args = inspect.getfullargspec(func).args
         args_count = len(args) - (2 if 'self' in args else 1)
@@ -35,17 +39,17 @@ def native_method(func):
         if args_count >= 5:
             raise NotImplementedError("We don't support more than 4 args yet, read from the stack.")
 
-        try:
-            result = func(self, mu, *native_args)
-        except:
-            # Make sure we catch exceptions inside hooks and stop emulation.
-            mu.emu_stop()
-            raise
+        if len(argv) == 1:
+            result = func(mu, *native_args)
+        else:
+            result = func(argv[0], mu, *native_args)
 
         if result is not None:
             if isinstance(result, int):
                 mu.reg_write(UC_ARM_REG_R0, result)
             else:
                 raise NotImplementedError("Unable to write response '%s' to emulator." % str(result))
+        else:
+            mu.reg_write(UC_ARM_REG_R0, JNI_ERR)
 
     return native_method_wrapper

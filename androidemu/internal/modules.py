@@ -19,6 +19,10 @@ class Modules:
     def __init__(self, emu):
         self.emu = emu
         self.modules = list()
+        self.symbol_hooks = dict()
+
+    def add_symbol_hook(self, symbol_name, addr):
+        self.symbol_hooks[symbol_name] = addr
 
     def load_module(self, filename):
         logger.debug("Loading module '%s'." % filename)
@@ -86,15 +90,19 @@ class Modules:
                         # Write the new value
                         self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
                     elif rel_info_type == arm.R_ARM_GLOB_DAT or rel_info_type == arm.R_ARM_JUMP_SLOT:
-                        # Resolve the symbol.
-                        (sym_base, resolved_symbol) = self._resolv_symbol(load_base, dynsym, sym)
+                        # Check if we have a hook for this symbol.
+                        if sym.name in self.symbol_hooks:
+                            value = self.symbol_hooks[sym.name]
+                        else:
+                            # Resolve the symbol.
+                            (sym_base, resolved_symbol) = self._resolv_symbol(load_base, dynsym, sym)
 
-                        if resolved_symbol is None:
-                            logger.debug("=> Unable to resolve symbol: %s" % sym.name)
-                            continue
+                            if resolved_symbol is None:
+                                logger.debug("=> Unable to resolve symbol: %s" % sym.name)
+                                continue
 
-                        # Create the new value.
-                        value = sym_base + resolved_symbol['st_value']
+                            # Create the new value.
+                            value = sym_base + resolved_symbol['st_value']
 
                         # Write the new value
                         self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))

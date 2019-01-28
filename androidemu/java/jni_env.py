@@ -3,6 +3,7 @@ import logging
 from androidemu.hooker import Hooker
 from androidemu.java.helpers.native_method import native_method
 from androidemu.java.jni_const import *
+from androidemu.utils import memory_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -255,8 +256,15 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def find_class(self, mu, env):
-        raise NotImplementedError()
+    def find_class(self, mu, env, name_ptr):
+        """
+        Returns a class object from a fully-qualified name, or NULL if the class cannot be found.
+        """
+
+        # TODO: Actually retrieve a class id from a class map.
+        name = memory_helpers.read_utf8(mu, name_ptr)
+        logger.debug(name)
+        return 0xFF
 
     @native_method
     def from_reflected_method(self, mu, env):
@@ -1091,8 +1099,20 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def register_natives(self, mu, env):
-        raise NotImplementedError()
+    def register_natives(self, mu, env, clazz, methods, methods_count):
+        for i in range(0, methods_count):
+            ptr_name = memory_helpers.read_ptr(mu, (i * 12) + methods)
+            ptr_sign = memory_helpers.read_ptr(mu, (i * 12) + methods + 4)
+            ptr_func = memory_helpers.read_ptr(mu, (i * 12) + methods + 8)
+
+            name = memory_helpers.read_utf8(mu, ptr_name)
+            signature = memory_helpers.read_utf8(mu, ptr_sign)
+
+            print(name, signature, "%x" % ptr_func)
+
+        # TODO: Store these so we can call them.
+
+        return JNI_OK
 
     @native_method
     def unregister_natives(self, mu, env):

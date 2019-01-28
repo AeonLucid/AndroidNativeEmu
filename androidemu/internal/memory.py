@@ -7,10 +7,10 @@ logger = logging.getLogger(__name__)
 
 
 class Memory:
+
     """
     :type emu androidemu.emulator.Emulator
     """
-
     def __init__(self, emu):
         self.emu = emu
         self.counter_memory = config.BASE_ADDR
@@ -18,11 +18,8 @@ class Memory:
 
     def mem_reserve(self, size):
         (_, size_aligned) = align(0, size, True)
-
         ret = self.counter_memory
-
         self.counter_memory += size_aligned
-
         return ret
 
     def mem_map(self, address, size, prot):

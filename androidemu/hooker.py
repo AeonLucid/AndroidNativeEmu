@@ -9,13 +9,15 @@ class Hooker:
     """
     :type mu Uc
     """
-    def __init__(self, mu, base_addr):
+    def __init__(self, mu, base_addr, size):
         self._mu = mu
         self._keystone = Ks(KS_ARCH_ARM, KS_MODE_THUMB)
         self._base_addr = base_addr
+        self._size = size
         self._current_id = 0xFF00
         self._current_addr = self._base_addr
         self._hooks = dict()
+        self._mu.hook_add(UC_HOOK_CODE, self._hook, None, self._base_addr, self._base_addr + size)
 
     def _get_next_id(self):
         idx = self._current_id
@@ -87,7 +89,10 @@ class Hooker:
         hook_func = self._hooks[hook_id]
 
         # Call hook.
-        hook_func(mu)
 
-    def enable(self):
-        self._mu.hook_add(UC_HOOK_CODE, self._hook, None, self._base_addr, self._current_addr)
+        try:
+            hook_func(mu)
+        except:
+            # Make sure we catch exceptions inside hooks and stop emulation.
+            mu.emu_stop()
+            raise
