@@ -1,7 +1,7 @@
 from unicorn import Uc
 
-from androidemu.const.android import PR_SET_VMA
-from androidemu.const.linux import CLOCK_MONOTONIC_COARSE
+from androidemu.const.android import *
+from androidemu.const.linux import *
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.utils import memory_helpers
 
@@ -16,6 +16,7 @@ class SyscallHooks:
         self._mu = mu
         self._syscall_handler = syscall_handler
         self._syscall_handler.set_handler(0xAC, "prctl", 5, self._handle_prctl)
+        self._syscall_handler.set_handler(0xF0, "futex", 6, self._handle_futex)
         self._syscall_handler.set_handler(0x107, "clock_gettime", 2, self._handle_clock_gettime)
 
     def _handle_prctl(self, mu, option, arg2, arg3, arg4, arg5):
@@ -35,6 +36,25 @@ class SyscallHooks:
             return 0
         else:
             raise NotImplementedError("Unsupported prctl option %d (0x%x)" % (option, option))
+
+    def _handle_futex(self, mu, uaddr, op, val, timeout, uaddr2, val3):
+        """
+        See: https://linux.die.net/man/2/futex
+        """
+
+        if op & FUTEX_WAIT:
+            raise NotImplementedError()
+        elif op & FUTEX_WAKE:
+            wakes_at_most = val
+            return 0
+        elif op & FUTEX_FD:
+            raise NotImplementedError()
+        elif op & FUTEX_REQUEUE:
+            raise NotImplementedError()
+        elif op & FUTEX_CMP_REQUEUE:
+            raise NotImplementedError()
+
+        return 0
 
     def _handle_clock_gettime(self, mu, clk_id, tp_ptr):
         """

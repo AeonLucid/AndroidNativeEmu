@@ -400,8 +400,9 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_object_method_v(self, mu, env):
-        raise NotImplementedError()
+    def call_object_method_v(self, mu, env, obj, method_id, args):
+        logger.debug("JNIEnv->CallObjectMethodV(%d, %d, 0x%x) was called" % (obj, method_id, args))
+        return 1
 
     @native_method
     def call_object_method_a(self, mu, env):
@@ -649,8 +650,9 @@ class JNIEnv:
         return 0xFD
 
     @native_method
-    def get_object_field(self, mu, env):
-        raise NotImplementedError()
+    def get_object_field(self, mu, env, obj, field_id):
+        logger.debug("JNIEnv->GetObjectField(%d, %d) was called" % (obj, field_id))
+        return 32
 
     @native_method
     def get_boolean_field(self, mu, env):
@@ -669,8 +671,9 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_int_field(self, mu, env):
-        raise NotImplementedError()
+    def get_int_field(self, mu, env, obj, field_id):
+        logger.debug("JNIEnv->GetIntField(%d, %d) was called" % (obj, field_id))
+        return 25
 
     @native_method
     def get_long_field(self, mu, env):
@@ -736,8 +739,9 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_static_object_method_v(self, mu, env):
-        raise NotImplementedError()
+    def call_static_object_method_v(self, mu, env, clazz, method_id, args):
+        logger.debug("JNIEnv->CallStaticObjectMethodV(%d, %d, 0x%x) was called" % (clazz, method_id, args))
+        return 0xAA
 
     @native_method
     def call_static_object_method_a(self, mu, env):
@@ -865,8 +869,9 @@ class JNIEnv:
         return 0xFE
 
     @native_method
-    def get_static_object_field(self, mu, env):
-        raise NotImplementedError()
+    def get_static_object_field(self, mu, env, clazz, field_id):
+        logger.debug("JNIEnv->GetStaticObjectField(%d, %d) was called" % (clazz, field_id))
+        return 50
 
     @native_method
     def get_static_boolean_field(self, mu, env):
@@ -885,8 +890,9 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_static_int_field(self, mu, env):
-        raise NotImplementedError()
+    def get_static_int_field(self, mu, env, clazz, field_id):
+        logger.debug("JNIEnv->GetStaticIntField(%d, %d) was called" % (clazz, field_id))
+        return 0
 
     @native_method
     def get_static_long_field(self, mu, env):
@@ -961,16 +967,16 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_string_utf_chars(self, mu, env):
-        raise NotImplementedError()
+    def get_string_utf_chars(self, mu, env, string, is_copy_ptr):
+        return 0
 
     @native_method
-    def release_string_utf_chars(self, mu, env):
-        raise NotImplementedError()
+    def release_string_utf_chars(self, mu, env, string, utf_ptr):
+        pass
 
     @native_method
-    def get_array_length(self, mu, env):
-        raise NotImplementedError()
+    def get_array_length(self, mu, env, array):
+        return 0
 
     @native_method
     def new_object_array(self, mu, env):

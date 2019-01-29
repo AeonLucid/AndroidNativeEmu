@@ -13,7 +13,16 @@ This is an educational project to learn more about the ELF file format and [Unic
 - All JavaVM, JNIEnv and hooked functions are handled by python.
 - Enable VFP support.
 
-> The first two are still being worked on, please contribute if you can! :)
+## TODO
+
+- Improve file descriptors in `vfs/file_system.py` so they are re-useable.
+- Add a way for the VirtualFileSystem to give back dynamic files, such as `/proc/self/status`, `/proc/self/status` but also `/dev/urandom`.
+- Library consumers must be able to easily rebuild the needed Java classes for a native library, which are used by the native library through the JNIEnv.
+  - Classes
+  - Objects
+  - Fields
+  - Types
+  - Reflection
 
 ## Dependencies
 

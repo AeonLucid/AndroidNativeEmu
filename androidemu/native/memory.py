@@ -14,6 +14,7 @@ class NativeMemory:
         self._memory_current = memory_base
         self._memory_size = memory_size
         self._syscall_handler = syscall_handler
+        self._syscall_handler.set_handler(0x7D, "mprotect", 6, self._handle_mmap2)
         self._syscall_handler.set_handler(0xC0, "mmap2", 6, self._handle_mmap2)
         self._syscall_handler.set_handler(0xDC, "madvise", 3, self._handle_madvise)
 
@@ -41,4 +42,17 @@ class NativeMemory:
         On success madvise() returns zero. On error, it returns -1 and errno is set appropriately.
         """
         # We don't need your advise.
+        return 0
+
+    def _handle_mprotect(self, mu, addr, len_in, prot):
+        """
+        int mprotect(void *addr, size_t len, int prot);
+
+        mprotect() changes protection for the calling process's memory page(s) containing any part of the address
+        range in the interval [addr, addr+len-1]. addr must be aligned to a page boundary.
+        """
+        if addr < self._memory_base and addr + len_in > self._memory_base + self._memory_size:
+            raise RuntimeError("Tried to protect memory not in the native range..")
+
+        self._mu.mem_protect(addr, len_in, perms=prot)
         return 0
