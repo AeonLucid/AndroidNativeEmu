@@ -8,6 +8,7 @@ from androidemu.cpu.syscall_hooks import SyscallHooks
 from androidemu.hooker import Hooker
 from androidemu.internal.memory import Memory
 from androidemu.internal.modules import Modules
+from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.java_vm import JavaVM
 from androidemu.native.hooks import NativeHooks
 from androidemu.native.memory import NativeMemory
@@ -52,7 +53,8 @@ class Emulator:
         self.hooker = Hooker(self.mu, config.MEMORY_BASE, config.MEMORY_SIZE)
 
         # JavaVM
-        self.java_vm = JavaVM(self.hooker)
+        self.java_classloader = JavaClassLoader()
+        self.java_vm = JavaVM(self.java_classloader, self.hooker)
 
         # Native
         self.native_memory = NativeMemory(self.mu, config.MEMORY_DYN_BASE, config.MEMORY_DYN_SIZE, self.syscall_handler)

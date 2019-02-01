@@ -1,5 +1,4 @@
 import logging
-import os
 import sys
 import posixpath
 
@@ -8,6 +7,15 @@ from unicorn.arm_const import *
 
 import debug_utils
 from androidemu.emulator import Emulator
+from androidemu.java.helpers.java_class_def import JavaClassDef
+
+
+# Create java class.
+class MainActivity(metaclass=JavaClassDef, jvm_name='local/myapp/testnativeapp/MainActivity'):
+
+    def __init__(self):
+        pass
+
 
 # Configure logging
 logging.basicConfig(
@@ -23,6 +31,9 @@ emulator = Emulator(
     vfp_inst_set=True,
     vfs_root=posixpath.join(posixpath.dirname(__file__), "vfs")
 )
+
+# Register Java class.
+emulator.java_classloader.add_class(MainActivity)
 
 # Load all libraries.
 emulator.load_library("example_binaries/libdl.so")
@@ -50,8 +61,14 @@ emulator.mu.reg_write(UC_ARM_REG_R1, 0x00)  # void* reserved
 # Run JNI_OnLoad.
 try:
     emulator.mu.emu_start(base_address + 0x7DEC + 1, base_address + 0x7EEA)
+
+    # Dump natives found.
+    logger.info("Exited EMU.")
+    logger.info("Native methods registered to MainActivity:")
+
+    for (name, sig, ptr) in MainActivity.jvm_natives:
+        logger.info("- [0x%08x] %s - %s" % (ptr, name, sig))
 except UcError as e:
     print("Exit at %x" % emulator.mu.reg_read(UC_ARM_REG_PC))
     raise
 
-logger.info("Exited EMU.")

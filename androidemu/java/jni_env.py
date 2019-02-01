@@ -2,6 +2,7 @@ import logging
 
 from androidemu.hooker import Hooker
 from androidemu.java.helpers.native_method import native_method
+from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.jni_const import *
 from androidemu.utils import memory_helpers
 
@@ -12,9 +13,12 @@ logger = logging.getLogger(__name__)
 class JNIEnv:
 
     """
+    :type class_loader JavaClassLoader
     :type hooker Hooker
     """
-    def __init__(self, hooker):
+    def __init__(self, class_loader, hooker):
+        self._class_loader = class_loader
+
         (self.address_ptr, self.address) = hooker.write_function_table({
             4: self.get_version,
             5: self.define_class,
@@ -262,8 +266,17 @@ class JNIEnv:
         """
         name = memory_helpers.read_utf8(mu, name_ptr)
         logger.debug("JNIEnv->FindClass(%s) was called" % name)
-        # TODO: Actually retrieve a class id from a class map.
-        return 0xFA
+
+        if name.startswith('['):
+            raise NotImplementedError('Array type not implemented.')
+
+        clazz = self._class_loader.find_class_by_name(name)
+
+        if clazz is None:
+            # TODO: Proper Java error?
+            raise RuntimeError('Could not find class \'%s\' for JNIEnv.' % name)
+
+        return clazz.jvm_id
 
     @native_method
     def from_reflected_method(self, mu, env):
@@ -1151,7 +1164,11 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def register_natives(self, mu, env, clazz, methods, methods_count):
+    def register_natives(self, mu, env, clazz_id, methods, methods_count):
+        logger.debug("JNIEnv->RegisterNatives(%d, 0x%08x, %d) was called" % (clazz_id, methods, methods_count))
+
+        clazz = self._class_loader.find_class_by_id(clazz_id)
+
         for i in range(0, methods_count):
             ptr_name = memory_helpers.read_ptr(mu, (i * 12) + methods)
             ptr_sign = memory_helpers.read_ptr(mu, (i * 12) + methods + 4)
@@ -1160,9 +1177,7 @@ class JNIEnv:
             name = memory_helpers.read_utf8(mu, ptr_name)
             signature = memory_helpers.read_utf8(mu, ptr_sign)
 
-            print(name, signature, "%x" % ptr_func)
-
-        # TODO: Store these so we can call them.
+            clazz.register_native(name, signature, ptr_func)
 
         return JNI_OK
 

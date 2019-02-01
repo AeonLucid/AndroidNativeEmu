@@ -2,6 +2,7 @@ import logging
 
 from androidemu.hooker import Hooker
 from androidemu.java.helpers.native_method import native_method
+from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.jni_const import *
 from androidemu.java.jni_env import JNIEnv
 
@@ -13,9 +14,10 @@ logger = logging.getLogger(__name__)
 class JavaVM:
 
     """
+    :type class_loader JavaClassLoader
     :type hooker Hooker
     """
-    def __init__(self, hooker):
+    def __init__(self, class_loader, hooker):
         (self.address_ptr, self.address) = hooker.write_function_table({
             3: self.destroy_java_vm,
             4: self.attach_current_thread,
@@ -24,7 +26,7 @@ class JavaVM:
             7: self.attach_current_thread
         })
 
-        self.jni_env = JNIEnv(hooker)
+        self.jni_env = JNIEnv(class_loader, hooker)
 
     @native_method
     def destroy_java_vm(self, mu):
