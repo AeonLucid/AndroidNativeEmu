@@ -64,7 +64,10 @@ class VirtualFileSystem:
 
         if os.path.isfile(file_path):
             logger.info("File opened '%s'" % orig_filename)
-            return self._store_fd(orig_filename, os.open(file_path, flags=os.O_RDWR | os.O_BINARY))
+            flags = os.O_RDWR
+            if hasattr(os, "O_BINARY"):
+                flags |= os.O_BINARY
+            return self._store_fd(orig_filename, os.open(file_path, flags=flags))
         else:
             logger.info("File does not exist %s" % file_path)
             return -1
