@@ -2,10 +2,9 @@ import logging
 import sys
 import posixpath
 
-from unicorn import UC_HOOK_CODE, UcError
+from unicorn import UcError
 from unicorn.arm_const import *
 
-import debug_utils
 from androidemu.emulator import Emulator
 from androidemu.java.helpers.java_class_def import JavaClassDef
 

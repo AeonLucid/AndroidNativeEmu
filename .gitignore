@@ -1,5 +1,3 @@
-private.py
-
 # Created by https://www.gitignore.io/api/venv,python,pycharm+all
 
 ### PyCharm+all ###
@@ -194,4 +192,5 @@ pip-selfcheck.json
 # End of https://www.gitignore.io/api/venv,python,pycharm+all
 
 # Custom
-!example_binaries/*.so
+private.py
+!samples/example_binaries/*.so
