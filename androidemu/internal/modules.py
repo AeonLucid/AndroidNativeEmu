@@ -2,10 +2,12 @@ import logging
 
 from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
+from elftools.elf.sections import SymbolTableSection
 from unicorn import UC_PROT_ALL
 
 from androidemu.internal import get_segment_protection, arm
 from androidemu.internal.module import Module
+from androidemu.internal.symbol_resolved import SymbolResolved
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +72,20 @@ class Modules:
             dynsym = elf.get_section_by_name(".dynsym")
             dynstr = elf.get_section_by_name(".dynstr")
 
+            # Resolve all symbols.
+            symbols_resolved = dict()
+
+            for section in elf.iter_sections():
+                if not isinstance(section, SymbolTableSection):
+                    continue
+
+                itersymbols = section.iter_symbols()
+                next(itersymbols)  # Skip first symbol which is always NULL.
+                for symbol in itersymbols:
+                    symbol_address = self._elf_get_symval(elf, load_base, symbol)
+                    if symbol_address is not None:
+                        symbols_resolved[symbol.name] = SymbolResolved(symbol_address, symbol)
+
             # Relocate.
             for section in elf.iter_sections():
                 if not isinstance(section, RelocationSection):
@@ -90,22 +106,12 @@ class Modules:
                         # Write the new value
                         self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
                     elif rel_info_type == arm.R_ARM_GLOB_DAT or rel_info_type == arm.R_ARM_JUMP_SLOT:
-                        # Check if we have a hook for this symbol.
-                        if sym.name in self.symbol_hooks:
-                            value = self.symbol_hooks[sym.name]
-                        else:
-                            # Resolve the symbol.
-                            (sym_base, resolved_symbol) = self._resolv_symbol(load_base, dynsym, sym)
+                        # Resolve the symbol.
+                        if sym.name in symbols_resolved:
+                            value = symbols_resolved[sym.name].address
 
-                            if resolved_symbol is None:
-                                logger.debug("=> Unable to resolve symbol: %s" % sym.name)
-                                continue
-
-                            # Create the new value.
-                            value = sym_base + resolved_symbol['st_value']
-
-                        # Write the new value
-                        self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
+                            # Write the new value
+                            self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
                     elif rel_info_type == arm.R_ARM_RELATIVE:
                         if sym_value == 0:
                             # Load address at which it was linked originally.
@@ -123,30 +129,44 @@ class Modules:
                         logger.error("Unhandled relocation type %i." % rel_info_type)
 
             # Store information about loaded module.
-            self.modules.append(Module(filename, load_base, bound_high - bound_low, dynsym))
+            self.modules.append(Module(filename, load_base, bound_high - bound_low, symbols_resolved))
 
             return load_base
 
-    def _resolv_symbol(self, load_base, symbol_table, symbol):
-        # First we check our own symbol table.
-        symbols = symbol_table.get_symbol_by_name(symbol.name)
-        symbol = symbols[0]
+    def _elf_get_symval(self, elf, elf_base, symbol):
+        if symbol.name in self.symbol_hooks:
+            return self.symbol_hooks[symbol.name]
 
-        if symbol['st_shndx'] != 'SHN_UNDEF':
-            return load_base, symbol
+        if symbol['st_shndx'] == 'SHN_UNDEF':
+            # External symbol, lookup value.
+            target = self._elf_lookup_symbol(symbol.name)
+            if target is None:
+                # Extern symbol not found
+                if symbol['st_info']['bind'] == 'STB_WEAK':
+                    # Weak symbol initialized as 0
+                    return 0
+                else:
+                    logger.error('=> Undefined external symbol: %s' % symbol.name)
+                    return None
+            else:
+                return target
+        elif symbol['st_shndx'] == 'SHN_ABS':
+            # Absolute symbol.
+            return symbol['st_value']
+        else:
+            # Internally defined symbol.
+            target = elf.get_section(symbol['st_shndx'])
+            return elf_base + symbol['st_value'] + target['sh_offset']
 
-        # Next we check previously discovered symbol tables.
+    def _elf_lookup_symbol(self, name):
         for module in self.modules:
-            symbols = module.symbols.get_symbol_by_name(symbol.name)
+            if name in module.symbols:
+                symbol = module.symbols[name]
 
-            if symbols is None:
-                continue
+                if symbol.address != 0:
+                    return symbol.address
 
-            for symbol in symbols:
-                if symbol['st_shndx'] != 'SHN_UNDEF':
-                    return module.base_addr, symbol
-
-        return None, None
+        return None
 
     def __iter__(self):
         for x in self.modules:

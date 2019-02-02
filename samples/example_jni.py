@@ -59,7 +59,9 @@ emulator.mu.reg_write(UC_ARM_REG_R1, 0x00)  # void* reserved
 
 # Run JNI_OnLoad.
 try:
-    emulator.mu.emu_start(base_address + 0x7DEC + 1, base_address + 0x7EEA)
+    print('Manual start at %x' % (base_address + 0x7DEC + 1))
+
+    # emulator.mu.emu_start(base_address + 0x7DEC + 1, base_address + 0x7EEA)
 
     # Dump natives found.
     logger.info("Exited EMU.")

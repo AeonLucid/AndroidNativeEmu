@@ -55,6 +55,7 @@ All resources used while developing AndroidNativeEmu.
 - https://stackoverflow.com/questions/13908276/loading-elf-file-in-c-in-user-space
 - https://programtalk.com/python-examples/pyelftools.elftools.elf.relocation.Relocation/
 - http://infocenter.arm.com/help/topic/com.arm.doc.ihi0044f/IHI0044F_aaelf.pdf
+- https://wiki.osdev.org/ELF_Tutorial
 
 ### Code sources
 - https://github.com/lunixbochs/usercorn
