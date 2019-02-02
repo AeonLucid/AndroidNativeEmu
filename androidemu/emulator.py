@@ -1,18 +1,25 @@
+import logging
+from random import randint
+
 from unicorn import Uc, UC_ARCH_ARM, UC_MODE_ARM
-from unicorn.arm_const import UC_ARM_REG_SP
+from unicorn.arm_const import UC_ARM_REG_SP, UC_ARM_REG_LR
 
 from androidemu import config
+from androidemu.config import MEMORY_BASE, MEMORY_SIZE
 from androidemu.cpu.interrupt_handler import InterruptHandler
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.cpu.syscall_hooks import SyscallHooks
 from androidemu.hooker import Hooker
 from androidemu.internal.memory import Memory
 from androidemu.internal.modules import Modules
+from androidemu.java.helpers.native_method import native_write_args
 from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.java_vm import JavaVM
 from androidemu.native.hooks import NativeHooks
 from androidemu.native.memory import NativeMemory
 from androidemu.vfs.file_system import VirtualFileSystem
+
+logger = logging.getLogger(__name__)
 
 
 class Emulator:
@@ -94,3 +101,15 @@ class Emulator:
 
     def load_library(self, filename):
         return self.modules.load_module(filename)
+
+    def call_symbol(self, module, symbol_name, *argv):
+        symbol = module.find_symbol(symbol_name)
+
+        if symbol is None:
+            logger.error('Unable to find symbol \'%s\' in module \'%s\'.' % (symbol_name, module.filename))
+            return
+
+        native_write_args(self.mu, *argv)
+        stop_pos = randint(MEMORY_BASE, MEMORY_BASE + MEMORY_SIZE) | 1
+        self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
+        self.mu.emu_start(symbol.address, stop_pos - 1)

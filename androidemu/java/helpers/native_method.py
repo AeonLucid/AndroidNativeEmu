@@ -1,10 +1,38 @@
 import inspect
-import types
 
 from unicorn import Uc
 from unicorn.arm_const import *
 
 from androidemu.java.jni_const import JNI_ERR
+
+
+def native_write_args(mu, *argv):
+    amount = len(argv)
+
+    if amount == 0:
+        return
+
+    if amount >= 1:
+        native_write_arg_register(mu, UC_ARM_REG_R0, argv[0])
+
+    if amount >= 2:
+        native_write_arg_register(mu, UC_ARM_REG_R1, argv[1])
+
+    if amount >= 3:
+        native_write_arg_register(mu, UC_ARM_REG_R2, argv[2])
+
+    if amount >= 4:
+        native_write_arg_register(mu, UC_ARM_REG_R3, argv[3])
+
+    if amount >= 5:
+        raise NotImplementedError("We don't support more than 4 args yet, write to the stack.")
+
+
+def native_write_arg_register(mu, reg, val):
+    if isinstance(val, int):
+        mu.reg_write(reg, val)
+    else:
+        raise ValueError('Unsupported val type.')
 
 
 def native_method(func):

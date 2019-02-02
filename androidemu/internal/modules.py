@@ -129,9 +129,9 @@ class Modules:
                         logger.error("Unhandled relocation type %i." % rel_info_type)
 
             # Store information about loaded module.
-            self.modules.append(Module(filename, load_base, bound_high - bound_low, symbols_resolved))
-
-            return load_base
+            module = Module(filename, load_base, bound_high - bound_low, symbols_resolved)
+            self.modules.append(module)
+            return module
 
     def _elf_get_symval(self, elf, elf_base, symbol):
         if symbol.name in self.symbol_hooks:
@@ -152,11 +152,10 @@ class Modules:
                 return target
         elif symbol['st_shndx'] == 'SHN_ABS':
             # Absolute symbol.
-            return symbol['st_value']
+            return elf_base + symbol['st_value']
         else:
             # Internally defined symbol.
-            target = elf.get_section(symbol['st_shndx'])
-            return elf_base + symbol['st_value'] + target['sh_offset']
+            return elf_base + symbol['st_value']
 
     def _elf_lookup_symbol(self, name):
         for module in self.modules:
