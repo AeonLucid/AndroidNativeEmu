@@ -4,6 +4,8 @@ from androidemu.hooker import Hooker
 from androidemu.java.helpers.native_method import native_method
 from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.jni_const import *
+from androidemu.java.jni_ref import *
+from androidemu.java.reference_table import ReferenceTable
 from androidemu.utils import memory_helpers
 
 logger = logging.getLogger(__name__)
@@ -18,6 +20,8 @@ class JNIEnv:
     """
     def __init__(self, class_loader, hooker):
         self._class_loader = class_loader
+        self._locals = ReferenceTable()
+        self._globals = ReferenceTable()
 
         (self.address_ptr, self.address) = hooker.write_function_table({
             4: self.get_version,
@@ -251,6 +255,36 @@ class JNIEnv:
             232: self.get_object_ref_type
         })
 
+    def add_local_reference(self, obj):
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        return self._locals.add(obj)
+
+    def get_local_reference(self, idx):
+        return self._locals.get(idx)
+
+    def delete_local_reference(self, obj):
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        self._locals.remove(obj)
+
+    def clear_locals(self):
+        self._locals.clear()
+
+    def add_global_reference(self, obj):
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        return self._globals.add(obj)
+
+    def delete_global_reference(self, obj):
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        return self._globals.remove(obj)
+
     @native_method
     def get_version(self, mu, env):
         raise NotImplementedError()
@@ -276,7 +310,7 @@ class JNIEnv:
             # TODO: Proper Java error?
             raise RuntimeError('Could not find class \'%s\' for JNIEnv.' % name)
 
-        return clazz.jvm_id
+        return self.add_local_reference(jclass(clazz))
 
     @native_method
     def from_reflected_method(self, mu, env):
@@ -972,8 +1006,11 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def new_string_utf(self, mu, env):
-        raise NotImplementedError()
+    def new_string_utf(self, mu, env, bytes_ptr):
+        string = memory_helpers.read_utf8(mu, bytes_ptr)
+        logger.debug("JNIEnv->NewStringUtf(%s) was called" % string)
+
+        return self.add_local_reference(jstring(string))
 
     @native_method
     def get_string_utf_length(self, mu, env):
@@ -1167,7 +1204,12 @@ class JNIEnv:
     def register_natives(self, mu, env, clazz_id, methods, methods_count):
         logger.debug("JNIEnv->RegisterNatives(%d, 0x%08x, %d) was called" % (clazz_id, methods, methods_count))
 
-        clazz = self._class_loader.find_class_by_id(clazz_id)
+        clazz = self.get_local_reference(clazz_id)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        clazz = clazz.value
 
         for i in range(0, methods_count):
             ptr_name = memory_helpers.read_ptr(mu, (i * 12) + methods)

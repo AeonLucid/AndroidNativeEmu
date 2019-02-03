@@ -2,7 +2,7 @@ import logging
 from random import randint
 
 from unicorn import Uc, UC_ARCH_ARM, UC_MODE_ARM
-from unicorn.arm_const import UC_ARM_REG_SP, UC_ARM_REG_LR
+from unicorn.arm_const import UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_R0
 
 from androidemu import config
 from androidemu.config import MEMORY_BASE, MEMORY_SIZE
@@ -109,7 +109,34 @@ class Emulator:
             logger.error('Unable to find symbol \'%s\' in module \'%s\'.' % (symbol_name, module.filename))
             return
 
-        native_write_args(self.mu, *argv)
-        stop_pos = randint(MEMORY_BASE, MEMORY_BASE + MEMORY_SIZE) | 1
-        self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
-        self.mu.emu_start(symbol.address, stop_pos - 1)
+        self.call_native(symbol.address, *argv)
+
+    def call_native(self, addr, *argv):
+        # Detect JNI call
+        is_jni = False
+
+        if len(argv) >= 1:
+            is_jni = argv[0] == self.java_vm.address_ptr or argv[0] == self.java_vm.jni_env.address_ptr
+
+        # TODO: Write JNI args to local ref table if jni.
+
+        try:
+            # Execute native call.
+            native_write_args(self.mu, *argv)
+            stop_pos = randint(MEMORY_BASE, MEMORY_BASE + MEMORY_SIZE) | 1
+            self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
+            self.mu.emu_start(addr, stop_pos - 1)
+
+            # Read result from locals if jni.
+            if is_jni:
+                result_idx = self.mu.reg_read(UC_ARM_REG_R0)
+                result = self.java_vm.jni_env.get_local_reference(result_idx)
+
+                if result is None:
+                    return result
+
+                return result.value
+        finally:
+            # Clear locals if jni.
+            if is_jni:
+                self.java_vm.jni_env.clear_locals()

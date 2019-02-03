@@ -89,7 +89,6 @@ class Hooker:
         hook_func = self._hooks[hook_id]
 
         # Call hook.
-
         try:
             hook_func(mu)
         except:

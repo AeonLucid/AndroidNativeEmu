@@ -1,4 +1,4 @@
-from androidemu.java.helpers.java_class_def import JavaClassDef
+from androidemu.java.java_class_def import JavaClassDef
 
 
 class JavaClassLoader:
