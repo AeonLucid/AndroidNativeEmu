@@ -6,9 +6,10 @@ class ReferenceTable:
     """
     :type _table dict[int, jobject|None]
     """
-    def __init__(self, start=1):
+    def __init__(self, start=1, max_entries=1024):
         self._table = dict()
         self._start = start
+        self._size = max_entries
 
     def add(self, obj):
         if not isinstance(obj, jobject):
@@ -44,6 +45,9 @@ class ReferenceTable:
             return None
 
         return self._table[idx]
+
+    def in_range(self, idx):
+        return self._start <= idx < self._start + self._start
 
     def clear(self):
         self._table.clear()

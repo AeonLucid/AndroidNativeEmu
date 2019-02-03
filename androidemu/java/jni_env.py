@@ -20,8 +20,8 @@ class JNIEnv:
     """
     def __init__(self, class_loader, hooker):
         self._class_loader = class_loader
-        self._locals = ReferenceTable()
-        self._globals = ReferenceTable()
+        self._locals = ReferenceTable(start=1, max_entries=2048)
+        self._globals = ReferenceTable(start=4096, max_entries=512000)
 
         (self.address_ptr, self.address) = hooker.write_function_table({
             4: self.get_version,
@@ -255,6 +255,18 @@ class JNIEnv:
             232: self.get_object_ref_type
         })
 
+    def get_reference(self, idx):
+        if idx == 0:
+            return None
+
+        if self._locals.in_range(idx):
+            return self._locals.get(idx)
+
+        if self._globals.in_range(idx):
+            return self._globals.get(idx)
+
+        raise RuntimeError('Invalid get_reference(%d)' % idx)
+
     def add_local_reference(self, obj):
         if not isinstance(obj, jobject):
             raise ValueError('Expected a jobject.')
@@ -375,20 +387,27 @@ class JNIEnv:
         global or local reference. Global references must be explicitly disposed of by calling DeleteGlobalRef().
         """
         logger.debug("JNIEnv->NewGlobalRef(%d) was called" % obj)
-        # TODO: Implement
-        return obj + 1
+
+        obj = self.get_local_reference(obj)
+
+        if obj is None:
+            # TODO: Implement global > global support (?)
+            raise NotImplementedError('Invalid local reference obj.')
+
+        return self.add_global_reference(obj)
 
     @native_method
     def delete_global_ref(self, mu, env):
         raise NotImplementedError()
 
     @native_method
-    def delete_local_ref(self, mu, env, local_ref):
+    def delete_local_ref(self, mu, env, idx):
         """
         Deletes the local reference pointed to by localRef.
         """
-        logger.debug("JNIEnv->DeleteLocalRef(%d) was called" % local_ref)
-        # TODO: Implement
+        logger.debug("JNIEnv->DeleteLocalRef(%d) was called" % idx)
+        obj = self.get_local_reference(idx)
+        self.delete_local_reference(obj)
 
     @native_method
     def is_same_object(self, mu, env, ref1, ref2):
@@ -396,6 +415,13 @@ class JNIEnv:
         Returns JNI_TRUE if ref1 and ref2 refer to the same Java object, or are both NULL; otherwise, returns JNI_FALSE.
         """
         logger.debug("JNIEnv->IsSameObject(%d, %d) was called" % (ref1, ref2))
+
+        obj1 = self.get_reference(ref1)
+        obj2 = self.get_reference(ref2)
+
+        if obj1 is obj2:
+            return JNI_TRUE
+
         return JNI_FALSE
 
     @native_method
@@ -431,16 +457,26 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_method_id(self, mu, env, clazz, name_ptr, sig_ptr):
+    def get_method_id(self, mu, env, clazz_idx, name_ptr, sig_ptr):
         """
         Returns the method ID for an instance (nonstatic) method of a class or interface. The method may be defined
         in one of the clazz’s superclasses and inherited by clazz. The method is determined by its name and signature.
         """
         name = memory_helpers.read_utf8(mu, name_ptr)
         sig = memory_helpers.read_utf8(mu, sig_ptr)
-        logger.debug("JNIEnv->GetMethodId(%d, %s, %s) was called" % (clazz, name, sig))
-        # TODO: Implement
-        return 0xFC
+        clazz = self.get_reference(clazz_idx)
+        logger.debug("JNIEnv->GetMethodId(%d, %s, %s) was called" % (clazz_idx, name, sig))
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method(name, sig)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
+
+        return method.jvm_id
 
     @native_method
     def call_object_method(self, mu, env):
@@ -771,15 +807,26 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_static_method_id(self, mu, env, clazz, name_ptr, sig_ptr):
+    def get_static_method_id(self, mu, env, clazz_idx, name_ptr, sig_ptr):
         """
         Returns the method ID for a static method of a class. The method is specified by its name and signature.
         """
         name = memory_helpers.read_utf8(mu, name_ptr)
         sig = memory_helpers.read_utf8(mu, sig_ptr)
-        logger.debug("JNIEnv->GetStaticMethodId(%d, %s, %s) was called" % (clazz, name, sig))
-        # TODO: Implement
-        return 0xFB
+        clazz = self.get_reference(clazz_idx)
+
+        logger.debug("JNIEnv->GetStaticMethodId(%d, %s, %s) was called" % (clazz_idx, name, sig))
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method(name, sig)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find static method ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
+
+        return method.jvm_id
 
     @native_method
     def call_static_object_method(self, mu, env):
@@ -1278,7 +1325,6 @@ class JNIEnv:
         """
         logger.debug("JNIEnv->ExceptionCheck() was called")
         # TODO: Implement
-
         return JNI_FALSE
 
     @native_method

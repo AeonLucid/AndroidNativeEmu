@@ -1,6 +1,7 @@
 class JavaMethodDef:
 
     def __init__(self, func_name, name, signature, native):
+        self.jvm_id = None  # Assigned by JavaClassDef.
         self.func_name = func_name
         self.name = name
         self.signature = signature
