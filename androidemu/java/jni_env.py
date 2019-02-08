@@ -13,11 +13,11 @@ logger = logging.getLogger(__name__)
 
 # This class attempts to mimic the JNINativeInterface table.
 class JNIEnv:
-
     """
     :type class_loader JavaClassLoader
     :type hooker Hooker
     """
+
     def __init__(self, class_loader, hooker):
         self._class_loader = class_loader
         self._locals = ReferenceTable(start=1, max_entries=2048)
@@ -483,9 +483,26 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_object_method_v(self, mu, env, obj, method_id, args):
-        logger.debug("JNIEnv->CallObjectMethodV(%d, %d, 0x%x) was called" % (obj, method_id, args))
-        return 1
+    def call_object_method_v(self, mu, env, obj_idx, method_id, args):
+        obj = self.get_reference(obj_idx)
+
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        method = obj.value.__class__.find_method_by_id(method_id)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method %d in object %s by id." % (method_id, obj.value.jvm_name))
+
+        logger.debug("JNIEnv->CallObjectMethodV(%s, %s <%s>, 0x%x) was called" % (
+            obj.value.jvm_name,
+            method.name,
+            method.signature, args))
+
+        # TODO: Args.
+
+        return method.func(obj.value)
 
     @native_method
     def call_object_method_a(self, mu, env):
@@ -720,7 +737,7 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_field_id(self, mu, env, clazz, name_ptr, sig_ptr):
+    def get_field_id(self, mu, env, clazz_idx, name_ptr, sig_ptr):
         """
         Returns the field ID for an instance (nonstatic) field of a class. The field is specified by its name and
         signature. The Get<type>Field and Set<type>Field families of accessor functions use field IDs to retrieve
@@ -728,14 +745,22 @@ class JNIEnv:
         """
         name = memory_helpers.read_utf8(mu, name_ptr)
         sig = memory_helpers.read_utf8(mu, sig_ptr)
-        logger.debug("JNIEnv->GetFieldId(%d, %s, %s) was called" % (clazz, name, sig))
-        # TODO: Implement
-        return 0xFD
+        clazz = self.get_reference(clazz_idx)
+
+        logger.debug("JNIEnv->GetFieldId(%d, %s, %s) was called" % (clazz_idx, name, sig))
+
+        field = clazz.value.find_field(name, sig, False)
+
+        if field is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find field ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
+
+        return field.jvm_id
 
     @native_method
     def get_object_field(self, mu, env, obj, field_id):
         logger.debug("JNIEnv->GetObjectField(%d, %d) was called" % (obj, field_id))
-        return 32
+        raise NotImplementedError()
 
     @native_method
     def get_boolean_field(self, mu, env):
@@ -754,9 +779,23 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_int_field(self, mu, env, obj, field_id):
-        logger.debug("JNIEnv->GetIntField(%d, %d) was called" % (obj, field_id))
-        return 25
+    def get_int_field(self, mu, env, obj_idx, field_id):
+        obj = self.get_reference(obj_idx)
+
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        field = obj.value.__class__.find_field_by_id(field_id)
+
+        if field is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find field %d in object %s by id." % (field_id, obj.value.jvm_name))
+
+        logger.debug("JNIEnv->GetIntField(%s, %s <%s>) was called" % (obj.value.jvm_name,
+                                                                      field.name,
+                                                                      field.signature))
+
+        raise NotImplementedError()
 
     @native_method
     def get_long_field(self, mu, env):
@@ -824,7 +863,8 @@ class JNIEnv:
 
         if method is None:
             # TODO: Proper Java error?
-            raise RuntimeError("Could not find static method ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
+            raise RuntimeError(
+                "Could not find static method ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
 
         return method.jvm_id
 
@@ -833,9 +873,26 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_static_object_method_v(self, mu, env, clazz, method_id, args):
-        logger.debug("JNIEnv->CallStaticObjectMethodV(%d, %d, 0x%x) was called" % (clazz, method_id, args))
-        return 0xAA
+    def call_static_object_method_v(self, mu, env, clazz_idx, method_id, args):
+        clazz = self.get_reference(clazz_idx)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method_by_id(method_id)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method %d in class %s by id." % (method_id, clazz.value.jvm_name))
+
+        logger.debug("JNIEnv->CallStaticObjectMethodV(%s, %s <%s>, 0x%x) was called" % (
+            clazz.value.jvm_name,
+            method.name,
+            method.signature, args))
+
+        # TODO: Args.
+
+        return method.func()
 
     @native_method
     def call_static_object_method_a(self, mu, env):
@@ -950,7 +1007,7 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_static_field_id(self, mu, env, clazz, name_ptr, sig_ptr):
+    def get_static_field_id(self, mu, env, clazz_idx, name_ptr, sig_ptr):
         """
         Returns the field ID for a static field of a class. The field is specified by its name and signature. The
         GetStatic<type>Field and SetStatic<type>Field families of accessor functions use field IDs to retrieve static
@@ -958,14 +1015,23 @@ class JNIEnv:
         """
         name = memory_helpers.read_utf8(mu, name_ptr)
         sig = memory_helpers.read_utf8(mu, sig_ptr)
-        logger.debug("JNIEnv->GetStaticFieldId(%d, %s, %s) was called" % (clazz, name, sig))
-        # TODO: Implement
-        return 0xFE
+        clazz = self.get_reference(clazz_idx)
+
+        logger.debug("JNIEnv->GetStaticFieldId(%d, %s, %s) was called" % (clazz_idx, name, sig))
+
+        field = clazz.value.find_field(name, sig, True)
+
+        if field is None:
+            # TODO: Proper Java error?
+            raise RuntimeError(
+                "Could not find static field ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
+
+        return field.jvm_id
 
     @native_method
     def get_static_object_field(self, mu, env, clazz, field_id):
         logger.debug("JNIEnv->GetStaticObjectField(%d, %d) was called" % (clazz, field_id))
-        return 50
+        raise NotImplementedError()
 
     @native_method
     def get_static_boolean_field(self, mu, env):
@@ -986,7 +1052,7 @@ class JNIEnv:
     @native_method
     def get_static_int_field(self, mu, env, clazz, field_id):
         logger.debug("JNIEnv->GetStaticIntField(%d, %d) was called" % (clazz, field_id))
-        return 0
+        raise NotImplementedError()
 
     @native_method
     def get_static_long_field(self, mu, env):
@@ -1065,7 +1131,7 @@ class JNIEnv:
 
     @native_method
     def get_string_utf_chars(self, mu, env, string, is_copy_ptr):
-        return 0
+        raise NotImplementedError()
 
     @native_method
     def release_string_utf_chars(self, mu, env, string, utf_ptr):
@@ -1073,7 +1139,7 @@ class JNIEnv:
 
     @native_method
     def get_array_length(self, mu, env, array):
-        return 0
+        raise NotImplementedError()
 
     @native_method
     def new_object_array(self, mu, env):

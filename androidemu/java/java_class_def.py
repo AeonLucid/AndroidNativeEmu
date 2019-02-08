@@ -8,18 +8,26 @@ logger = logging.getLogger(__name__)
 class JavaClassDef(type):
     next_jvm_id = itertools.count(start=1)
     next_jvm_method_id = itertools.count(start=0xd2000000, step=4)
+    next_jvm_field_id = itertools.count(start=0xe2000000, step=4)
 
-    def __init__(cls, name, base, ns, jvm_name=None):
+    def __init__(cls, name, base, ns, jvm_name=None, jvm_fields=None):
         cls.jvm_id = next(JavaClassDef.next_jvm_id)
         cls.jvm_name = jvm_name
         cls.jvm_methods = dict()
+        cls.jvm_fields = dict()
 
         # Register all defined Java methods.
         for func in inspect.getmembers(cls, predicate=inspect.isfunction):
             if hasattr(func[1], 'jvm_method'):
                 method = func[1].jvm_method
                 method.jvm_id = next(JavaClassDef.next_jvm_method_id)
-                cls.jvm_methods[method] = method
+                cls.jvm_methods[method.jvm_id] = method
+
+        # Register all defined Java fields.
+        if jvm_fields is not None:
+            for jvm_field in jvm_fields:
+                jvm_field.jvm_id = next(JavaClassDef.next_jvm_field_id)
+                cls.jvm_fields[jvm_field.jvm_id] = jvm_field
 
         type.__init__(cls, name, base, ns)
 
@@ -50,3 +58,16 @@ class JavaClassDef(type):
                 return method
 
         return None
+
+    def find_method_by_id(cls, jvm_id):
+        return cls.jvm_methods[jvm_id]
+
+    def find_field(cls, name, signature, is_static):
+        for field in cls.jvm_fields.values():
+            if field.name == name and field.signature == signature and field.is_static == is_static:
+                return field
+
+        return None
+
+    def find_field_by_id(cls, jvm_id):
+        return cls.jvm_fields[jvm_id]

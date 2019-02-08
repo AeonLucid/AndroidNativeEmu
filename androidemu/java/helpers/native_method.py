@@ -3,7 +3,9 @@ import inspect
 from unicorn import Uc
 from unicorn.arm_const import *
 
+from androidemu.java.java_class_def import JavaClassDef
 from androidemu.java.jni_const import JNI_ERR
+from androidemu.java.jni_ref import jobject
 
 
 def native_write_args(mu, *argv):
@@ -39,10 +41,12 @@ def native_method(func):
     def native_method_wrapper(*argv):
         """
         :type self
+        :type emu androidemu.emulator.Emulator
         :type mu Uc
         """
 
-        mu = argv[1] if len(argv) == 2 else argv[0]
+        emu = argv[1] if len(argv) == 2 else argv[0]
+        mu = emu.mu
 
         args = inspect.getfullargspec(func).args
         args_count = len(args) - (2 if 'self' in args else 1)
@@ -75,6 +79,10 @@ def native_method(func):
         if result is not None:
             if isinstance(result, int):
                 mu.reg_write(UC_ARM_REG_R0, result)
+            elif isinstance(type(result), JavaClassDef):
+                # This is a Java class object, so we should probably respond with a local jobject reference.
+                ref = emu.java_vm.jni_env.add_local_reference(jobject(result))
+                mu.reg_write(UC_ARM_REG_R0, ref)
             else:
                 raise NotImplementedError("Unable to write response '%s' to emulator." % str(result))
         else:

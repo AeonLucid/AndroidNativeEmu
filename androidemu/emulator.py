@@ -57,7 +57,7 @@ class Emulator:
 
         # Hooker
         self.mu.mem_map(config.MEMORY_BASE, config.MEMORY_SIZE)
-        self.hooker = Hooker(self.mu, config.MEMORY_BASE, config.MEMORY_SIZE)
+        self.hooker = Hooker(self, config.MEMORY_BASE, config.MEMORY_SIZE)
 
         # JavaVM
         self.java_classloader = JavaClassLoader()

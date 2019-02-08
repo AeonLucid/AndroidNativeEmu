@@ -47,7 +47,7 @@ class ReferenceTable:
         return self._table[idx]
 
     def in_range(self, idx):
-        return self._start <= idx < self._start + self._start
+        return self._start <= idx < self._start + self._size
 
     def clear(self):
         self._table.clear()
