@@ -469,8 +469,6 @@ class JNIEnv:
 
     @native_method
     def new_object_v(self, mu, env, clazz_idx, method_id, args):
-        logger.debug("JNIEnv->NewObjectV(%u, %u, 0x%x) was called" % (clazz_idx, method_id, args))
-
         # Get class reference.
         clazz = self.get_reference(clazz_idx)
         if not isinstance(clazz, jclass):
@@ -483,6 +481,8 @@ class JNIEnv:
         method = obj.__class__.find_method_by_id(method_id)
         if method.name != '<init>' or not method.signature.endswith('V'):
             raise ValueError('Class constructor has the wrong name or does not return void.')
+
+        logger.debug("JNIEnv->NewObjectV(%s, %s, 0x%x) was called" % (clazz.value.jvm_name, method.name, args))
 
         # Parse arguments.
         constructor_args = self.read_args_v(mu, args, method.args_list)

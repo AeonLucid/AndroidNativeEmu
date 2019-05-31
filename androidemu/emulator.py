@@ -39,6 +39,9 @@ class Emulator:
         if vfp_inst_set:
             self._enable_vfp()
 
+        # Android
+        self.system_properties = {}
+
         # Stack.
         self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
         self.mu.reg_write(UC_ARM_REG_SP, config.STACK_ADDR + config.STACK_SIZE)
@@ -68,7 +71,7 @@ class Emulator:
 
         # Native
         self.native_memory = NativeMemory(self.mu, config.HEAP_BASE, config.HEAP_SIZE, self.syscall_handler)
-        self.native_hooks = NativeHooks(self.native_memory, self.modules, self.hooker)
+        self.native_hooks = NativeHooks(self, self.native_memory, self.modules, self.hooker)
 
     # https://github.com/unicorn-engine/unicorn/blob/8c6cbe3f3cabed57b23b721c29f937dd5baafc90/tests/regress/arm_fp_vfp_disabled.py#L15
     def _enable_vfp(self):
