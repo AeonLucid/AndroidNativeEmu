@@ -2,6 +2,7 @@ import math
 import time
 from random import randint
 
+import hexdump
 from unicorn import Uc
 
 from androidemu.const.android import *
@@ -20,10 +21,11 @@ class SyscallHooks:
         self._mu = mu
         self._syscall_handler = syscall_handler
         self._syscall_handler.set_handler(0x4E, "gettimeofday", 2, self._handle_gettimeofday)
-        self._syscall_handler.set_handler(0x5B, "fchmod", 2, self._handle_fchmod)
         self._syscall_handler.set_handler(0xAC, "prctl", 5, self._handle_prctl)
         self._syscall_handler.set_handler(0xF0, "futex", 6, self._handle_futex)
         self._syscall_handler.set_handler(0x107, "clock_gettime", 2, self._handle_clock_gettime)
+        self._syscall_handler.set_handler(0x119, "socket", 3, self._socket)
+        self._syscall_handler.set_handler(0x11b, "connect", 3, self._connect)
         self._clock_start = time.time()
         self._clock_offset = randint(1000, 2000)
 
@@ -45,9 +47,6 @@ class SyscallHooks:
             uc.mem_write(tz + 4, int().to_bytes(4, byteorder='little'))  # dsttime
 
         return 0
-
-    def _handle_fchmod(self, uc, fd, mode):
-        raise NotImplementedError()
 
     def _handle_prctl(self, mu, option, arg2, arg3, arg4, arg5):
         """
@@ -106,3 +105,10 @@ class SyscallHooks:
             return 0
         else:
             raise NotImplementedError("Unsupported clk_id: %d (%x)" % (clk_id, clk_id))
+
+    def _socket(self, mu, family, type_in, protocol):
+        raise NotImplementedError()
+
+    def _connect(self, mu, fd, addr, addr_len):
+        print(hexdump.hexdump(mu.mem_read(addr, addr_len)))
+        raise NotImplementedError()

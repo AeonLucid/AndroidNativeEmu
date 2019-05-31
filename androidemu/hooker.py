@@ -2,6 +2,8 @@ from keystone import Ks, KS_ARCH_ARM, KS_MODE_THUMB
 from unicorn import *
 from unicorn.arm_const import *
 
+STACK_OFFSET = 8
+
 
 # Utility class to create a bridge between ARM and Python.
 class Hooker:
@@ -31,24 +33,16 @@ class Hooker:
         hook_addr = self._hook_current
 
         # Create the ARM assembly code.
-        # asm = "PUSH {LR}\n" \
-        #       "MOV R4, #" + hex(hook_id) + "\n" \
-        #       "IT AL\n" \
-        #       "POP {PC}"
-
+        # Make sure to update STACK_OFFSET if you change the PUSH/POP.
         asm = "PUSH {R4,LR}\n" \
-              "PUSH {R0,R1}\n" \
-              "MOV R0, #" + hex(self._hook_magic) + "\n" \
-              "MOV R1, #" + hex(hook_id) + "\n" \
-              "STR R1, [R0]\n" \
-              "POP {R0,R1}\n" \
+              "MOV R4, #" + hex(hook_id) + "\n" \
               "IT AL\n" \
               "POP {R4,PC}"
 
         asm_bytes_list, asm_count = self._keystone.asm(bytes(asm, encoding='ascii'))
 
-        if asm_count != 8:
-            raise ValueError("Expected asm_count to be 6 instead of %u." % asm_count)
+        if asm_count != 4:
+            raise ValueError("Expected asm_count to be 4 instead of %u." % asm_count)
 
         # Write assembly code to the emulator.
         self._emu.mu.mem_write(hook_addr, bytes(asm_bytes_list))
@@ -90,20 +84,18 @@ class Hooker:
         return ptr_address, table_address
 
     def _hook(self, mu, address, size, user_data):
-        if self._hook_start <= address < self._hook_current:
-            # Check if instruction is "IT AL"
-            if size != 2 or self._emu.mu.mem_read(address, size) != b"\xE8\xBF":
-                return
+        # Check if instruction is "IT AL"
+        if size != 2 or self._emu.mu.mem_read(address, size) != b"\xE8\xBF":
+            return
 
-            # Find hook.
-            # hook_id = self._emu.mu.reg_read(UC_ARM_REG_R4)
-            hook_id = int.from_bytes(self._emu.mu.mem_read(self._hook_magic, 4), byteorder='little')
-            hook_func = self._hooks[hook_id]
+        # Find hook.
+        hook_id = self._emu.mu.reg_read(UC_ARM_REG_R4)
+        hook_func = self._hooks[hook_id]
 
-            # Call hook.
-            try:
-                hook_func(self._emu)
-            except:
-                # Make sure we catch exceptions inside hooks and stop emulation.
-                mu.emu_stop()
-                raise
+        # Call hook.
+        try:
+            hook_func(self._emu)
+        except:
+            # Make sure we catch exceptions inside hooks and stop emulation.
+            mu.emu_stop()
+            raise

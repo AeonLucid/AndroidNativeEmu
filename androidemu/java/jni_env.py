@@ -391,7 +391,7 @@ class JNIEnv:
         Clears any exception that is currently being thrown.
         If no exception is currently being thrown, this routine has no effect.
         """
-        logger.debug("JNIEnv->ExceptionCheck() was called")
+        logger.debug("JNIEnv->ExceptionClear() was called")
         # TODO: Implement
         return None
 
@@ -1371,7 +1371,7 @@ class JNIEnv:
 
     @native_method
     def get_byte_array_region(self, mu, env, array_idx, start, len_in, buf_ptr):
-        logger.debug("JNIEnv->GetArrayLength(%u, %u, %u, 0x%x) was called" % (array_idx, start, len_in, buf_ptr))
+        logger.debug("JNIEnv->GetByteArrayRegion(%u, %u, %u, 0x%x) was called" % (array_idx, start, len_in, buf_ptr))
 
         obj = self.get_reference(array_idx)
 
