@@ -1,6 +1,6 @@
 class JavaMethodDef:
 
-    def __init__(self, func_name, func, name, signature, native):
+    def __init__(self, func_name, func, name, signature, native, args_list=None):
         self.jvm_id = None  # Assigned by JavaClassDef.
         self.func_name = func_name
         self.func = func
@@ -8,9 +8,10 @@ class JavaMethodDef:
         self.signature = signature
         self.native = native
         self.native_addr = None
+        self.args_list = args_list
 
 
-def java_method_def(name, signature, native=False):
+def java_method_def(name, signature, native=False, args_list=None):
     def java_method_def_real(func):
         def native_wrapper(self, emulator, *argv):
             return emulator.call_native(
@@ -26,7 +27,7 @@ def java_method_def(name, signature, native=False):
             return result
 
         wrapper = native_wrapper if native else normal_wrapper
-        wrapper.jvm_method = JavaMethodDef(func.__name__, wrapper, name, signature, native)
+        wrapper.jvm_method = JavaMethodDef(func.__name__, wrapper, name, signature, native, args_list=args_list)
         return wrapper
 
     return java_method_def_real

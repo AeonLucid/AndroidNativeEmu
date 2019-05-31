@@ -1,3 +1,7 @@
+import math
+import time
+from random import randint
+
 from unicorn import Uc
 
 from androidemu.const.android import *
@@ -15,9 +19,35 @@ class SyscallHooks:
     def __init__(self, mu, syscall_handler):
         self._mu = mu
         self._syscall_handler = syscall_handler
+        self._syscall_handler.set_handler(0x4E, "gettimeofday", 2, self._handle_gettimeofday)
+        self._syscall_handler.set_handler(0x5B, "fchmod", 2, self._handle_fchmod)
         self._syscall_handler.set_handler(0xAC, "prctl", 5, self._handle_prctl)
         self._syscall_handler.set_handler(0xF0, "futex", 6, self._handle_futex)
         self._syscall_handler.set_handler(0x107, "clock_gettime", 2, self._handle_clock_gettime)
+        self._clock_start = time.time()
+        self._clock_offset = randint(1000, 2000)
+
+    def _handle_gettimeofday(self, uc, tv, tz):
+        """
+        If either tv or tz is NULL, the corresponding structure is not set or returned.
+        """
+
+        if tv != 0:
+            timestamp = time.time()
+            (usec, sec) = math.modf(timestamp)
+            usec = abs(int(usec * 100000))
+
+            uc.mem_write(tv + 0, int(sec).to_bytes(4, byteorder='little'))
+            uc.mem_write(tv + 4, int(usec).to_bytes(4, byteorder='little'))
+
+        if tz != 0:
+            uc.mem_write(tz + 0, int(-120).to_bytes(4, byteorder='little'))  # minuteswest -(+GMT_HOURS) * 60
+            uc.mem_write(tz + 4, int().to_bytes(4, byteorder='little'))  # dsttime
+
+        return 0
+
+    def _handle_fchmod(self, uc, fd, mode):
+        raise NotImplementedError()
 
     def _handle_prctl(self, mu, option, arg2, arg3, arg4, arg5):
         """
@@ -68,7 +98,11 @@ class SyscallHooks:
         """
 
         if clk_id == CLOCK_MONOTONIC_COARSE:
-            # TODO: Actually write time.
+            clock_add = time.time() - self._clock_start  # Seconds passed since clock_start was set.
+
+            mu.mem_write(tp_ptr + 0, int(self._clock_start + clock_add).to_bytes(4, byteorder='little'))
+            mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
+
             return 0
         else:
             raise NotImplementedError("Unsupported clk_id: %d (%x)" % (clk_id, clk_id))

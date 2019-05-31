@@ -25,3 +25,7 @@ def read_utf8(mu, address):
         buffer_address += buffer_read_size
 
     return buffer[:null_pos].decode("utf-8")
+
+
+def write_utf8(mu, address, value):
+    mu.mem_write(address, value.encode(encoding="utf-8") + b"\x00")

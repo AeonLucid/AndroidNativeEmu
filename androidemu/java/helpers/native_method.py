@@ -5,36 +5,56 @@ from unicorn.arm_const import *
 
 from androidemu.java.java_class_def import JavaClassDef
 from androidemu.java.jni_const import JNI_ERR
-from androidemu.java.jni_ref import jobject
+from androidemu.java.jni_ref import jobject, jstring, jobjectArray, jbyteArray
 
 
-def native_write_args(mu, *argv):
+def native_write_args(emu, *argv):
     amount = len(argv)
 
     if amount == 0:
         return
 
     if amount >= 1:
-        native_write_arg_register(mu, UC_ARM_REG_R0, argv[0])
+        native_write_arg_register(emu, UC_ARM_REG_R0, argv[0])
 
     if amount >= 2:
-        native_write_arg_register(mu, UC_ARM_REG_R1, argv[1])
+        native_write_arg_register(emu, UC_ARM_REG_R1, argv[1])
 
     if amount >= 3:
-        native_write_arg_register(mu, UC_ARM_REG_R2, argv[2])
+        native_write_arg_register(emu, UC_ARM_REG_R2, argv[2])
 
     if amount >= 4:
-        native_write_arg_register(mu, UC_ARM_REG_R3, argv[3])
+        native_write_arg_register(emu, UC_ARM_REG_R3, argv[3])
 
     if amount >= 5:
-        raise NotImplementedError("We don't support more than 4 args yet, write to the stack.")
+        # TODO: I have no idea why this dark magic is required but it works (for me)..
+        sp_start = emu.mu.reg_read(UC_ARM_REG_SP)
+        sp_current = sp_start - 8
+
+        for arg in argv[4:]:
+            emu.mu.mem_write(sp_current - 8, native_translate_arg(emu, arg).to_bytes(4, byteorder='little'))
+            sp_current = sp_current - 4
+
+        emu.mu.reg_write(UC_ARM_REG_SP, sp_current)
 
 
-def native_write_arg_register(mu, reg, val):
+def native_translate_arg(emu, val):
     if isinstance(val, int):
-        mu.reg_write(reg, val)
+        return val
+    elif isinstance(val, str):
+        return emu.java_vm.jni_env.add_local_reference(jstring(val))
+    elif isinstance(val, list):
+        return emu.java_vm.jni_env.add_local_reference(jobjectArray(val))
+    elif isinstance(val, bytearray):
+        return emu.java_vm.jni_env.add_local_reference(jbyteArray(val))
+    elif isinstance(type(val), JavaClassDef):
+        return emu.java_vm.jni_env.add_local_reference(jobject(val))
     else:
-        raise ValueError('Unsupported val type.')
+        raise NotImplementedError("Unable to write response '%s' type '%s' to emulator." % (str(val), type(val)))
+
+
+def native_write_arg_register(emu, reg, val):
+    emu.mu.reg_write(reg, native_translate_arg(emu, val))
 
 
 def native_method(func):
@@ -69,7 +89,19 @@ def native_method(func):
             native_args.append(mu.reg_read(UC_ARM_REG_R3))
 
         if args_count >= 5:
-            raise NotImplementedError("We don't support more than 4 args yet, read from the stack.")
+            native_args.append(mu.reg_read(UC_ARM_REG_R4))
+
+        if args_count >= 6:
+            native_args.append(mu.reg_read(UC_ARM_REG_R5))
+
+        if args_count >= 7:
+            native_args.append(mu.reg_read(UC_ARM_REG_R6))
+
+        if args_count >= 8:
+            native_args.append(mu.reg_read(UC_ARM_REG_R7))
+
+        if args_count >= 9:
+            raise NotImplementedError("We don't support more than 8 args yet, read from the stack.")
 
         if len(argv) == 1:
             result = func(mu, *native_args)
@@ -77,14 +109,7 @@ def native_method(func):
             result = func(argv[0], mu, *native_args)
 
         if result is not None:
-            if isinstance(result, int):
-                mu.reg_write(UC_ARM_REG_R0, result)
-            elif isinstance(type(result), JavaClassDef):
-                # This is a Java class object, so we should probably respond with a local jobject reference.
-                ref = emu.java_vm.jni_env.add_local_reference(jobject(result))
-                mu.reg_write(UC_ARM_REG_R0, ref)
-            else:
-                raise NotImplementedError("Unable to write response '%s' to emulator." % str(result))
+            native_write_arg_register(emu, UC_ARM_REG_R0, result)
         else:
             mu.reg_write(UC_ARM_REG_R0, JNI_ERR)
 

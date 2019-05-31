@@ -6,14 +6,16 @@ import sys
 from androidemu.config import WRITE_FSTAT_TIMES
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.utils import memory_helpers
+from androidemu.vfs import file_helpers
 
 logger = logging.getLogger(__name__)
 
 
 class VirtualFile:
 
-    def __init__(self, name, file_descriptor):
+    def __init__(self, name, file_descriptor, name_virt=None):
         self.name = name
+        self.name_virt = name_virt
         self.descriptor = file_descriptor
 
 
@@ -38,21 +40,9 @@ class VirtualFileSystem:
         syscall_handler.set_handler(0x92, "writev", 3, self._handle_writev)
         syscall_handler.set_handler(0xC5, "fstat64", 2, self._handle_fstat64)
         syscall_handler.set_handler(0x142, "openat", 4, self._handle_openat)
+        syscall_handler.set_handler(0x147, "fstatat64", 4, self._handle_fstatat64)
 
-    def _store_fd(self, name, file_descriptor):
-        next_fd = self._file_descriptor_counter
-        self._file_descriptor_counter += 1
-        self._file_descriptors[next_fd] = VirtualFile(name, file_descriptor)
-        return next_fd
-
-    def _open_file(self, filename):
-        # Special cases, such as /dev/urandom.
-        orig_filename = filename
-
-        if filename == '/dev/urandom':
-            logger.info("File opened '%s'" % filename)
-            return self._store_fd('/dev/urandom', 'urandom')
-
+    def translate_path(self, filename):
         if filename.startswith("/"):
             filename = filename[1:]
 
@@ -62,12 +52,30 @@ class VirtualFileSystem:
         if posixpath.commonpath([file_path, self._root_path]) != self._root_path:
             raise RuntimeError("Emulated binary tried to escape vfs jail.")
 
+        return file_path
+
+    def _store_fd(self, name, name_virt, file_descriptor):
+        next_fd = self._file_descriptor_counter
+        self._file_descriptor_counter += 1
+        self._file_descriptors[next_fd] = VirtualFile(name, file_descriptor, name_virt=name_virt)
+        return next_fd
+
+    def _open_file(self, filename):
+        # Special cases, such as /dev/urandom.
+        orig_filename = filename
+
+        if filename == '/dev/urandom':
+            logger.info("File opened '%s'" % filename)
+            return self._store_fd('/dev/urandom', None, 'urandom')
+
+        file_path = self.translate_path(filename)
+
         if os.path.isfile(file_path):
             logger.info("File opened '%s'" % orig_filename)
             flags = os.O_RDWR
             if hasattr(os, "O_BINARY"):
                 flags |= os.O_BINARY
-            return self._store_fd(orig_filename, os.open(file_path, flags=flags))
+            return self._store_fd(orig_filename, file_path, os.open(file_path, flags=flags))
         else:
             logger.info("File does not exist %s" % file_path)
             return -1
@@ -163,38 +171,9 @@ class VirtualFileSystem:
         file = self._file_descriptors[fd]
         logger.info("File stat64 '%s'" % file.name)
 
-        stat = os.fstat(file.descriptor)
-
-        mu.mem_write(buf_ptr, stat.st_dev.to_bytes(8, byteorder='little'))
-        # PAD 4
-        mu.mem_write(buf_ptr + 12, stat.st_ino.to_bytes(8, byteorder='little'))
-        mu.mem_write(buf_ptr + 20, stat.st_mode.to_bytes(4, byteorder='little'))
-        mu.mem_write(buf_ptr + 24, stat.st_nlink.to_bytes(4, byteorder='little'))
-        mu.mem_write(buf_ptr + 28, stat.st_uid.to_bytes(8, byteorder='little'))
-        mu.mem_write(buf_ptr + 36, stat.st_gid.to_bytes(8, byteorder='little'))
-        mu.mem_write(buf_ptr + 44, int(0).to_bytes(8, byteorder='little'))  # st_rdev
-        # PAD 4
-        mu.mem_write(buf_ptr + 56, stat.st_size.to_bytes(8, byteorder='little'))
-        mu.mem_write(buf_ptr + 64, int(0).to_bytes(8, byteorder='little'))  # st_blksize
-        mu.mem_write(buf_ptr + 72, int(0).to_bytes(8, byteorder='little'))  # st_blocks
-
-        if WRITE_FSTAT_TIMES:
-            mu.mem_write(buf_ptr + 80, int(stat.st_atime).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 84, int(stat.st_atime_ns).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 88, int(stat.st_mtime).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 92, int(stat.st_mtime_ns).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 96, int(stat.st_ctime).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 100, int(stat.st_ctime_ns).to_bytes(4, byteorder='little'))
-        else:
-            mu.mem_write(buf_ptr + 80, int(0).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 84, int(0).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 88, int(0).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 92, int(0).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 96, int(0).to_bytes(4, byteorder='little'))
-            mu.mem_write(buf_ptr + 100, int(0).to_bytes(4, byteorder='little'))
-
-        # New..
-        # mu.mem_write(buf_ptr + 104, stat.st_ino.to_bytes(8, byteorder='little'))
+        stat = file_helpers.stat64(file.name_virt)
+        # stat = os.fstat(file.descriptor)
+        file_helpers.stat_to_memory(mu, buf_ptr, stat, WRITE_FSTAT_TIMES)
 
         return 0
 
@@ -216,3 +195,36 @@ class VirtualFileSystem:
             raise NotImplementedError("Directory file descriptor has not been implemented yet.")
 
         return self._open_file(filename)
+
+    def _handle_fstatat64(self, mu, dirfd, pathname_ptr, buf, flags):
+        """
+        int fstatat(int dirfd, const char *pathname, struct stat *buf, int flags);
+
+        If the pathname given in pathname is relative, then it is interpreted relative to the directory referred
+        to by the file descriptor dirfd (rather than relative to the current working directory of the calling process,
+        as is done by stat(2) for a relative pathname).
+
+        If pathname is relative and dirfd is the special value AT_FDCWD,
+        then pathname is interpreted relative to the current working directory of the calling process (like stat(2)).
+
+        If pathname is absolute, then dirfd is ignored.
+
+        flags can either be 0, or include one or more of the following flags ..
+
+        On success, fstatat() returns 0. On error, -1 is returned and errno is set to indicate the error.
+        """
+        pathname = memory_helpers.read_utf8(mu, pathname_ptr)
+
+        if not pathname.startswith('/'):
+            raise NotImplementedError("Directory file descriptor has not been implemented yet.")
+
+        if not flags == 0:
+            raise NotImplementedError("Flags has not been implemented yet.")
+
+        pathname = self.translate_path(pathname)
+
+        stat = file_helpers.stat64(path=pathname)
+        # stat = os.stat(path=file_path, dir_fd=None, follow_symlinks=False)
+        file_helpers.stat_to_memory(mu, buf, stat, WRITE_FSTAT_TIMES)
+
+        return 0

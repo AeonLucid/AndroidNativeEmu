@@ -61,7 +61,7 @@ class Emulator:
 
         # JavaVM
         self.java_classloader = JavaClassLoader()
-        self.java_vm = JavaVM(self.java_classloader, self.hooker)
+        self.java_vm = JavaVM(self, self.java_classloader, self.hooker)
 
         # Native
         self.native_memory = NativeMemory(self.mu, config.MEMORY_DYN_BASE, config.MEMORY_DYN_SIZE, self.syscall_handler)
@@ -122,7 +122,7 @@ class Emulator:
 
         try:
             # Execute native call.
-            native_write_args(self.mu, *argv)
+            native_write_args(self, *argv)
             stop_pos = randint(MEMORY_BASE, MEMORY_BASE + MEMORY_SIZE) | 1
             self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
             self.mu.emu_start(addr, stop_pos - 1)
