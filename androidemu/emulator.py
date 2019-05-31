@@ -1,11 +1,14 @@
 import logging
+import os
+import time
 from random import randint
 
+import hexdump
 from unicorn import Uc, UC_ARCH_ARM, UC_MODE_ARM
 from unicorn.arm_const import UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_R0
 
 from androidemu import config
-from androidemu.config import MEMORY_BASE, MEMORY_SIZE
+from androidemu.config import HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE
 from androidemu.cpu.interrupt_handler import InterruptHandler
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.cpu.syscall_hooks import SyscallHooks
@@ -56,15 +59,15 @@ class Emulator:
             self.vfs = None
 
         # Hooker
-        self.mu.mem_map(config.MEMORY_BASE, config.MEMORY_SIZE)
-        self.hooker = Hooker(self, config.MEMORY_BASE, config.MEMORY_SIZE)
+        self.mu.mem_map(config.HOOK_MEMORY_BASE, config.HOOK_MEMORY_SIZE)
+        self.hooker = Hooker(self, config.HOOK_MEMORY_BASE, config.HOOK_MEMORY_SIZE)
 
         # JavaVM
         self.java_classloader = JavaClassLoader()
         self.java_vm = JavaVM(self, self.java_classloader, self.hooker)
 
         # Native
-        self.native_memory = NativeMemory(self.mu, config.MEMORY_DYN_BASE, config.MEMORY_DYN_SIZE, self.syscall_handler)
+        self.native_memory = NativeMemory(self.mu, config.HEAP_BASE, config.HEAP_SIZE, self.syscall_handler)
         self.native_hooks = NativeHooks(self.native_memory, self.modules, self.hooker)
 
     # https://github.com/unicorn-engine/unicorn/blob/8c6cbe3f3cabed57b23b721c29f937dd5baafc90/tests/regress/arm_fp_vfp_disabled.py#L15
@@ -123,7 +126,7 @@ class Emulator:
         try:
             # Execute native call.
             native_write_args(self, *argv)
-            stop_pos = randint(MEMORY_BASE, MEMORY_BASE + MEMORY_SIZE) | 1
+            stop_pos = randint(HOOK_MEMORY_BASE, HOOK_MEMORY_BASE + HOOK_MEMORY_SIZE) | 1
             self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
             self.mu.emu_start(addr, stop_pos - 1)
 
@@ -140,3 +143,15 @@ class Emulator:
             # Clear locals if jni.
             if is_jni:
                 self.java_vm.jni_env.clear_locals()
+
+    def dump(self):
+        local_dir = os.path.dirname(__file__)
+        out_dir = os.path.join(local_dir, 'dump', str(int(time.time())))
+
+        os.makedirs(out_dir)
+
+        for begin, end, prot in [reg for reg in self.mu.mem_regions()]:
+            filename = "{:#010x}-{:#010x}.bin".format(begin, end)
+            pathname = os.path.join(out_dir, filename)
+            with open(pathname, "w") as f:
+                f.write(hexdump.hexdump(self.mu.mem_read(begin, end - begin), result='return'))

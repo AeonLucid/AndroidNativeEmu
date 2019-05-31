@@ -30,7 +30,8 @@ class SyscallHandlers:
             handler = self._handlers[idx]
             args = args[:handler.arg_count]
             args_formatted = ", ".join(["%08x" % arg for arg in args])
-            logger.debug("Executing syscall %s(%s)" % (handler.name, args_formatted))
+            logger.debug("Executing syscall %s(%s) at 0x%x" % (handler.name, args_formatted,
+                                                               mu.reg_read(UC_ARM_REG_PC)))
 
             try:
                 result = handler.callback(mu, *args)
