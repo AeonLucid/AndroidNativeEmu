@@ -1,8 +1,9 @@
 import logging
 
 from androidemu.hooker import Hooker
-from androidemu.java.helpers.native_method import native_method
 from androidemu.native.memory import NativeMemory
+
+from androidemu.java.helpers.native_method import native_method
 from androidemu.utils import memory_helpers
 
 logger = logging.getLogger(__name__)

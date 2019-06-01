@@ -26,6 +26,12 @@ class Modules:
     def add_symbol_hook(self, symbol_name, addr):
         self.symbol_hooks[symbol_name] = addr
 
+    def find_symbol(self, addr):
+        for module in self.modules:
+            if addr in module.symbol_lookup:
+                return module.symbol_lookup[addr]
+        return None, None
+
     def load_module(self, filename):
         logger.debug("Loading module '%s'." % filename)
 

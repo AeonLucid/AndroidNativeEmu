@@ -20,6 +20,7 @@ from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.java_vm import JavaVM
 from androidemu.native.hooks import NativeHooks
 from androidemu.native.memory import NativeMemory
+from androidemu.tracer import Tracer
 from androidemu.vfs.file_system import VirtualFileSystem
 
 logger = logging.getLogger(__name__)
@@ -72,6 +73,9 @@ class Emulator:
         # Native
         self.native_memory = NativeMemory(self.mu, config.HEAP_BASE, config.HEAP_SIZE, self.syscall_handler)
         self.native_hooks = NativeHooks(self, self.native_memory, self.modules, self.hooker)
+
+        # Tracer
+        self.tracer = Tracer(self.mu, self.modules)
 
     # https://github.com/unicorn-engine/unicorn/blob/8c6cbe3f3cabed57b23b721c29f937dd5baafc90/tests/regress/arm_fp_vfp_disabled.py#L15
     def _enable_vfp(self):
