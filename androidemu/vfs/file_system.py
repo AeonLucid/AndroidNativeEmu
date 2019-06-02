@@ -46,6 +46,9 @@ class VirtualFileSystem:
         if filename.startswith("/"):
             filename = filename[1:]
 
+        if os.name == 'nt':
+            filename = filename.replace(':', '_')
+
         file_path = posixpath.join(self._root_path, filename)
         file_path = posixpath.normpath(file_path)
 
@@ -77,7 +80,7 @@ class VirtualFileSystem:
                 flags |= os.O_BINARY
             return self._store_fd(orig_filename, file_path, os.open(file_path, flags=flags))
         else:
-            logger.info("File does not exist %s" % file_path)
+            logger.warning("File does not exist '%s'" % orig_filename)
             return -1
 
     def _handle_read(self, mu, fd, buf_addr, count):
@@ -219,8 +222,13 @@ class VirtualFileSystem:
             raise NotImplementedError("Directory file descriptor has not been implemented yet.")
 
         if not flags == 0:
-            raise NotImplementedError("Flags has not been implemented yet.")
+            if flags & 0x100:  # AT_SYMLINK_NOFOLLOW
+                pass
+            if flags & 0x800:  # AT_NO_AUTOMOUNT
+                pass
+            # raise NotImplementedError("Flags has not been implemented yet.")
 
+        logger.info("File fstatat64 '%s'" % pathname)
         pathname = self.translate_path(pathname)
 
         stat = file_helpers.stat64(path=pathname)

@@ -10,11 +10,12 @@ class JavaClassDef(type):
     next_jvm_method_id = itertools.count(start=0xd2000000, step=4)
     next_jvm_field_id = itertools.count(start=0xe2000000, step=4)
 
-    def __init__(cls, name, base, ns, jvm_name=None, jvm_fields=None):
+    def __init__(cls, name, base, ns, jvm_name=None, jvm_fields=None, jvm_ignore=False):
         cls.jvm_id = next(JavaClassDef.next_jvm_id)
         cls.jvm_name = jvm_name
         cls.jvm_methods = dict()
         cls.jvm_fields = dict()
+        cls.jvm_ignore = jvm_ignore
 
         # Register all defined Java methods.
         for func in inspect.getmembers(cls, predicate=inspect.isfunction):

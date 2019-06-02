@@ -1,6 +1,8 @@
 import logging
 
 from androidemu.hooker import Hooker
+from androidemu.java.classes.constructor import Constructor
+from androidemu.java.classes.method import Method
 from androidemu.java.helpers.native_method import native_method
 from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.jni_const import *
@@ -305,7 +307,11 @@ class JNIEnv:
         result = []
 
         for arg_name in args_list:
-            if arg_name == 'jstring':
+            if arg_name == 'jint':
+                ref = int.from_bytes(mu.mem_read(args_ptr, 4), byteorder='little')
+                result.append(ref)
+                args_ptr = args_ptr + 4
+            elif arg_name == 'jstring':
                 ref = int.from_bytes(mu.mem_read(args_ptr, 4), byteorder='little')
                 result.append(self.get_reference(ref))
                 args_ptr = args_ptr + 4
@@ -343,6 +349,9 @@ class JNIEnv:
             # TODO: Proper Java error?
             raise RuntimeError('Could not find class \'%s\' for JNIEnv.' % name)
 
+        if clazz.jvm_ignore:
+            return 0
+
         return self.add_local_reference(jclass(clazz))
 
     @native_method
@@ -354,8 +363,32 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def to_reflected_method(self, mu, env):
-        raise NotImplementedError()
+    def to_reflected_method(self, mu, env, class_idx, method_id, is_static):
+        """
+        Converts a method ID derived from cls to a java.lang.reflect.Method or java.lang.reflect.Constructor object.
+        isStatic must be set to JNI_TRUE if the method ID refers to a static field, and JNI_FALSE otherwise.
+
+        Throws OutOfMemoryError and returns 0 if fails.
+        """
+        clazz = self.get_reference(class_idx)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method_by_id(method_id)
+        if method is None:
+            raise RuntimeError("Could not find method ('%u') in class %s." % (method_id, clazz.value.jvm_name))
+
+        # TODO: Static check.
+
+        logger.debug("JNIEnv->ToReflectedMethod(%s, %s, %u) was called" % (clazz.value.jvm_name,
+                                                                           method.name,
+                                                                           is_static))
+
+        if method.name == '<init>' and method.signature.endswith('V'):
+            return Constructor(clazz.value, method)
+        else:
+            return Method(clazz.value, method)
 
     @native_method
     def get_superclass(self, mu, env):
@@ -501,8 +534,22 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def is_instance_of(self, mu, env):
-        raise NotImplementedError()
+    def is_instance_of(self, mu, env, obj_idx, class_idx):
+        """
+        Tests whether an object is an instance of a class.
+        Returns JNI_TRUE if obj can be cast to clazz; otherwise, returns JNI_FALSE. A NULL object can be cast to any class.
+        """
+        obj = self.get_reference(obj_idx)
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        clazz = self.get_reference(class_idx)
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        # TODO: Casting check (?)
+
+        return JNI_TRUE if obj.value.jvm_id == clazz.value.jvm_id else JNI_FALSE
 
     @native_method
     def get_method_id(self, mu, env, clazz_idx, name_ptr, sig_ptr):
@@ -548,9 +595,10 @@ class JNIEnv:
             method.name,
             method.signature, args))
 
-        # TODO: Args.
+        # Parse arguments.
+        constructor_args = self.read_args_v(mu, args, method.args_list)
 
-        return method.func(obj.value, self._emu)
+        return method.func(obj.value, self._emu, *constructor_args)
 
     @native_method
     def call_object_method_a(self, mu, env):
@@ -621,8 +669,27 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_long_method_v(self, mu, env):
-        raise NotImplementedError()
+    def call_long_method_v(self, mu, env, obj_idx, method_id, args):
+        obj = self.get_reference(obj_idx)
+
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        method = obj.value.__class__.find_method_by_id(method_id)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method %d in object %s by id." % (method_id, obj.value.jvm_name))
+
+        logger.debug("JNIEnv->CallLongMethodV(%s, %s <%s>, 0x%x) was called" % (
+            obj.value.jvm_name,
+            method.name,
+            method.signature, args))
+
+        # Parse arguments.
+        constructor_args = self.read_args_v(mu, args, method.args_list)
+
+        return method.func(obj.value, self._emu, *constructor_args)
 
     @native_method
     def call_long_method_a(self, mu, env):
@@ -1032,8 +1099,27 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_static_int_method_v(self, mu, env):
-        raise NotImplementedError()
+    def call_static_int_method_v(self, mu, env, clazz_idx, method_id, args):
+        clazz = self.get_reference(clazz_idx)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method_by_id(method_id)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method %d in class %s by id." % (method_id, clazz.value.jvm_name))
+
+        logger.debug("JNIEnv->CallStaticIntMethodV(%s, %s <%s>, 0x%x) was called" % (
+            clazz.value.jvm_name,
+            method.name,
+            method.signature, args))
+
+        # Parse arguments.
+        constructor_args = self.read_args_v(mu, args, method.args_list)
+
+        return method.func(self._emu, *constructor_args)
 
     @native_method
     def call_static_int_method_a(self, mu, env):

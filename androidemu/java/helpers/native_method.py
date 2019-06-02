@@ -48,6 +48,9 @@ def native_translate_arg(emu, val):
     elif isinstance(val, bytearray):
         return emu.java_vm.jni_env.add_local_reference(jbyteArray(val))
     elif isinstance(type(val), JavaClassDef):
+        # TODO: Look into this, seems wrong..
+        return emu.java_vm.jni_env.add_local_reference(jobject(val))
+    elif isinstance(val, JavaClassDef):
         return emu.java_vm.jni_env.add_local_reference(jobject(val))
     else:
         raise NotImplementedError("Unable to write response '%s' type '%s' to emulator." % (str(val), type(val)))

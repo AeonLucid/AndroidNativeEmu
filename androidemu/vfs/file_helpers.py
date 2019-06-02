@@ -11,6 +11,11 @@ def stat64(path):
     meta_path = path + '.meta_emu'
 
     if not os.path.exists(meta_path):
+        meta_path_dir = os.path.dirname(meta_path)
+
+        if not os.path.isdir(meta_path_dir):
+            os.makedirs(meta_path_dir)
+
         with open(meta_path, 'w') as f:
             json.dump({
                 'st_dev': 0,
