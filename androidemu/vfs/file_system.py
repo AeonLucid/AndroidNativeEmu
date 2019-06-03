@@ -10,6 +10,9 @@ from androidemu.vfs import file_helpers
 
 logger = logging.getLogger(__name__)
 
+OVERRIDE_URANDOM = False
+OVERRIDE_URANDOM_BYTE = b"\x00"
+
 
 class VirtualFile:
 
@@ -108,7 +111,10 @@ class VirtualFileSystem:
         logger.info("Reading %d bytes from '%s'" % (count, file.name))
 
         if file.descriptor == 'urandom':
-            buf = os.urandom(count)
+            if OVERRIDE_URANDOM:
+                buf = OVERRIDE_URANDOM_BYTE * count
+            else:
+                buf = os.urandom(count)
         else:
             buf = os.read(file.descriptor, count)
 
@@ -230,6 +236,12 @@ class VirtualFileSystem:
 
         logger.info("File fstatat64 '%s'" % pathname)
         pathname = self.translate_path(pathname)
+
+        if not os.path.exists(pathname):
+            logger.warning('> File was not found.')
+            return -1
+
+        logger.warning('> File was found.')
 
         stat = file_helpers.stat64(path=pathname)
         # stat = os.stat(path=file_path, dir_fd=None, follow_symlinks=False)

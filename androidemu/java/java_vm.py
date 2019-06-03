@@ -38,7 +38,8 @@ class JavaVM:
 
     @native_method
     def detach_current_thread(self, mu):
-        raise NotImplementedError()
+        # TODO: NooOO idea.
+        pass
 
     @native_method
     def get_env(self, mu, java_vm, env, version):

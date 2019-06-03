@@ -3,6 +3,7 @@ import logging
 from androidemu.hooker import Hooker
 from androidemu.java.classes.constructor import Constructor
 from androidemu.java.classes.method import Method
+from androidemu.java.constant_values import MODIFIER_STATIC
 from androidemu.java.helpers.native_method import native_method
 from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.jni_const import *
@@ -379,7 +380,10 @@ class JNIEnv:
         if method is None:
             raise RuntimeError("Could not find method ('%u') in class %s." % (method_id, clazz.value.jvm_name))
 
-        # TODO: Static check.
+        if method.modifier & MODIFIER_STATIC:
+            mu.mem_write(is_static, int(JNI_TRUE).to_bytes(4, byteorder='little'))
+        else:
+            mu.mem_write(is_static, int(JNI_FALSE).to_bytes(4, byteorder='little'))
 
         logger.debug("JNIEnv->ToReflectedMethod(%s, %s, %u) was called" % (clazz.value.jvm_name,
                                                                            method.name,
@@ -448,6 +452,9 @@ class JNIEnv:
         """
         logger.debug("JNIEnv->NewGlobalRef(%d) was called" % obj)
 
+        if obj == 0:
+            return 0
+
         obj = self.get_local_reference(obj)
 
         if obj is None:
@@ -466,6 +473,10 @@ class JNIEnv:
         Deletes the local reference pointed to by localRef.
         """
         logger.debug("JNIEnv->DeleteLocalRef(%d) was called" % idx)
+
+        if idx == 0:
+            return None
+
         obj = self.get_local_reference(idx)
         self.delete_local_reference(obj)
 
@@ -1012,6 +1023,9 @@ class JNIEnv:
             # TODO: Proper Java error?
             raise RuntimeError(
                 "Could not find static method ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
+
+        if method.ignore:
+            return 0
 
         return method.jvm_id
 

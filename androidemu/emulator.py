@@ -151,10 +151,7 @@ class Emulator:
             if is_jni:
                 self.java_vm.jni_env.clear_locals()
 
-    def dump(self):
-        local_dir = os.path.dirname(__file__)
-        out_dir = os.path.join(local_dir, 'dump', str(int(time.time())))
-
+    def dump(self, out_dir):
         os.makedirs(out_dir)
 
         for begin, end, prot in [reg for reg in self.mu.mem_regions()]:

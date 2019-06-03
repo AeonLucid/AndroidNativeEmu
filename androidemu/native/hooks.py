@@ -22,18 +22,11 @@ class NativeHooks:
         self.atexit = []
 
         modules.add_symbol_hook('__system_property_get', hooker.write_function(self.system_property_get) + 1)
-        modules.add_symbol_hook('pthread_create', hooker.write_function(self.pthread_create) + 1)
-        modules.add_symbol_hook('fork', hooker.write_function(self.nop('fork')) + 1)
-        modules.add_symbol_hook('vfork', hooker.write_function(self.nop('vfork')) + 1)
         modules.add_symbol_hook('dladdr', hooker.write_function(self.nop('dladdr')) + 1)
         modules.add_symbol_hook('dlsym', hooker.write_function(self.nop('dlsym')) + 1)
-        modules.add_symbol_hook('tolower', hooker.write_function(self.tolower) + 1)
-        modules.add_symbol_hook('strcmpi', hooker.write_function(self.nop('strcmpi')) + 1)
-
-    @native_method
-    def tolower(self, uc, charr):
-        logger.debug("Called tolower(%s)" % chr(charr))
-        return ord(chr(charr).lower())
+        modules.add_symbol_hook('dlopen', hooker.write_function(self.nop('dlopen')) + 1)
+        modules.add_symbol_hook('pthread_create', hooker.write_function(self.nop('pthread_create')) + 1)
+        modules.add_symbol_hook('pthread_join', hooker.write_function(self.nop('pthread_join')) + 1)
 
     @native_method
     def system_property_get(self, uc, name_ptr, buf_ptr):
@@ -46,10 +39,6 @@ class NativeHooks:
             raise ValueError('%s was not found in system_properties dictionary.' % name)
 
         return None
-
-    @native_method
-    def pthread_create(self, uc, thread_ptr, attr, start_ptr, arg_ptr):
-        logger.debug("Called pthread_create(0x%x, 0x%x, 0x%x, 0x%x)" % (thread_ptr, attr, start_ptr, arg_ptr))
 
     def nop(self, name):
         @native_method

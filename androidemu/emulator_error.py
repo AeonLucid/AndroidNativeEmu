@@ -1,0 +1,2 @@
+class EmulatorError(Exception):
+    pass

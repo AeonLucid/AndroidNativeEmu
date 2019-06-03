@@ -8,7 +8,13 @@ from unicorn import Uc
 from androidemu.const.android import *
 from androidemu.const.linux import *
 from androidemu.cpu.syscall_handlers import SyscallHandlers
-from androidemu.utils import memory_helpers
+
+OVERRIDE_TIMEOFDAY = False
+OVERRIDE_TIMEOFDAY_SEC = 0
+OVERRIDE_TIMEOFDAY_USEC = 0
+
+OVERRIDE_CLOCK = False
+OVERRIDE_CLOCK_TIME = 0
 
 
 class SyscallHooks:
@@ -35,12 +41,16 @@ class SyscallHooks:
         """
 
         if tv != 0:
-            timestamp = time.time()
-            (usec, sec) = math.modf(timestamp)
-            usec = abs(int(usec * 100000))
+            if OVERRIDE_TIMEOFDAY:
+                uc.mem_write(tv + 0, int(OVERRIDE_TIMEOFDAY_SEC).to_bytes(4, byteorder='little'))
+                uc.mem_write(tv + 4, int(OVERRIDE_TIMEOFDAY_USEC).to_bytes(4, byteorder='little'))
+            else:
+                timestamp = time.time()
+                (usec, sec) = math.modf(timestamp)
+                usec = abs(int(usec * 100000))
 
-            uc.mem_write(tv + 0, int(sec).to_bytes(4, byteorder='little'))
-            uc.mem_write(tv + 4, int(usec).to_bytes(4, byteorder='little'))
+                uc.mem_write(tv + 0, int(sec).to_bytes(4, byteorder='little'))
+                uc.mem_write(tv + 4, int(usec).to_bytes(4, byteorder='little'))
 
         if tz != 0:
             uc.mem_write(tz + 0, int(-120).to_bytes(4, byteorder='little'))  # minuteswest -(+GMT_HOURS) * 60
@@ -97,11 +107,14 @@ class SyscallHooks:
         """
 
         if clk_id == CLOCK_MONOTONIC_COARSE:
-            clock_add = time.time() - self._clock_start  # Seconds passed since clock_start was set.
+            if OVERRIDE_CLOCK:
+                mu.mem_write(tp_ptr + 0, int(OVERRIDE_CLOCK_TIME).to_bytes(4, byteorder='little'))
+                mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
+            else:
+                clock_add = time.time() - self._clock_start  # Seconds passed since clock_start was set.
 
-            mu.mem_write(tp_ptr + 0, int(self._clock_start + clock_add).to_bytes(4, byteorder='little'))
-            mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
-
+                mu.mem_write(tp_ptr + 0, int(self._clock_start + clock_add).to_bytes(4, byteorder='little'))
+                mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
             return 0
         else:
             raise NotImplementedError("Unsupported clk_id: %d (%x)" % (clk_id, clk_id))
