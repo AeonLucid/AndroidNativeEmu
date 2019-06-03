@@ -32,9 +32,8 @@ def hook_mem_write(uc, access, address, size, value, user_data):
 
 def hook_mem_read(uc, access, address, size, value, user_data):
     pc = uc.reg_read(UC_ARM_REG_PC)
-    if pc > 0xcbc24cf0 - 8 and pc < 0xcbc24cf0:
-        data = uc.mem_read(address, size)
-        logger.debug(">>> Memory READ at 0x%x, data size = %u, pc: %x, data value = 0x%s" % (address, size, pc, data.hex()))
+    data = uc.mem_read(address, size)
+    logger.debug(">>> Memory READ at 0x%x, data size = %u, pc: %x, data value = 0x%s" % (address, size, pc, data.hex()))
 
 
 def hook_interrupt(uc, intno, data):

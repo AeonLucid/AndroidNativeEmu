@@ -295,6 +295,9 @@ class JNIEnv:
 
         return self._globals.add(obj)
 
+    def get_global_reference(self, idx):
+        return self._globals.get(idx)
+
     def delete_global_reference(self, obj):
         if not isinstance(obj, jobject):
             raise ValueError('Expected a jobject.')
@@ -464,8 +467,17 @@ class JNIEnv:
         return self.add_global_reference(obj)
 
     @native_method
-    def delete_global_ref(self, mu, env):
-        raise NotImplementedError()
+    def delete_global_ref(self, mu, env, idx):
+        """
+        Deletes the global reference pointed to by globalRef.
+        """
+        logger.debug("JNIEnv->DeleteGlobalRef(%d) was called" % idx)
+
+        if idx == 0:
+            return None
+
+        obj = self.get_global_reference(idx)
+        self.delete_global_reference(obj)
 
     @native_method
     def delete_local_ref(self, mu, env, idx):
@@ -487,6 +499,9 @@ class JNIEnv:
         """
         logger.debug("JNIEnv->IsSameObject(%d, %d) was called" % (ref1, ref2))
 
+        if ref1 == 0 and ref2 == 0:
+            return JNI_TRUE
+
         obj1 = self.get_reference(ref1)
         obj2 = self.get_reference(ref2)
 
@@ -496,8 +511,19 @@ class JNIEnv:
         return JNI_FALSE
 
     @native_method
-    def new_local_ref(self, mu, env):
-        raise NotImplementedError()
+    def new_local_ref(self, mu, env, ref):
+        """
+        Creates a new local reference that refers to the same object as ref.
+        The given ref may be a global or local reference. Returns NULL if ref refers to null.
+        """
+        logger.debug("JNIEnv->NewLocalRef(%d) was called" % ref)
+
+        obj = self.get_reference(ref)
+
+        if obj is None:
+            return 0
+
+        return self.add_local_reference(obj)
 
     @native_method
     def ensure_local_capacity(self, mu, env):
