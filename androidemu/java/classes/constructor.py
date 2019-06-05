@@ -7,7 +7,7 @@ from androidemu.java.java_method_def import JavaMethodDef
 class Constructor(metaclass=JavaClassDef,
                   jvm_name='java/lang/reflect/Constructor',
                   jvm_fields=[
-                      JavaFieldDef('slot', 'I', False),
+                      JavaFieldDef('slot', 'I', False, ignore=True),
                       JavaFieldDef('declaringClass', 'Ljava/lang/Class;', False)
                   ],
                   jvm_super=Executable):

@@ -925,6 +925,9 @@ class JNIEnv:
             # TODO: Proper Java error?
             raise RuntimeError("Could not find field ('%s', '%s') in class %s." % (name, sig, clazz.value.jvm_name))
 
+        if field.ignore:
+            return 0
+
         return field.jvm_id
 
     @native_method

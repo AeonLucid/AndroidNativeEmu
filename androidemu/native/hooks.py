@@ -27,6 +27,8 @@ class NativeHooks:
         modules.add_symbol_hook('dlopen', hooker.write_function(self.nop('dlopen')) + 1)
         modules.add_symbol_hook('pthread_create', hooker.write_function(self.nop('pthread_create')) + 1)
         modules.add_symbol_hook('pthread_join', hooker.write_function(self.nop('pthread_join')) + 1)
+        modules.add_symbol_hook('vfprintf', hooker.write_function(self.nop('vfprintf')) + 1)
+        modules.add_symbol_hook('fprintf', hooker.write_function(self.nop('fprintf')) + 1)
 
     @native_method
     def system_property_get(self, uc, name_ptr, buf_ptr):
