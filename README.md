@@ -1,4 +1,5 @@
 # AndroidNativeEmu
+[ 中文README & 教程？ ](README_cn.md)
 
 Allows you to partly emulate an Android native library.
 
