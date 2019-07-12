@@ -40,7 +40,7 @@ class Emulator:
             self._enable_vfp()
 
         # Android
-        self.system_properties = {}
+        self.system_properties = {"libc.debug.malloc.options":""}
 
         # Stack.
         self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
