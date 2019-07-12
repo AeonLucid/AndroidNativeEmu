@@ -9,6 +9,8 @@ from androidemu.emulator import Emulator
 from androidemu.java.java_class_def import JavaClassDef
 from androidemu.java.java_method_def import java_method_def
 
+from samples import debug_utils
+
 class XGorgen(metaclass=JavaClassDef, jvm_name='com/ss/sys/ces/a'):
     def __init__(self):
         pass
@@ -126,7 +128,7 @@ for module in emulator.modules:
 
 # Debug
 # emulator.mu.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
-# emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
+emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
 # emulator.mu.hook_add(UC_HOOK_MEM_WRITE, debug_utils.hook_mem_write)
 # emulator.mu.hook_add(UC_HOOK_MEM_READ, debug_utils.hook_mem_read)
 

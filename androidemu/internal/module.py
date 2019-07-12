@@ -21,5 +21,11 @@ class Module:
     def find_symbol(self, name):
         if name in self.symbols:
             return self.symbols[name]
-
         return None
+
+    def is_symbol_addr(self, addr):
+        if addr in self.symbol_lookup:
+            return  self.symbol_lookup[addr](0)
+        else:
+            return None
+

@@ -44,8 +44,7 @@ class SyscallHandlers:
                 mu.reg_write(UC_ARM_REG_R0, result)
         else:
 
-            error = ("Unhandled syscall 0x%x (%u) at 0x%x, stopping emulation" % (idx, idx,
-                                                                                      mu.reg_read(UC_ARM_REG_PC)))
-            logger.log(error)
+            error = "Unhandled syscall 0x%x (%u) at 0x%x, stopping emulation" % (idx, idx,
+                                                                                      mu.reg_read(UC_ARM_REG_PC))
             mu.emu_stop()
-            raise error
+            raise RuntimeError(error)
