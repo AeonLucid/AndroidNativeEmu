@@ -5,12 +5,13 @@ class Module:
     :type base int
     :type size int
     """
-    def __init__(self, filename, address, size, symbols_resolved):
+    def __init__(self, filename, address, size, symbols_resolved, init_array=[]):
         self.filename = filename
         self.base = address
         self.size = size
         self.symbols = symbols_resolved
         self.symbol_lookup = dict()
+        self.init_array = list(init_array)
 
         # Create fast lookup.
         for symbol_name, symbol in self.symbols.items():

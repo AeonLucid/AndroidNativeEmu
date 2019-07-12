@@ -32,8 +32,14 @@ class SyscallHooks:
         self._syscall_handler.set_handler(0x107, "clock_gettime", 2, self._handle_clock_gettime)
         self._syscall_handler.set_handler(0x119, "socket", 3, self._socket)
         self._syscall_handler.set_handler(0x11b, "connect", 3, self._connect)
+        self._syscall_handler.set_handler(0x159, "getcpu", 3, self._getcpu)
         self._clock_start = time.time()
         self._clock_offset = randint(1000, 2000)
+
+    def _getcpu(self, mu, _cpu, node, cache):
+        if _cpu != 0:
+            mu.mem_write(_cpu, int(1).to_bytes(4, byteorder='little'))
+        return 0
 
     def _handle_gettimeofday(self, uc, tv, tz):
         """

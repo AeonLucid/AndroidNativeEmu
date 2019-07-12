@@ -19,6 +19,7 @@ def hook_code(mu, address, size, user_data):
 
 def hook_unmapped(mu, access, address, length, value, context):
     pc = mu.reg_read(UC_ARM_REG_PC)
+
     logger.debug("mem unmapped: pc: %x access: %x address: %x length: %x value: %x" %
                  (pc, access, address, length, value))
     mu.emu_stop()

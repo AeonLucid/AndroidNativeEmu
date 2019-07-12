@@ -49,8 +49,10 @@ class JavaClassDef(type):
                 break
 
         if not found:
-            raise RuntimeError("Register native ('%s', '%s') failed on class %s." % (name, signature, self.__name__))
-
+            x = "Register native ('%s', '%s') failed on class %s." % (name, signature, self.__name__)
+            logger.warning(x)
+            return
+            # raise RuntimeError("Register native ('%s', '%s') failed on class %s." % (name, signature, self.__name__))
         logger.debug("Registered native function ('%s', '%s') to %s.%s" % (name, signature,
                                                                            self.__name__, found_method.func_name))
 

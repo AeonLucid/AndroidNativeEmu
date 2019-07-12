@@ -277,6 +277,12 @@ class JNIEnv:
 
         return self._locals.add(obj)
 
+    def set_local_reference(self, idx, newobj):
+        if not isinstance(newobj, jobject):
+            raise ValueError('Expected a jobject.')
+        self._locals.set(idx, newobj)
+
+
     def get_local_reference(self, idx):
         return self._locals.get(idx)
 
@@ -590,10 +596,6 @@ class JNIEnv:
 
     @native_method
     def get_method_id(self, mu, env, clazz_idx, name_ptr, sig_ptr):
-        """
-        Returns the method ID for an instance (nonstatic) method of a class or interface. The method may be defined
-        in one of the clazz’s superclasses and inherited by clazz. The method is determined by its name and signature.
-        """
         name = memory_helpers.read_utf8(mu, name_ptr)
         sig = memory_helpers.read_utf8(mu, sig_ptr)
         clazz = self.get_reference(clazz_idx)
@@ -622,7 +624,6 @@ class JNIEnv:
             raise ValueError('Expected a jobject.')
 
         method = obj.value.__class__.find_method_by_id(method_id)
-
         if method is None:
             # TODO: Proper Java error?
             raise RuntimeError("Could not find method %d in object %s by id." % (method_id, obj.value.jvm_name))
@@ -1403,8 +1404,10 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def new_byte_array(self, mu, env):
-        raise NotImplementedError()
+    def new_byte_array(self, mu, env, bytelen):
+        logger.debug("JNIEnv->NewByteArray(%u) was called" % bytelen)
+        return self.add_local_reference(jbyteArray(bytelen))
+        #raise NotImplementedError()
 
     @native_method
     def new_char_array(self, mu, env):
@@ -1540,8 +1543,11 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def set_byte_array_region(self, mu, env):
-        raise NotImplementedError()
+    def set_byte_array_region(self, mu, env, arrayJREF, startIndex, length, bufAddress):
+        string = memory_helpers.read_byte_array(mu, bufAddress, length)
+        logger.debug("JNIEnv->SetByteArrayRegion was called")
+        self.set_local_reference(arrayJREF,jbyteArray(string))
+
 
     @native_method
     def set_char_array_region(self, mu, env):

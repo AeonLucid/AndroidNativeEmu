@@ -9,6 +9,8 @@ def hex_dump(mu, address, size):
 def read_ptr(mu, address):
     return int.from_bytes(mu.mem_read(address, 4), byteorder='little')
 
+def read_byte_array(mu, address, size):
+    return mu.mem_read(address, size)
 
 def read_utf8(mu, address):
     buffer_address = address

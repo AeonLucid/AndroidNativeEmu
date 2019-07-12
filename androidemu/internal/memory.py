@@ -33,4 +33,7 @@ class Memory:
     def mem_write(self, address, data):
         self.emu.mu.mem_write(address, data)
 
+    def mem_read(self, address, size):
+        return self.emu.mu.mem_read(address, size)
+
 
