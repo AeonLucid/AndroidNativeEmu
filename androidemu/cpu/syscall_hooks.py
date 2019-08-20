@@ -37,6 +37,7 @@ class SyscallHooks:
         self._syscall_handler.set_handler(0x14, "getpid", 0, self._getpid)
         self._syscall_handler.set_handler(0xe0, "gettid", 0, self._gettid)
         self._syscall_handler.set_handler(0x180,"null1",0, self._null)
+        self._syscall_handler.set_handler(0x180, "getrandom", 3, self._getrandom)
         self._clock_start = time.time()
         self._clock_offset = randint(1000, 2000)
 
@@ -148,3 +149,7 @@ class SyscallHooks:
     def _connect(self, mu, fd, addr, addr_len):
         print(hexdump.hexdump(mu.mem_read(addr, addr_len)))
         raise NotImplementedError()
+
+    def _getrandom(self, mu, buf, count, flags):
+        mu.mem_write(buf, b"\x00" * count)
+        return count
