@@ -33,7 +33,6 @@ class Modules:
                 return module.symbol_lookup[addr]
         return None, None
 
-
     def load_module(self, filename):
         logger.debug("Loading module '%s'." % filename)
 
@@ -49,7 +48,6 @@ class Modules:
 
             # - LOAD (determinate what parts of the ELF file get mapped into memory)
             load_segments = [x for x in elf.iter_segments() if x.header.p_type == 'PT_LOAD']
-
 
             # Find bounds of the load segments.
             bound_low = 0
@@ -111,7 +109,7 @@ class Modules:
                 if fun_ptr != 0:
                     # fun_ptr += load_base
                     init_array.append(fun_ptr + load_base)
-                    #print ("find init array for :%s %x" % (filename, fun_ptr))
+                    # print ("find init array for :%s %x" % (filename, fun_ptr))
                 else:
                     # search in reloc
                     for rel in rel_section.iter_relocations():
@@ -121,7 +119,7 @@ class Modules:
                             sym = dynsym.get_symbol(rel['r_info_sym'])
                             sym_value = sym['st_value']
                             init_array.append(load_base + sym_value)
-                            #print ("find init array for :%s %x" % (filename, sym_value))
+                            # print ("find init array for :%s %x" % (filename, sym_value))
                             break
                 init_array_offset += 4
 
@@ -150,7 +148,6 @@ class Modules:
 
                     rel_addr = load_base + rel['r_offset']  # Location where relocation should happen
                     rel_info_type = rel['r_info_type']
-
 
                     # Relocation table for ARM
                     if rel_info_type == arm.R_ARM_ABS32:
@@ -189,9 +186,6 @@ class Modules:
             # Store information about loaded module.
             module = Module(filename, load_base, bound_high - bound_low, symbols_resolved, init_array)
             self.modules.append(module)
-
-            #do init
-
 
             return module
 

@@ -20,7 +20,6 @@ class ReferenceTable:
 
         self._table[idx] = newobj
 
-
     def add(self, obj):
         if not isinstance(obj, jobject):
             raise ValueError('Expected a jobject.')

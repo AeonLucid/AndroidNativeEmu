@@ -27,7 +27,6 @@ class VirtualFileSystem:
     """
     :type syscall_handler SyscallHandlers
     """
-
     def __init__(self, root_path, syscall_handler):
         self._root_path = root_path
 

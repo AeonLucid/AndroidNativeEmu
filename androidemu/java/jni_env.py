@@ -280,8 +280,8 @@ class JNIEnv:
     def set_local_reference(self, idx, newobj):
         if not isinstance(newobj, jobject):
             raise ValueError('Expected a jobject.')
-        self._locals.set(idx, newobj)
 
+        self._locals.set(idx, newobj)
 
     def get_local_reference(self, idx):
         return self._locals.get(idx)
@@ -596,6 +596,10 @@ class JNIEnv:
 
     @native_method
     def get_method_id(self, mu, env, clazz_idx, name_ptr, sig_ptr):
+        """
+        Returns the method ID for an instance (nonstatic) method of a class or interface. The method may be defined
+        in one of the clazz’s superclasses and inherited by clazz. The method is determined by its name and signature.
+        """
         name = memory_helpers.read_utf8(mu, name_ptr)
         sig = memory_helpers.read_utf8(mu, sig_ptr)
         clazz = self.get_reference(clazz_idx)
@@ -1546,8 +1550,7 @@ class JNIEnv:
     def set_byte_array_region(self, mu, env, arrayJREF, startIndex, length, bufAddress):
         string = memory_helpers.read_byte_array(mu, bufAddress, length)
         logger.debug("JNIEnv->SetByteArrayRegion was called")
-        self.set_local_reference(arrayJREF,jbyteArray(string))
-
+        self.set_local_reference(arrayJREF, jbyteArray(string))
 
     @native_method
     def set_char_array_region(self, mu, env):

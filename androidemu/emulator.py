@@ -108,9 +108,6 @@ class Emulator:
         finally:
             self.mu.mem_unmap(address, mem_size)
 
-    def _call_init_array(self):
-        pass
-
     def load_library(self, filename, do_init=True):
         libmod = self.modules.load_module(filename)
         if do_init:
@@ -140,7 +137,6 @@ class Emulator:
 
         try:
             # Execute native call.
-
             native_write_args(self, *argv)
             stop_pos = randint(HOOK_MEMORY_BASE, HOOK_MEMORY_BASE + HOOK_MEMORY_SIZE) | 1
             self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
