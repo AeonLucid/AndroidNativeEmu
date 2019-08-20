@@ -1,5 +1,5 @@
 import hexdump
-
+import struct
 
 def hex_dump(mu, address, size):
     data = mu.mem_read(address, size)
@@ -9,6 +9,8 @@ def hex_dump(mu, address, size):
 def read_ptr(mu, address):
     return int.from_bytes(mu.mem_read(address, 4), byteorder='little')
 
+def read_byte_array(mu, address, size):
+    return mu.mem_read(address, size)
 
 def read_utf8(mu, address):
     buffer_address = address
@@ -26,6 +28,20 @@ def read_utf8(mu, address):
 
     return buffer[:null_pos].decode("utf-8")
 
+def read_uints(mu, address, num = 1):
+    data = mu.mem_read(address, num * 4)
+    return struct.unpack("I"*num,data)
 
 def write_utf8(mu, address, value):
     mu.mem_write(address, value.encode(encoding="utf-8") + b"\x00")
+
+def write_uints(mu, address, num):
+    l = []
+    if not isinstance(num, list):
+        l = [num]
+    else:
+        l = num
+
+    for v in l:
+        mu.mem_write(address, int(v).to_bytes(4, byteorder='little'))
+        address += 4

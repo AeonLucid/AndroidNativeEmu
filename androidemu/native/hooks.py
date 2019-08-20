@@ -17,6 +17,7 @@ class NativeHooks:
     """
 
     def __init__(self, emu, memory, modules, hooker):
+        self._module_mgr = modules
         self._emu = emu
         self._memory = memory
         self.atexit = []
@@ -24,11 +25,12 @@ class NativeHooks:
         modules.add_symbol_hook('__system_property_get', hooker.write_function(self.system_property_get) + 1)
         modules.add_symbol_hook('dladdr', hooker.write_function(self.nop('dladdr')) + 1)
         modules.add_symbol_hook('dlsym', hooker.write_function(self.nop('dlsym')) + 1)
-        modules.add_symbol_hook('dlopen', hooker.write_function(self.nop('dlopen')) + 1)
+        modules.add_symbol_hook('dlopen', hooker.write_function(self.mydlopen) + 1)
         modules.add_symbol_hook('pthread_create', hooker.write_function(self.nop('pthread_create')) + 1)
         modules.add_symbol_hook('pthread_join', hooker.write_function(self.nop('pthread_join')) + 1)
         modules.add_symbol_hook('vfprintf', hooker.write_function(self.nop('vfprintf')) + 1)
         modules.add_symbol_hook('fprintf', hooker.write_function(self.nop('fprintf')) + 1)
+        modules.add_symbol_hook('dladdr', hooker.write_function(self.dladdr) + 1)
 
     @native_method
     def system_property_get(self, uc, name_ptr, buf_ptr):
@@ -41,6 +43,27 @@ class NativeHooks:
             raise ValueError('%s was not found in system_properties dictionary.' % name)
 
         return None
+
+    @native_method
+    def mydlopen(self, uc, path):
+        path = memory_helpers.read_utf8(uc, path)
+        logger.debug("Called dlopen(%s)" % path)
+        return None
+
+    @native_method
+    def dladdr(self, uc, addr, info):
+        infos = memory_helpers.read_uints(uc, info, 4)
+        Dl_info = {}
+
+        nm = self._emu.native_memory
+        isfind = False
+        for mod in self._module_mgr.modules:
+            if mod.base <= addr < mod.base + mod.size:
+                dli_fname = nm.allocate(len(mod.filename) + 1)
+                memory_helpers.write_utf8(uc, dli_fname, mod.filename + '\x00')
+                memory_helpers.write_uints(uc, addr, [dli_fname, mod.base, 0, 0])
+                return 1
+
 
     def nop(self, name):
         @native_method

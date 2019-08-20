@@ -11,6 +11,16 @@ class ReferenceTable:
         self._start = start
         self._size = max_entries
 
+    def set(self, idx, newobj):
+        if not isinstance(newobj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        if idx not in self._table:
+            raise ValueError('Expected a index.')
+
+        self._table[idx] = newobj
+
+
     def add(self, obj):
         if not isinstance(obj, jobject):
             raise ValueError('Expected a jobject.')

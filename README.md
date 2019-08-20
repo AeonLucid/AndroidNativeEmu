@@ -1,4 +1,5 @@
 # AndroidNativeEmu
+[ 中文README & 教程？ ](README_cn.md)
 
 Allows you to partly emulate an Android native library.
 
@@ -12,6 +13,15 @@ This is an educational project to learn more about the ELF file format and [Unic
 - Hooking through the symbol table.
 - All JavaVM, JNIEnv and hooked functions are handled by python.
 - Enable VFP support.
+
+## My Changes
+- Add init_array support depends on Relocation information.
+- Add support of modify object value by reference id.
+- Implement getcpu() syscall
+- Implement set_byte_array_region
+- Register Function failed would't raise an error(beacuse most jni functions are not used.)
+- samples:添加抖音 X-Gorgen 调用实例
+- [ 中文README ](README_cn.md)
 
 ## Usage
 

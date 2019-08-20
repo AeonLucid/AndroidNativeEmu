@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 class Tracer:
-
     def __init__(self, uc: Uc, modules: Modules):
         self._uc = uc
         self._modules = modules

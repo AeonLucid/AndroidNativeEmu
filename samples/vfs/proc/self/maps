@@ -1,0 +1,1152 @@
+12c00000-12c95000 rw-p 00000000 00:04 16626                              /dev/ashmem/dalvik-main space (deleted)
+12c95000-12d65000 rw-p 00095000 00:04 16626                              /dev/ashmem/dalvik-main space (deleted)
+12d65000-1ec00000 ---p 00165000 00:04 16626                              /dev/ashmem/dalvik-main space (deleted)
+32c00000-32c01000 rw-p 00000000 00:04 16627                              /dev/ashmem/dalvik-main space 1 (deleted)
+32c01000-3ec00000 ---p 00001000 00:04 16627                              /dev/ashmem/dalvik-main space 1 (deleted)
+70e78000-71370000 rw-p 00000000 fd:00 32729                              /data/dalvik-cache/arm/system@framework@boot.art
+71370000-71453000 rw-p 00000000 fd:00 32730                              /data/dalvik-cache/arm/system@framework@boot-core-libart.art
+71453000-7146e000 rw-p 00000000 fd:00 32733                              /data/dalvik-cache/arm/system@framework@boot-conscrypt.art
+7146e000-71491000 rw-p 00000000 fd:00 32738                              /data/dalvik-cache/arm/system@framework@boot-okhttp.art
+71491000-71492000 rw-p 00000000 fd:00 32739                              /data/dalvik-cache/arm/system@framework@boot-core-junit.art
+71492000-714b6000 rw-p 00000000 fd:00 32740                              /data/dalvik-cache/arm/system@framework@boot-bouncycastle.art
+714b6000-714d3000 rw-p 00000000 fd:00 32741                              /data/dalvik-cache/arm/system@framework@boot-ext.art
+714d3000-718e8000 rw-p 00000000 fd:00 32742                              /data/dalvik-cache/arm/system@framework@boot-framework.art
+718e8000-7190c000 rw-p 00000000 fd:00 32745                              /data/dalvik-cache/arm/system@framework@boot-telephony-common.art
+7190c000-71910000 rw-p 00000000 fd:00 32747                              /data/dalvik-cache/arm/system@framework@boot-voip-common.art
+71910000-71913000 rw-p 00000000 fd:00 32748                              /data/dalvik-cache/arm/system@framework@boot-ims-common.art
+71913000-7192b000 rw-p 00000000 fd:00 32750                              /data/dalvik-cache/arm/system@framework@boot-apache-xml.art
+7192b000-7193c000 rw-p 00000000 fd:00 32753                              /data/dalvik-cache/arm/system@framework@boot-org.apache.http.legacy.boot.art
+7193c000-71ea9000 r--p 00000000 103:09 1117                              /system/framework/arm/boot.oat
+71ea9000-72198000 r-xp 0056d000 103:09 1117                              /system/framework/arm/boot.oat
+72198000-72199000 r--p 0085c000 103:09 1117                              /system/framework/arm/boot.oat
+72199000-7219a000 rw-p 0085d000 103:09 1117                              /system/framework/arm/boot.oat
+7219a000-72617000 r--p 00000000 103:09 1101                              /system/framework/arm/boot-core-libart.oat
+72617000-72857000 r-xp 0047d000 103:09 1101                              /system/framework/arm/boot-core-libart.oat
+72857000-72858000 r--p 006bd000 103:09 1101                              /system/framework/arm/boot-core-libart.oat
+72858000-72859000 rw-p 006be000 103:09 1101                              /system/framework/arm/boot-core-libart.oat
+72859000-728c4000 r--p 00000000 103:09 1097                              /system/framework/arm/boot-conscrypt.oat
+728c4000-72901000 r-xp 0006b000 103:09 1097                              /system/framework/arm/boot-conscrypt.oat
+72901000-72902000 r--p 000a8000 103:09 1097                              /system/framework/arm/boot-conscrypt.oat
+72902000-72903000 rw-p 000a9000 103:09 1097                              /system/framework/arm/boot-conscrypt.oat
+72903000-72988000 r--p 00000000 103:09 1109                              /system/framework/arm/boot-okhttp.oat
+72988000-729d1000 r-xp 00085000 103:09 1109                              /system/framework/arm/boot-okhttp.oat
+729d1000-729d2000 r--p 000ce000 103:09 1109                              /system/framework/arm/boot-okhttp.oat
+729d2000-729d3000 rw-p 000cf000 103:09 1109                              /system/framework/arm/boot-okhttp.oat
+729d3000-729dc000 r--p 00000000 103:09 1099                              /system/framework/arm/boot-core-junit.oat
+729dc000-729de000 r-xp 00009000 103:09 1099                              /system/framework/arm/boot-core-junit.oat
+729de000-729df000 r--p 0000b000 103:09 1099                              /system/framework/arm/boot-core-junit.oat
+729df000-729e0000 rw-p 0000c000 103:09 1099                              /system/framework/arm/boot-core-junit.oat
+729e0000-72b4a000 r--p 00000000 103:09 1095                              /system/framework/arm/boot-bouncycastle.oat
+72b4a000-72b7e000 r-xp 0016a000 103:09 1095                              /system/framework/arm/boot-bouncycastle.oat
+72b7e000-72b7f000 r--p 0019e000 103:09 1095                              /system/framework/arm/boot-bouncycastle.oat
+72b7f000-72b80000 rw-p 0019f000 103:09 1095                              /system/framework/arm/boot-bouncycastle.oat
+72b80000-72c9b000 r--p 00000000 103:09 1103                              /system/framework/arm/boot-ext.oat
+72c9b000-72ccb000 r-xp 0011b000 103:09 1103                              /system/framework/arm/boot-ext.oat
+72ccb000-72ccc000 r--p 0014b000 103:09 1103                              /system/framework/arm/boot-ext.oat
+72ccc000-72ccd000 rw-p 0014c000 103:09 1103                              /system/framework/arm/boot-ext.oat
+72ccd000-7420c000 r--p 00000000 103:09 1105                              /system/framework/arm/boot-framework.oat
+7420c000-74de6000 r-xp 0153f000 103:09 1105                              /system/framework/arm/boot-framework.oat
+74de6000-74de7000 r--p 02119000 103:09 1105                              /system/framework/arm/boot-framework.oat
+74de7000-74de8000 rw-p 0211a000 103:09 1105                              /system/framework/arm/boot-framework.oat
+74de8000-7507e000 r--p 00000000 103:09 1113                              /system/framework/arm/boot-telephony-common.oat
+7507e000-751f7000 r-xp 00296000 103:09 1113                              /system/framework/arm/boot-telephony-common.oat
+751f7000-751f8000 r--p 0040f000 103:09 1113                              /system/framework/arm/boot-telephony-common.oat
+751f8000-751f9000 rw-p 00410000 103:09 1113                              /system/framework/arm/boot-telephony-common.oat
+751f9000-75228000 r--p 00000000 103:09 1115                              /system/framework/arm/boot-voip-common.oat
+75228000-75235000 r-xp 0002f000 103:09 1115                              /system/framework/arm/boot-voip-common.oat
+75235000-75236000 r--p 0003c000 103:09 1115                              /system/framework/arm/boot-voip-common.oat
+75236000-75237000 rw-p 0003d000 103:09 1115                              /system/framework/arm/boot-voip-common.oat
+75237000-7525f000 r--p 00000000 103:09 1107                              /system/framework/arm/boot-ims-common.oat
+7525f000-75273000 r-xp 00028000 103:09 1107                              /system/framework/arm/boot-ims-common.oat
+75273000-75274000 r--p 0003c000 103:09 1107                              /system/framework/arm/boot-ims-common.oat
+75274000-75275000 rw-p 0003d000 103:09 1107                              /system/framework/arm/boot-ims-common.oat
+75275000-753c5000 r--p 00000000 103:09 1093                              /system/framework/arm/boot-apache-xml.oat
+753c5000-753e1000 r-xp 00150000 103:09 1093                              /system/framework/arm/boot-apache-xml.oat
+753e1000-753e2000 r--p 0016c000 103:09 1093                              /system/framework/arm/boot-apache-xml.oat
+753e2000-753e3000 rw-p 0016d000 103:09 1093                              /system/framework/arm/boot-apache-xml.oat
+753e3000-7548a000 r--p 00000000 103:09 1111                              /system/framework/arm/boot-org.apache.http.legacy.boot.oat
+7548a000-754de000 r-xp 000a7000 103:09 1111                              /system/framework/arm/boot-org.apache.http.legacy.boot.oat
+754de000-754df000 r--p 000fb000 103:09 1111                              /system/framework/arm/boot-org.apache.http.legacy.boot.oat
+754df000-754e0000 rw-p 000fc000 103:09 1111                              /system/framework/arm/boot-org.apache.http.legacy.boot.oat
+754e0000-755fe000 rw-p 00000000 00:04 16625                              /dev/ashmem/dalvik-zygote space (deleted)
+755fe000-755ff000 rw-p 00000000 00:04 27920                              /dev/ashmem/dalvik-non moving space (deleted)
+755ff000-75607000 rw-p 00001000 00:04 27920                              /dev/ashmem/dalvik-non moving space (deleted)
+75607000-78ce1000 ---p 00009000 00:04 27920                              /dev/ashmem/dalvik-non moving space (deleted)
+78ce1000-794e0000 rw-p 036e3000 00:04 27920                              /dev/ashmem/dalvik-non moving space (deleted)
+ab006000-ab00b000 r-xp 00000000 103:09 330                               /system/bin/app_process32
+ab00b000-ab00c000 r--p 00004000 103:09 330                               /system/bin/app_process32
+ab00c000-ab00d000 rw-p 00000000 00:00 0 
+beaa0000-beac1000 rw-s 0004b000 00:0c 854                                /dev/kgsl-3d0
+beac4000-beac9000 rw-s 0004c000 00:0c 854                                /dev/kgsl-3d0
+bead0000-beaf1000 rw-s 0004a000 00:0c 854                                /dev/kgsl-3d0
+beb00000-bec01000 rw-s 00030000 00:0c 854                                /dev/kgsl-3d0
+bec14000-bec19000 rw-s 00051000 00:0c 854                                /dev/kgsl-3d0
+bec1c000-bec2d000 rw-s 0004e000 00:0c 854                                /dev/kgsl-3d0
+bec30000-becf1000 rw-s 00036000 00:0c 854                                /dev/kgsl-3d0
+becf8000-becfd000 rw-s 0004f000 00:0c 854                                /dev/kgsl-3d0
+bed00000-bee01000 rw-s 0002f000 00:0c 854                                /dev/kgsl-3d0
+bee08000-bee0d000 rw-s 0004d000 00:0c 854                                /dev/kgsl-3d0
+bee10000-bee51000 rw-s 00035000 00:0c 854                                /dev/kgsl-3d0
+bee54000-bee59000 rw-s 00049000 00:0c 854                                /dev/kgsl-3d0
+bee5c000-bee65000 rw-s 0002d000 00:0c 854                                /dev/kgsl-3d0
+bee68000-bee6d000 rw-s 00029000 00:0c 854                                /dev/kgsl-3d0
+bee70000-bee75000 rw-s 00027000 00:0c 854                                /dev/kgsl-3d0
+bee78000-bee7d000 rw-s 00026000 00:0c 854                                /dev/kgsl-3d0
+bee80000-bee85000 rw-s 00025000 00:0c 854                                /dev/kgsl-3d0
+bee88000-bee8d000 rw-s 00024000 00:0c 854                                /dev/kgsl-3d0
+bee90000-bee95000 rw-s 00023000 00:0c 854                                /dev/kgsl-3d0
+bee98000-bee9d000 rw-s 00022000 00:0c 854                                /dev/kgsl-3d0
+bee9d000-beea0000 rw-s 00048000 00:0c 854                                /dev/kgsl-3d0
+beea0000-beea5000 rw-s 00021000 00:0c 854                                /dev/kgsl-3d0
+beea5000-beea8000 rw-s 00047000 00:0c 854                                /dev/kgsl-3d0
+beea8000-beead000 rw-s 00020000 00:0c 854                                /dev/kgsl-3d0
+beead000-beeb0000 rw-s 00046000 00:0c 854                                /dev/kgsl-3d0
+beeb0000-beeb5000 rw-s 0001f000 00:0c 854                                /dev/kgsl-3d0
+beeb5000-beeb8000 rw-s 00045000 00:0c 854                                /dev/kgsl-3d0
+beeb8000-beebd000 rw-s 0001e000 00:0c 854                                /dev/kgsl-3d0
+beebd000-beec0000 rw-s 00044000 00:0c 854                                /dev/kgsl-3d0
+beec0000-beec5000 rw-s 0001d000 00:0c 854                                /dev/kgsl-3d0
+beec5000-beec8000 rw-s 00043000 00:0c 854                                /dev/kgsl-3d0
+beec8000-beecd000 rw-s 0001c000 00:0c 854                                /dev/kgsl-3d0
+beecd000-beed0000 rw-s 00042000 00:0c 854                                /dev/kgsl-3d0
+beed0000-beed5000 rw-s 0001b000 00:0c 854                                /dev/kgsl-3d0
+beed5000-beed8000 rw-s 00041000 00:0c 854                                /dev/kgsl-3d0
+beed8000-beedd000 rw-s 0001a000 00:0c 854                                /dev/kgsl-3d0
+beedd000-beee0000 rw-s 00040000 00:0c 854                                /dev/kgsl-3d0
+beee0000-beee5000 rw-s 00019000 00:0c 854                                /dev/kgsl-3d0
+beee5000-beee8000 rw-s 0003f000 00:0c 854                                /dev/kgsl-3d0
+beee8000-beeed000 rw-s 00018000 00:0c 854                                /dev/kgsl-3d0
+beeed000-beef0000 rw-s 0003e000 00:0c 854                                /dev/kgsl-3d0
+beef0000-bef01000 rw-s 00015000 00:0c 854                                /dev/kgsl-3d0
+bef01000-bef04000 rw-s 0003d000 00:0c 854                                /dev/kgsl-3d0
+bef04000-bef09000 rw-s 00014000 00:0c 854                                /dev/kgsl-3d0
+bef09000-bef0c000 rw-s 0003c000 00:0c 854                                /dev/kgsl-3d0
+bef0c000-bef1d000 rw-s 00013000 00:0c 854                                /dev/kgsl-3d0
+bef1d000-bef20000 rw-s 0003b000 00:0c 854                                /dev/kgsl-3d0
+bef20000-bef31000 rw-s 00012000 00:0c 854                                /dev/kgsl-3d0
+bef31000-bef34000 rw-s 0003a000 00:0c 854                                /dev/kgsl-3d0
+bef34000-bef45000 rw-s 00011000 00:0c 854                                /dev/kgsl-3d0
+bef45000-bef48000 rw-s 00039000 00:0c 854                                /dev/kgsl-3d0
+bef48000-bef59000 rw-s 00010000 00:0c 854                                /dev/kgsl-3d0
+bef59000-bef5c000 rw-s 00038000 00:0c 854                                /dev/kgsl-3d0
+bef5c000-bef6d000 rw-s 0000f000 00:0c 854                                /dev/kgsl-3d0
+bef6e000-bef70000 rw-s 00037000 00:0c 854                                /dev/kgsl-3d0
+bef70000-bef75000 rw-s 0000e000 00:0c 854                                /dev/kgsl-3d0
+bef75000-bef78000 rw-s 00033000 00:0c 854                                /dev/kgsl-3d0
+bef78000-bef7d000 rw-s 0000d000 00:0c 854                                /dev/kgsl-3d0
+bef7d000-bef80000 rw-s 00032000 00:0c 854                                /dev/kgsl-3d0
+bef80000-befa1000 rw-s 0000b000 00:0c 854                                /dev/kgsl-3d0
+befa1000-befa4000 rw-s 00031000 00:0c 854                                /dev/kgsl-3d0
+befa4000-befa9000 rw-s 0000c000 00:0c 854                                /dev/kgsl-3d0
+befaa000-befac000 rw-s 0002e000 00:0c 854                                /dev/kgsl-3d0
+befac000-befae000 rw-s 0002c000 00:0c 854                                /dev/kgsl-3d0
+befae000-befb0000 rw-s 0002b000 00:0c 854                                /dev/kgsl-3d0
+befb0000-befd1000 rw-s 0000a000 00:0c 854                                /dev/kgsl-3d0
+befd2000-befd4000 rw-s 0002a000 00:0c 854                                /dev/kgsl-3d0
+befd4000-befd6000 rw-s 00028000 00:0c 854                                /dev/kgsl-3d0
+befd6000-befd8000 rw-s 00017000 00:0c 854                                /dev/kgsl-3d0
+befd8000-befdd000 rw-s 00009000 00:0c 854                                /dev/kgsl-3d0
+befde000-befe0000 rw-s 00016000 00:0c 854                                /dev/kgsl-3d0
+befe0000-befe5000 rw-s 00008000 00:0c 854                                /dev/kgsl-3d0
+befe6000-befe8000 rw-s 00007000 00:0c 854                                /dev/kgsl-3d0
+befe8000-befed000 rw-s 00006000 00:0c 854                                /dev/kgsl-3d0
+befee000-beff0000 rw-s 00005000 00:0c 854                                /dev/kgsl-3d0
+beff0000-beff5000 rw-s 00002000 00:0c 854                                /dev/kgsl-3d0
+beff6000-beff8000 rw-s 00004000 00:0c 854                                /dev/kgsl-3d0
+beff8000-beffd000 rw-s 00001000 00:0c 854                                /dev/kgsl-3d0
+beffe000-bf000000 rw-s 00003000 00:0c 854                                /dev/kgsl-3d0
+d0620000-d0e90000 rw-s 00000000 00:08 9499                               anon_inode:dmabuf
+d0e90000-d1700000 rw-s 00000000 00:08 9499                               anon_inode:dmabuf
+d1700000-d1780000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+d1880000-d1a00000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+d1a02000-d1a03000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+d1a03000-d1a04000 ---p 00000000 00:00 0 
+d1a04000-d1b01000 rw-p 00000000 00:00 0                                  [stack:18616]
+d1b01000-d1b02000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+d1b02000-d1b03000 ---p 00000000 00:00 0 
+d1b03000-d1c00000 rw-p 00000000 00:00 0                                  [stack:18615]
+d1c00000-d1e80000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+d1ed5000-d2320000 r--p 00000000 fd:00 327073                             /data/app/com.yf.douyintool-1/oat/arm/base.odex
+d2320000-d236d000 r-xp 0044b000 fd:00 327073                             /data/app/com.yf.douyintool-1/oat/arm/base.odex
+d236d000-d23b9000 rw-p 00000000 00:00 0                                  [anon:.bss]
+d23b9000-d23ba000 r--p 00498000 fd:00 327073                             /data/app/com.yf.douyintool-1/oat/arm/base.odex
+d23ba000-d23bb000 rw-p 00499000 fd:00 327073                             /data/app/com.yf.douyintool-1/oat/arm/base.odex
+d23bb000-d43bb000 rw-p 00000000 00:04 5299837                            /dev/ashmem/dalvik-data-code-cache (deleted)
+d43bb000-d63bb000 r-xp 00000000 00:04 5299838                            /dev/ashmem/dalvik-jit-code-cache (deleted)
+d63bb000-d6bbb000 rw-p 00000000 00:04 27919                              /dev/ashmem/dalvik-allocspace main rosalloc space mark-bitmap 3 (deleted)
+d6bbb000-d73bb000 rw-p 00000000 00:04 27918                              /dev/ashmem/dalvik-allocspace main rosalloc space live-bitmap 3 (deleted)
+d73bb000-de2bb000 ---p 00000000 00:00 0 
+de2bb000-de2bf000 r-xp 00000000 103:09 1528                              /system/lib/libwebviewchromium_loader.so
+de2bf000-de2c0000 r--p 00003000 103:09 1528                              /system/lib/libwebviewchromium_loader.so
+de2c0000-de2c1000 rw-p 00004000 103:09 1528                              /system/lib/libwebviewchromium_loader.so
+de2c7000-de2c8000 r--s 00000000 103:09 2303                              /system/usr/hyphen-data/hyph-und-ethi.hyb
+de2c8000-de2c9000 r--s 00000000 103:09 2301                              /system/usr/hyphen-data/hyph-tk.hyb
+de2c9000-de2ed000 r--s 00000000 103:09 2287                              /system/usr/hyphen-data/hyph-nn.hyb
+de2ed000-de311000 r--s 00000000 103:09 2285                              /system/usr/hyphen-data/hyph-nb.hyb
+de311000-de35f000 r--s 00000000 103:09 2273                              /system/usr/hyphen-data/hyph-hu.hyb
+de35f000-de368000 r--s 00000000 103:09 2265                              /system/usr/hyphen-data/hyph-ga.hyb
+de368000-de36e000 r--s 00000000 103:09 2259                              /system/usr/hyphen-data/hyph-et.hyb
+de36e000-de376000 r--s 00000000 103:09 2255                              /system/usr/hyphen-data/hyph-en-us.hyb
+de376000-de382000 r--s 00000000 103:09 2253                              /system/usr/hyphen-data/hyph-en-gb.hyb
+de382000-de39d000 r--s 00000000 103:09 2251                              /system/usr/hyphen-data/hyph-de-ch-1901.hyb
+de39d000-de3b7000 r--s 00000000 103:09 2249                              /system/usr/hyphen-data/hyph-de-1996.hyb
+de3b7000-de3d2000 r--s 00000000 103:09 2247                              /system/usr/hyphen-data/hyph-de-1901.hyb
+de3d2000-de3db000 r--s 00000000 103:09 2243                              /system/usr/hyphen-data/hyph-cy.hyb
+de3db000-de3e2000 r-xp 00000000 103:09 1454                              /system/lib/libqservice.so
+de3e2000-de3e4000 r--p 00006000 103:09 1454                              /system/lib/libqservice.so
+de3e4000-de3e5000 rw-p 00008000 103:09 1454                              /system/lib/libqservice.so
+de3e5000-de3ee000 r-xp 00000000 103:09 1452                              /system/lib/libqdutils.so
+de3ee000-de3ef000 ---p 00000000 00:00 0 
+de3ef000-de3f0000 r--p 00009000 103:09 1452                              /system/lib/libqdutils.so
+de3f0000-de3f1000 rw-p 0000a000 103:09 1452                              /system/lib/libqdutils.so
+de3f1000-de62b000 r-xp 00000000 103:07 111                               /vendor/lib/egl/libGLESv2_adreno.so
+de62b000-de63e000 r--p 00239000 103:07 111                               /vendor/lib/egl/libGLESv2_adreno.so
+de63e000-de64c000 rw-p 0024c000 103:07 111                               /vendor/lib/egl/libGLESv2_adreno.so
+de64c000-de64d000 rw-p 00000000 00:00 0                                  [anon:.bss]
+de64d000-dee2d000 r-xp 00000000 103:07 214                               /vendor/lib/libllvm-glnext.so
+dee2d000-dee2e000 ---p 00000000 00:00 0 
+dee2e000-dee50000 r--p 007e0000 103:07 214                               /vendor/lib/libllvm-glnext.so
+dee50000-dee57000 rw-p 00802000 103:07 214                               /vendor/lib/libllvm-glnext.so
+dee57000-dee68000 rw-p 00000000 00:00 0                                  [anon:.bss]
+dee68000-dee69000 r--s 00000000 103:09 2299                              /system/usr/hyphen-data/hyph-te.hyb
+dee69000-dee6b000 r--s 00000000 103:09 2295                              /system/usr/hyphen-data/hyph-sl.hyb
+dee6b000-dee6d000 r--s 00000000 103:09 2281                              /system/usr/hyphen-data/hyph-mn-cyrl.hyb
+dee6d000-dee70000 r-xp 00000000 103:09 1451                              /system/lib/libqdMetaData.so
+dee70000-dee71000 r--p 00002000 103:09 1451                              /system/lib/libqdMetaData.so
+dee71000-dee72000 rw-p 00003000 103:09 1451                              /system/lib/libqdMetaData.so
+dee72000-dee78000 r-xp 00000000 103:09 1417                              /system/lib/libmemalloc.so
+dee78000-dee79000 r--p 00005000 103:09 1417                              /system/lib/libmemalloc.so
+dee79000-dee7a000 rw-p 00006000 103:09 1417                              /system/lib/libmemalloc.so
+dee7a000-dee80000 r-xp 00000000 103:09 1284                              /system/lib/hw/gralloc.msm8992.so
+dee80000-dee81000 ---p 00000000 00:00 0 
+dee81000-dee82000 r--p 00006000 103:09 1284                              /system/lib/hw/gralloc.msm8992.so
+dee82000-dee83000 rw-p 00007000 103:09 1284                              /system/lib/hw/gralloc.msm8992.so
+dee83000-dee84000 r--s 00000000 103:09 2297                              /system/usr/hyphen-data/hyph-ta.hyb
+dee84000-dee88000 r--s 00000000 103:09 2257                              /system/usr/hyphen-data/hyph-es.hyb
+dee88000-dee93000 r-xp 00000000 103:07 108                               /vendor/lib/egl/eglSubDriverAndroid.so
+dee93000-dee94000 r--p 0000a000 103:07 108                               /vendor/lib/egl/eglSubDriverAndroid.so
+dee94000-dee95000 rw-p 0000b000 103:07 108                               /vendor/lib/egl/eglSubDriverAndroid.so
+dee95000-deeb9000 r-xp 00000000 103:07 110                               /vendor/lib/egl/libGLESv1_CM_adreno.so
+deeb9000-deeba000 r--p 00023000 103:07 110                               /vendor/lib/egl/libGLESv1_CM_adreno.so
+deeba000-deebb000 rw-p 00024000 103:07 110                               /vendor/lib/egl/libGLESv1_CM_adreno.so
+deebb000-deec1000 r-xp 00000000 103:07 154                               /vendor/lib/libadreno_utils.so
+deec1000-deec2000 r--p 00005000 103:07 154                               /vendor/lib/libadreno_utils.so
+deec2000-deec3000 rw-p 00006000 103:07 154                               /vendor/lib/libadreno_utils.so
+deec3000-deec5000 rw-p 00000000 00:00 0                                  [anon:.bss]
+deec5000-def02000 r-xp 00000000 103:07 205                               /vendor/lib/libgsl.so
+def02000-def03000 ---p 00000000 00:00 0 
+def03000-def04000 r--p 0003d000 103:07 205                               /vendor/lib/libgsl.so
+def04000-def05000 rw-p 0003e000 103:07 205                               /vendor/lib/libgsl.so
+def05000-def16000 r-xp 00000000 103:07 109                               /vendor/lib/egl/libEGL_adreno.so
+def16000-def17000 r--p 00010000 103:07 109                               /vendor/lib/egl/libEGL_adreno.so
+def17000-def18000 rw-p 00011000 103:07 109                               /vendor/lib/egl/libEGL_adreno.so
+def18000-def19000 rw-p 00000000 00:00 0                                  [anon:.bss]
+def19000-def22000 r-xp 00000000 103:09 1355                              /system/lib/libcompiler_rt.so
+def22000-def23000 r--p 00008000 103:09 1355                              /system/lib/libcompiler_rt.so
+def23000-def24000 rw-p 00009000 103:09 1355                              /system/lib/libcompiler_rt.so
+def24000-def34000 rw-p 00000000 00:04 19667                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def34000-def3b000 rw-p 00000000 00:04 19666                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def3b000-def3f000 rw-p 00000000 00:04 19665                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def3f000-def46000 rw-p 00000000 00:04 19664                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def46000-def4d000 rw-p 00000000 00:04 19663                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def4d000-def52000 rw-p 00000000 00:04 19662                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def52000-def57000 rw-p 00000000 00:04 19661                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def57000-def5c000 rw-p 00000000 00:04 19660                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def5c000-def61000 rw-p 00000000 00:04 19659                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def61000-def66000 rw-p 00000000 00:04 19658                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def66000-def6b000 rw-p 00000000 00:04 19657                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def6b000-def70000 rw-p 00000000 00:04 19656                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def70000-def75000 rw-p 00000000 00:04 19655                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def75000-def7a000 rw-p 00000000 00:04 19654                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def7a000-def7f000 rw-p 00000000 00:04 19653                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def7f000-def84000 rw-p 00000000 00:04 19652                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def84000-def89000 rw-p 00000000 00:04 19651                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def89000-def8e000 rw-p 00000000 00:04 19650                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def8e000-def93000 rw-p 00000000 00:04 19649                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def93000-def98000 rw-p 00000000 00:04 19648                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def98000-def9d000 rw-p 00000000 00:04 19647                              /dev/ashmem/dalvik-large object space allocation (deleted)
+def9d000-defa2000 rw-p 00000000 00:04 19646                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defa2000-defa7000 rw-p 00000000 00:04 19645                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defa7000-defac000 rw-p 00000000 00:04 19644                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defac000-defb1000 rw-p 00000000 00:04 19643                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defb1000-defb6000 rw-p 00000000 00:04 19642                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defb6000-defbb000 rw-p 00000000 00:04 19641                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defbb000-defc0000 rw-p 00000000 00:04 19640                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defc0000-defc5000 rw-p 00000000 00:04 19639                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defc5000-defca000 rw-p 00000000 00:04 19638                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defca000-defcf000 rw-p 00000000 00:04 19637                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defcf000-defd4000 rw-p 00000000 00:04 19636                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defd4000-defe4000 rw-p 00000000 00:04 19635                              /dev/ashmem/dalvik-large object space allocation (deleted)
+defe4000-deff4000 rw-p 00000000 00:04 19634                              /dev/ashmem/dalvik-large object space allocation (deleted)
+deff4000-df004000 rw-p 00000000 00:04 19633                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df004000-df00d000 rw-p 00000000 00:04 19632                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df00d000-df016000 rw-p 00000000 00:04 19631                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df016000-df01f000 rw-p 00000000 00:04 19630                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df01f000-df023000 rw-p 00000000 00:04 19629                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df023000-df027000 rw-p 00000000 00:04 19628                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df027000-df02b000 rw-p 00000000 00:04 19627                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df02b000-df040000 rw-p 00000000 00:04 19623                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df040000-df055000 rw-p 00000000 00:04 19622                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df055000-df06a000 rw-p 00000000 00:04 19621                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df06a000-df07f000 rw-p 00000000 00:04 19620                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df07f000-df088000 rw-p 00000000 00:04 19619                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df088000-df091000 rw-p 00000000 00:04 19618                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df091000-df098000 rw-p 00000000 00:04 19616                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df098000-df09f000 rw-p 00000000 00:04 19615                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df09f000-df0a6000 rw-p 00000000 00:04 19614                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df0a6000-df0ad000 rw-p 00000000 00:04 15305                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df0ad000-df0b4000 rw-p 00000000 00:04 15304                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df0b4000-df0e7000 rw-p 00000000 00:04 16822                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df0e7000-df11a000 rw-p 00000000 00:04 16821                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df11a000-df14d000 rw-p 00000000 00:04 16820                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df14d000-df180000 rw-p 00000000 00:04 16819                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df180000-df200000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+df200000-df201000 r--s 00000000 103:09 2293                              /system/usr/hyphen-data/hyph-pt.hyb
+df201000-df208000 rw-p 00000000 00:04 15303                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df208000-df20f000 rw-p 00000000 00:04 15302                              /dev/ashmem/dalvik-large object space allocation (deleted)
+df20f000-e0345000 r--s 007f5000 103:09 1167                              /system/framework/framework-res.apk
+e0345000-e0349000 rw-p 00000000 00:04 19533                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0349000-e034a000 r--s 00000000 103:09 2291                              /system/usr/hyphen-data/hyph-pa.hyb
+e034a000-e034e000 rw-p 00000000 00:04 19626                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e034e000-e0355000 rw-p 00000000 00:04 15301                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0355000-e035c000 rw-p 00000000 00:04 15300                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e035c000-e0363000 rw-p 00000000 00:04 19613                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0363000-e036a000 rw-p 00000000 00:04 19612                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e036a000-e0371000 rw-p 00000000 00:04 16827                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0371000-e0377000 rw-p 00000000 00:04 19522                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0377000-e0378000 r--s 00000000 103:09 2289                              /system/usr/hyphen-data/hyph-or.hyb
+e0378000-e037c000 rw-p 00000000 00:04 19625                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e037c000-e0383000 rw-p 00000000 00:04 16826                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0383000-e038a000 rw-p 00000000 00:04 16825                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e038a000-e0391000 rw-p 00000000 00:04 16824                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0391000-e0398000 rw-p 00000000 00:04 16823                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e0398000-e03cb000 rw-p 00000000 00:04 16818                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e03cb000-e03d2000 rw-p 00000000 00:04 16817                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e03d2000-e03e1000 rw-p 00000000 00:04 16812                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e03e1000-e03f0000 rw-p 00000000 00:04 16811                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e03f0000-e0430000 r--s 01a1b000 103:09 1167                              /system/framework/framework-res.apk
+e0430000-e0450000 r-xp 00000000 103:09 1395                              /system/lib/libkeymaster1.so
+e0450000-e0452000 r--p 0001f000 103:09 1395                              /system/lib/libkeymaster1.so
+e0452000-e0453000 rw-p 00021000 103:09 1395                              /system/lib/libkeymaster1.so
+e0453000-e046c000 r-xp 00000000 103:09 1392                              /system/lib/libjavacrypto.so
+e046c000-e046d000 ---p 00000000 00:00 0 
+e046d000-e046e000 r--p 00019000 103:09 1392                              /system/lib/libjavacrypto.so
+e046e000-e046f000 rw-p 0001a000 103:09 1392                              /system/lib/libjavacrypto.so
+e046f000-e0487000 r-xp 00000000 103:09 1471                              /system/lib/libsoftkeymasterdevice.so
+e0487000-e0488000 ---p 00000000 00:00 0 
+e0488000-e0489000 r--p 00018000 103:09 1471                              /system/lib/libsoftkeymasterdevice.so
+e0489000-e048a000 rw-p 00019000 103:09 1471                              /system/lib/libsoftkeymasterdevice.so
+e048a000-e0495000 r-xp 00000000 103:09 1396                              /system/lib/libkeymaster_messages.so
+e0495000-e0496000 ---p 00000000 00:00 0 
+e0496000-e0497000 r--p 0000b000 103:09 1396                              /system/lib/libkeymaster_messages.so
+e0497000-e0498000 rw-p 0000c000 103:09 1396                              /system/lib/libkeymaster_messages.so
+e0498000-e04ad000 r-xp 00000000 103:09 1398                              /system/lib/libkeystore_binder.so
+e04ad000-e04af000 r--p 00014000 103:09 1398                              /system/lib/libkeystore_binder.so
+e04af000-e04b0000 rw-p 00016000 103:09 1398                              /system/lib/libkeystore_binder.so
+e04b0000-e1680000 r--s 00000000 103:09 971                               /system/fonts/NotoSansCJK-Regular.ttc
+e1680000-e1700000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+e1700000-e1704000 rw-p 00000000 00:04 19617                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1704000-e1713000 rw-p 00000000 00:04 16810                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1713000-e1733000 r--s 00000000 00:0c 4999                               /dev/__properties__/u:object_r:log_prop:s0
+e1733000-e1749000 r-xp 00000000 103:09 1425                              /system/lib/libmtp.so
+e1749000-e174b000 r--p 00015000 103:09 1425                              /system/lib/libmtp.so
+e174b000-e174c000 rw-p 00017000 103:09 1425                              /system/lib/libmtp.so
+e174c000-e1769000 r-xp 00000000 103:09 1367                              /system/lib/libexif.so
+e1769000-e176a000 ---p 00000000 00:00 0 
+e176a000-e1776000 r--p 0001d000 103:09 1367                              /system/lib/libexif.so
+e1776000-e1777000 rw-p 00029000 103:09 1367                              /system/lib/libexif.so
+e1777000-e17c5000 r-xp 00000000 103:09 1409                              /system/lib/libmedia_jni.so
+e17c5000-e17c6000 ---p 00000000 00:00 0 
+e17c6000-e17ca000 r--p 0004e000 103:09 1409                              /system/lib/libmedia_jni.so
+e17ca000-e17cb000 rw-p 00052000 103:09 1409                              /system/lib/libmedia_jni.so
+e17cb000-e17d7000 rw-p 00000000 00:04 16786                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e17d7000-e17dd000 rw-p 00000000 00:04 16785                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e17dd000-e17e1000 rw-p 00000000 00:04 16784                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e17e1000-e1841000 rw-p 00000000 00:04 16783                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1841000-e184a000 rw-p 00000000 00:04 15272                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e184a000-e184b000 r--s 00000000 103:09 2283                              /system/usr/hyphen-data/hyph-mr.hyb
+e184b000-e184c000 r--s 00000000 103:09 2279                              /system/usr/hyphen-data/hyph-ml.hyb
+e184c000-e1853000 rw-p 00000000 00:04 16816                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1853000-e1857000 rw-p 00000000 00:04 15270                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1857000-e185e000 rw-p 00000000 00:04 15269                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e185e000-e185f000 r--s 00000000 103:09 2277                              /system/usr/hyphen-data/hyph-kn.hyb
+e185f000-e1863000 r-xp 00000000 103:09 1397                              /system/lib/libkeystore-engine.so
+e1863000-e1864000 r--p 00003000 103:09 1397                              /system/lib/libkeystore-engine.so
+e1864000-e1865000 rw-p 00004000 103:09 1397                              /system/lib/libkeystore-engine.so
+e1865000-e186c000 rw-p 00000000 00:04 15267                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e186c000-e1870000 rw-p 00000000 00:04 15266                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1870000-e1871000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_vector]
+e1871000-e1872000 r--s 00000000 103:09 2275                              /system/usr/hyphen-data/hyph-hy.hyb
+e1872000-e1873000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+e1873000-e1874000 r--s 00000000 103:09 2271                              /system/usr/hyphen-data/hyph-hr.hyb
+e1874000-e187d000 rw-p 00000000 00:04 16780                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e187d000-e187f000 r--s 00000000 103:09 2263                              /system/usr/hyphen-data/hyph-fr.hyb
+e187f000-e1886000 rw-p 00000000 00:04 16815                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1886000-e1900000 r--s 00000000 103:09 2360                              /system/usr/share/zoneinfo/tzdata
+e1900000-e1980000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+e1980000-e1982000 r--s 00000000 103:09 2245                              /system/usr/hyphen-data/hyph-da.hyb
+e1982000-e1987000 rw-p 00000000 00:04 15264                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e1987000-e1995000 r-xp 00000000 103:09 1481                              /system/lib/libstagefright_amrnb_common.so
+e1995000-e1996000 ---p 00000000 00:00 0 
+e1996000-e1997000 r--p 0000e000 103:09 1481                              /system/lib/libstagefright_amrnb_common.so
+e1997000-e1998000 rw-p 0000f000 103:09 1481                              /system/lib/libstagefright_amrnb_common.so
+e1998000-e199c000 rw-p 00000000 00:04 19624                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e199c000-e19a0000 rw-p 00000000 00:04 16814                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e19a0000-e19a7000 rw-p 00000000 00:04 16809                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e19a7000-e19ad000 rw-p 00000000 00:04 16773                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e19ad000-e19b3000 rw-p 00000000 00:04 16772                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e19b3000-e19c1000 rw-p 00000000 00:04 16771                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e19c1000-e19cb000 rw-p 00000000 00:04 16770                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e19cb000-e19d0000 rw-p 00000000 00:04 16769                              /dev/ashmem/dalvik-large object space allocation (deleted)
+e19d0000-e19da000 r--s 00000000 103:09 947                               /system/fonts/CarroisGothicSC-Regular.ttf
+e19da000-e19f7000 r--s 00000000 103:09 950                               /system/fonts/DancingScript-Bold.ttf
+e19f7000-e1a14000 r--s 00000000 103:09 951                               /system/fonts/DancingScript-Regular.ttf
+e1a14000-e1a23000 r--s 00000000 103:09 948                               /system/fonts/ComingSoon.ttf
+e1a23000-e1a34000 r--s 00000000 103:09 949                               /system/fonts/CutiveMono.ttf
+e1a34000-e1a4f000 r--s 00000000 103:09 954                               /system/fonts/DroidSansMono.ttf
+e1a4f000-e1a90000 r--s 00000000 103:09 1065                              /system/fonts/NotoSerif-BoldItalic.ttf
+e1a90000-e1ace000 r--s 00000000 103:09 1066                              /system/fonts/NotoSerif-Italic.ttf
+e1ace000-e1b0b000 r--s 00000000 103:09 1064                              /system/fonts/NotoSerif-Bold.ttf
+e1b0b000-e1b48000 r--s 00000000 103:09 1067                              /system/fonts/NotoSerif-Regular.ttf
+e1b48000-e1b99000 r--s 00000000 103:09 1081                              /system/fonts/RobotoCondensed-BoldItalic.ttf
+e1b99000-e1be3000 r--s 00000000 103:09 1080                              /system/fonts/RobotoCondensed-Bold.ttf
+e1be3000-e1c34000 r--s 00000000 103:09 1082                              /system/fonts/RobotoCondensed-Italic.ttf
+e1c34000-e1c7f000 r--s 00000000 103:09 1085                              /system/fonts/RobotoCondensed-Regular.ttf
+e1c7f000-e1cd1000 r--s 00000000 103:09 1084                              /system/fonts/RobotoCondensed-LightItalic.ttf
+e1cd1000-e1d1c000 r--s 00000000 103:09 1083                              /system/fonts/RobotoCondensed-Light.ttf
+e1d1c000-e1d38000 r--s 00000000 103:09 1020                              /system/fonts/NotoSansMongolian-Regular.ttf
+e1d38000-e1d3b000 r--s 00000000 103:09 1042                              /system/fonts/NotoSansTaiLe-Regular.ttf
+e1d3b000-e1d3f000 r--s 00000000 103:09 1039                              /system/fonts/NotoSansSymbols-Regular-Subsetted2.ttf
+e1d3f000-e2094000 r--s 00000000 103:09 955                               /system/fonts/NotoColorEmoji.ttf
+e2094000-e20db000 r--s 00000000 103:09 1038                              /system/fonts/NotoSansSymbols-Regular-Subsetted.ttf
+e20db000-e20fa000 r--s 00000000 103:09 1063                              /system/fonts/NotoSansYi-Regular.ttf
+e20fa000-e210a000 r--s 00000000 103:09 1062                              /system/fonts/NotoSansVai-Regular.ttf
+e210a000-e210e000 r--s 00000000 103:09 1061                              /system/fonts/NotoSansTifinagh-Regular.ttf
+e210e000-e216a000 r--s 00000000 103:09 1059                              /system/fonts/NotoSansTibetan-Bold.ttf
+e216a000-e21cd000 r--s 00000000 103:09 1060                              /system/fonts/NotoSansTibetan-Regular.ttf
+e21cd000-e21d1000 r--s 00000000 103:09 1044                              /system/fonts/NotoSansTaiViet-Regular.ttf
+e21d1000-e21dd000 r--s 00000000 103:09 1043                              /system/fonts/NotoSansTaiTham-Regular.ttf
+e21dd000-e21e9000 r--s 00000000 103:09 1040                              /system/fonts/NotoSansSyriacEstrangela-Regular.ttf
+e21e9000-e21ed000 r--s 00000000 103:09 1037                              /system/fonts/NotoSansSylotiNagri-Regular.ttf
+e21ed000-e21f0000 r--s 00000000 103:09 1036                              /system/fonts/NotoSansSundanese-Regular.ttf
+e21f0000-e21f5000 r--s 00000000 103:09 1033                              /system/fonts/NotoSansSaurashtra-Regular.ttf
+e21f5000-e21fa000 r--s 00000000 103:09 1025                              /system/fonts/NotoSansNKo-Regular.ttf
+e21fa000-e21fe000 r--s 00000000 103:09 1026                              /system/fonts/NotoSansNewTaiLue-Regular.ttf
+e21fe000-e2202000 r--s 00000000 103:09 1019                              /system/fonts/NotoSansMeeteiMayek-Regular.ttf
+e2202000-e2206000 r--s 00000000 103:09 1018                              /system/fonts/NotoSansMandaic-Regular.ttf
+e2206000-e2209000 r--s 00000000 103:09 1012                              /system/fonts/NotoSansLimbu-Regular.ttf
+e2209000-e2222000 r--s 00000000 103:09 1011                              /system/fonts/NotoSansLepcha-Regular.ttf
+e2222000-e222c000 r--s 00000000 103:09 997                               /system/fonts/NotoSansJavanese-Regular.ttf
+e222c000-e2230000 r--s 00000000 103:09 985                               /system/fonts/NotoSansGlagolitic-Regular.ttf
+e2230000-e2236000 r--s 00000000 103:09 976                               /system/fonts/NotoSansCoptic-Regular.ttf
+e2236000-e223f000 r--s 00000000 103:09 975                               /system/fonts/NotoSansCherokee-Regular.ttf
+e223f000-e224b000 r--s 00000000 103:09 972                               /system/fonts/NotoSansCanadianAboriginal-Regular.ttf
+e224b000-e226c000 r--s 00000000 103:09 963                               /system/fonts/NotoSansBamum-Regular.ttf
+e226c000-e2274000 r--s 00000000 103:09 962                               /system/fonts/NotoSansBalinese-Regular.ttf
+e2274000-e228e000 r--s 00000000 103:09 1023                              /system/fonts/NotoSansMyanmarUI-Bold.ttf
+e228e000-e22a8000 r--s 00000000 103:09 1024                              /system/fonts/NotoSansMyanmarUI-Regular.ttf
+e22a8000-e22c3000 r--s 00000000 103:09 1021                              /system/fonts/NotoSansMyanmar-Bold.ttf
+e22c3000-e22de000 r--s 00000000 103:09 1022                              /system/fonts/NotoSansMyanmar-Regular.ttf
+e22de000-e22e6000 r--s 00000000 103:09 1009                              /system/fonts/NotoSansLaoUI-Bold.ttf
+e22e6000-e22ee000 r--s 00000000 103:09 1010                              /system/fonts/NotoSansLaoUI-Regular.ttf
+e22ee000-e22f6000 r--s 00000000 103:09 1007                              /system/fonts/NotoSansLao-Bold.ttf
+e22f6000-e22fe000 r--s 00000000 103:09 1008                              /system/fonts/NotoSansLao-Regular.ttf
+e22fe000-e2307000 r--s 00000000 103:09 1005                              /system/fonts/NotoSansKhmerUI-Bold.ttf
+e2307000-e2311000 r--s 00000000 103:09 1006                              /system/fonts/NotoSansKhmerUI-Regular.ttf
+e2311000-e231a000 r--s 00000000 103:09 1003                              /system/fonts/NotoSansKhmer-Bold.ttf
+e231a000-e2323000 r--s 00000000 103:09 1004                              /system/fonts/NotoSansKhmer-Regular.ttf
+e2323000-e2349000 r--s 00000000 103:09 1034                              /system/fonts/NotoSansSinhala-Bold.ttf
+e2349000-e2371000 r--s 00000000 103:09 1035                              /system/fonts/NotoSansSinhala-Regular.ttf
+e2371000-e2385000 r--s 00000000 103:09 1030                              /system/fonts/NotoSansOriyaUI-Bold.ttf
+e2385000-e2399000 r--s 00000000 103:09 1031                              /system/fonts/NotoSansOriyaUI-Regular.ttf
+e2399000-e23ae000 r--s 00000000 103:09 1028                              /system/fonts/NotoSansOriya-Bold.ttf
+e23ae000-e23c3000 r--s 00000000 103:09 1029                              /system/fonts/NotoSansOriya-Regular.ttf
+e23c3000-e23d7000 r--s 00000000 103:09 1000                              /system/fonts/NotoSansKannadaUI-Bold.ttf
+e23d7000-e23eb000 r--s 00000000 103:09 1001                              /system/fonts/NotoSansKannadaUI-Regular.ttf
+e23eb000-e23ff000 r--s 00000000 103:09 998                               /system/fonts/NotoSansKannada-Bold.ttf
+e23ff000-e2414000 r--s 00000000 103:09 999                               /system/fonts/NotoSansKannada-Regular.ttf
+e2414000-e2430000 r--s 00000000 103:09 1051                              /system/fonts/NotoSansTeluguUI-Bold.ttf
+e2430000-e244c000 r--s 00000000 103:09 1052                              /system/fonts/NotoSansTeluguUI-Regular.ttf
+e244c000-e2467000 r--s 00000000 103:09 1049                              /system/fonts/NotoSansTelugu-Bold.ttf
+e2467000-e2483000 r--s 00000000 103:09 1050                              /system/fonts/NotoSansTelugu-Regular.ttf
+e2483000-e249d000 r--s 00000000 103:09 967                               /system/fonts/NotoSansBengaliUI-Bold.ttf
+e249d000-e24b8000 r--s 00000000 103:09 968                               /system/fonts/NotoSansBengaliUI-Regular.ttf
+e24b8000-e24d1000 r--s 00000000 103:09 965                               /system/fonts/NotoSansBengali-Bold.ttf
+e24d1000-e24ea000 r--s 00000000 103:09 966                               /system/fonts/NotoSansBengali-Regular.ttf
+e24ea000-e24f8000 r--s 00000000 103:09 1016                              /system/fonts/NotoSansMalayalamUI-Bold.ttf
+e24f8000-e2506000 r--s 00000000 103:09 1017                              /system/fonts/NotoSansMalayalamUI-Regular.ttf
+e2506000-e2514000 r--s 00000000 103:09 1014                              /system/fonts/NotoSansMalayalam-Bold.ttf
+e2514000-e2522000 r--s 00000000 103:09 1015                              /system/fonts/NotoSansMalayalam-Regular.ttf
+e2522000-e252b000 r--s 00000000 103:09 1047                              /system/fonts/NotoSansTamilUI-Bold.ttf
+e252b000-e2548000 r--s 00000000 103:09 989                               /system/fonts/NotoSansGujaratiUI-Regular.ttf
+e2548000-e2565000 r--s 00000000 103:09 986                               /system/fonts/NotoSansGujarati-Bold.ttf
+e2565000-e2583000 r--s 00000000 103:09 987                               /system/fonts/NotoSansGujarati-Regular.ttf
+e2583000-e25a2000 r--s 00000000 103:09 980                               /system/fonts/NotoSansDevanagariUI-Regular.ttf
+e25a2000-e25f3000 r--s 00000000 103:09 1071                              /system/fonts/Roboto-BoldItalic.ttf
+e25f3000-e263e000 r--s 00000000 103:09 1070                              /system/fonts/Roboto-Bold.ttf
+e263e000-e268f000 r--s 00000000 103:09 1069                              /system/fonts/Roboto-BlackItalic.ttf
+e268f000-e26da000 r--s 00000000 103:09 1068                              /system/fonts/Roboto-Black.ttf
+e26da000-e272b000 r--s 00000000 103:09 1076                              /system/fonts/Roboto-MediumItalic.ttf
+e272b000-e2776000 r--s 00000000 103:09 1075                              /system/fonts/Roboto-Medium.ttf
+e2776000-e27c7000 r--s 00000000 103:09 1072                              /system/fonts/Roboto-Italic.ttf
+e27c7000-e2812000 r--s 00000000 103:09 1077                              /system/fonts/Roboto-Regular.ttf
+e2812000-e2864000 r--s 00000000 103:09 1074                              /system/fonts/Roboto-LightItalic.ttf
+e2864000-e28b0000 r--s 00000000 103:09 1073                              /system/fonts/Roboto-Light.ttf
+e28b0000-e2900000 r--s 00000000 103:09 1079                              /system/fonts/Roboto-ThinItalic.ttf
+e2900000-e2980000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+e2980000-e2981000 r--s 00000000 103:09 2269                              /system/usr/hyphen-data/hyph-hi.hyb
+e2981000-e2987000 r--s 00000000 103:09 973                               /system/fonts/NotoSansCham-Bold.ttf
+e2987000-e29a8000 r--s 00000000 103:09 977                               /system/fonts/NotoSansDevanagari-Bold.ttf
+e29a8000-e29ca000 r--s 00000000 103:09 978                               /system/fonts/NotoSansDevanagari-Regular.ttf
+e29ca000-e3ef6000 r--s 00000000 103:09 2306                              /system/usr/icu/icudt56l.dat
+e3f80000-e4000000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+e4001000-e4002000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+e4002000-e4003000 ---p 00000000 00:00 0 
+e4003000-e4100000 rw-p 00000000 00:00 0                                  [stack:18614]
+e4100000-e4180000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+e4180000-e4181000 r--s 00000000 103:09 2267                              /system/usr/hyphen-data/hyph-gu.hyb
+e4181000-e4187000 r--s 00000000 103:09 974                               /system/fonts/NotoSansCham-Regular.ttf
+e4187000-e41ab000 r--s 00000000 103:09 981                               /system/fonts/NotoSansEthiopic-Bold.ttf
+e42a5000-e4383000 r-xp 00000000 fd:00 327070                             /data/app/com.yf.douyintool-1/lib/arm/libcms.so
+e4383000-e4387000 r--p 000dd000 fd:00 327070                             /data/app/com.yf.douyintool-1/lib/arm/libcms.so
+e4387000-e438e000 rw-p 000e1000 fd:00 327070                             /data/app/com.yf.douyintool-1/lib/arm/libcms.so
+e438e000-e4395000 rw-p 00000000 00:00 0                                  [anon:.bss]
+e4395000-e43b5000 rw-p 00000000 00:04 27917                              /dev/ashmem/dalvik-rosalloc page map (deleted)
+e43b5000-e58e1000 r--s 00000000 103:09 2306                              /system/usr/icu/icudt56l.dat
+e58e1000-e5991000 r-xp 00000000 103:09 1524                              /system/lib/libvixl.so
+e5991000-e5994000 r--p 000af000 103:09 1524                              /system/lib/libvixl.so
+e5994000-e5995000 rw-p 000b2000 103:09 1524                              /system/lib/libvixl.so
+e5995000-e599a000 rw-p 00000000 00:00 0                                  [anon:.bss]
+e599a000-e5c3a000 r-xp 00000000 103:09 1319                              /system/lib/libart-compiler.so
+e5c3a000-e5c3b000 ---p 00000000 00:00 0 
+e5c3b000-e5c47000 r--p 002a0000 103:09 1319                              /system/lib/libart-compiler.so
+e5c47000-e5c48000 rw-p 002ac000 103:09 1319                              /system/lib/libart-compiler.so
+e5c48000-e5c4c000 rw-p 00000000 00:00 0                                  [anon:.bss]
+e5c4c000-e5c68000 r--s 00000000 103:09 988                               /system/fonts/NotoSansGujaratiUI-Bold.ttf
+e5c68000-e5c8b000 r--s 00000000 103:09 982                               /system/fonts/NotoSansEthiopic-Regular.ttf
+e5c8b000-e5cd6000 r--s 00000000 103:09 1078                              /system/fonts/Roboto-Thin.ttf
+e5cd6000-e5d9e000 rw-p 00000000 00:04 16646                              /dev/ashmem/dalvik-indirect ref table (deleted)
+e5d9e000-e659f000 rw-p 00000000 00:04 16641                              /dev/ashmem/dalvik-live stack (deleted)
+e659f000-e6da0000 rw-p 00000000 00:04 16640                              /dev/ashmem/dalvik-allocation stack (deleted)
+e6da0000-e8da1000 rw-p 00000000 00:04 16638                              /dev/ashmem/dalvik-card table (deleted)
+e8da1000-e95a1000 rw-p 00000000 00:04 16635                              /dev/ashmem/dalvik-allocspace main rosalloc space 1 mark-bitmap 2 (deleted)
+e95a1000-e9da1000 rw-p 00000000 00:04 16634                              /dev/ashmem/dalvik-allocspace main rosalloc space 1 live-bitmap 2 (deleted)
+e9e5b000-e9e5c000 rw-s 00000000 00:08 9499                               anon_inode:dmabuf
+e9e5c000-e9e5d000 rw-s 00000000 00:08 9499                               anon_inode:dmabuf
+e9e5d000-e9e5e000 rw-s 00000000 00:08 9499                               anon_inode:dmabuf
+e9e5e000-e9e5f000 rw-s 00000000 00:08 9499                               anon_inode:dmabuf
+e9e62000-e9e64000 rw-p 00000000 00:04 5304092                            /dev/ashmem/dalvik-indirect ref table (deleted)
+e9e64000-e9e66000 rw-p 00000000 00:04 5305362                            /dev/ashmem/dalvik-indirect ref table (deleted)
+e9e66000-e9e67000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+e9e67000-e9e69000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+e9e69000-e9e6a000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+e9e6a000-e9e6c000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+e9e6c000-e9e6e000 r--s f8001000 00:0c 854                                /dev/kgsl-3d0
+e9e6e000-e9e70000 rw-p 00000000 00:04 5290520                            /dev/ashmem/dalvik-indirect ref table (deleted)
+e9e70000-e9e80000 r--s 007bf000 fd:00 327065                             /data/app/com.yf.douyintool-1/base.apk
+e9e80000-e9f00000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+e9f00000-e9f01000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+e9f01000-e9f03000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+e9f03000-e9f23000 rw-p 00000000 00:04 5290517                            /dev/ashmem/dalvik-LinearAlloc (deleted)
+e9f23000-e9f43000 rw-p 00000000 00:04 5290516                            /dev/ashmem/dalvik-LinearAlloc (deleted)
+e9f43000-e9f84000 r--s 001d8000 fd:00 327065                             /data/app/com.yf.douyintool-1/base.apk
+e9f84000-e9f94000 r--s 007bf000 fd:00 327065                             /data/app/com.yf.douyintool-1/base.apk
+e9f94000-e9f96000 rw-p 00000000 00:04 5296840                            /dev/ashmem/dalvik-indirect ref table (deleted)
+e9f96000-e9f97000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+e9f97000-e9f99000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+e9f99000-e9f9a000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+e9f9a000-e9f9b000 ---p 00000000 00:00 0 
+e9f9b000-ea098000 rw-p 00000000 00:00 0                                  [stack:18612]
+ea098000-ea099000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+ea099000-ea09b000 rw-p 00000000 00:04 5290515                            /dev/ashmem/dalvik-indirect ref table (deleted)
+ea09b000-ea09c000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea09c000-ea09d000 ---p 00000000 00:00 0 
+ea09d000-ea19a000 rw-p 00000000 00:00 0                                  [stack:18611]
+ea19a000-ea19b000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea19b000-ea19c000 ---p 00000000 00:00 0 
+ea19c000-ea299000 rw-p 00000000 00:00 0                                  [stack:18610]
+ea299000-ea29a000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea29a000-ea29b000 ---p 00000000 00:00 0 
+ea29b000-ea398000 rw-p 00000000 00:00 0                                  [stack:18609]
+ea398000-ea496000 r--p 00000000 00:0c 5089                               /dev/binder
+ea496000-ea497000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea497000-ea498000 ---p 00000000 00:00 0 
+ea498000-ea59b000 rw-p 00000000 00:00 0                                  [stack:18608]
+ea59b000-ea59c000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea59c000-ea59d000 ---p 00000000 00:00 0 
+ea59d000-ea6a0000 rw-p 00000000 00:00 0                                  [stack:18607]
+ea6a0000-ea6a1000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea6a1000-ea6a2000 ---p 00000000 00:00 0 
+ea6a2000-ea7a5000 rw-p 00000000 00:00 0                                  [stack:18606]
+ea7a5000-ea7a6000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea7a6000-ea7a7000 ---p 00000000 00:00 0 
+ea7a7000-ea8aa000 rw-p 00000000 00:00 0                                  [stack:18605]
+ea8aa000-ea8ab000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea8ab000-ea8ac000 ---p 00000000 00:00 0 
+ea8ac000-ea9a9000 rw-p 00000000 00:00 0                                  [stack:18604]
+ea9a9000-ea9aa000 ---p 00000000 00:00 0                                  [anon:thread stack guard page]
+ea9aa000-ea9ab000 ---p 00000000 00:00 0 
+ea9ab000-eaaa8000 rw-p 00000000 00:00 0                                  [stack:18603]
+eaaa8000-eaaa9000 ---p 00000000 00:04 5299839                            /dev/ashmem/dalvik-Jit thread pool worker thread 0 (deleted)
+eaaa9000-eaaaa000 ---p 00001000 00:04 5299839                            /dev/ashmem/dalvik-Jit thread pool worker thread 0 (deleted)
+eaaaa000-eaba9000 rw-p 00002000 00:04 5299839                            /dev/ashmem/dalvik-Jit thread pool worker thread 0 (deleted)
+eaba9000-eaca5000 rw-p 00000000 00:04 27922                              /dev/ashmem/dalvik-allocspace non moving space mark-bitmap 4 (deleted)
+eaca5000-eada1000 rw-p 00000000 00:04 27921                              /dev/ashmem/dalvik-allocspace non moving space live-bitmap 4 (deleted)
+eada1000-eaea1000 rw-p 00000000 00:04 16629                              /dev/ashmem/dalvik-allocspace zygote / non moving space mark-bitmap 0 (deleted)
+eaea1000-eafa1000 rw-p 00000000 00:04 16628                              /dev/ashmem/dalvik-allocspace zygote / non moving space live-bitmap 0 (deleted)
+eafa1000-eb3f4000 r-xp 00000000 103:09 1320                              /system/lib/libart.so
+eb3f4000-eb3fc000 r--p 00452000 103:09 1320                              /system/lib/libart.so
+eb3fc000-eb3fe000 rw-p 0045a000 103:09 1320                              /system/lib/libart.so
+eb3fe000-eb400000 rw-p 00000000 00:00 0                                  [anon:.bss]
+eb400000-eb580000 rw-p 00000000 00:00 0                                  [anon:libc_malloc]
+eb580000-eb582000 r--s 00000000 103:09 1041                              /system/fonts/NotoSansTagbanwa-Regular.ttf
+eb582000-eb583000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+eb583000-eb584000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+eb584000-eb5a2000 r-xp 00000000 103:09 1525                              /system/lib/libvorbisidec.so
+eb5a2000-eb5a3000 r--p 0001d000 103:09 1525                              /system/lib/libvorbisidec.so
+eb5a3000-eb5a4000 rw-p 0001e000 103:09 1525                              /system/lib/libvorbisidec.so
+eb5a4000-eb5ab000 r-xp 00000000 103:09 1432                              /system/lib/libnetutils.so
+eb5ab000-eb5ac000 r--p 00006000 103:09 1432                              /system/lib/libnetutils.so
+eb5ac000-eb5ad000 rw-p 00007000 103:09 1432                              /system/lib/libnetutils.so
+eb5ad000-eb5b0000 r-xp 00000000 103:09 1418                              /system/lib/libmemtrack.so
+eb5b0000-eb5b1000 r--p 00002000 103:09 1418                              /system/lib/libmemtrack.so
+eb5b1000-eb5b2000 rw-p 00003000 103:09 1418                              /system/lib/libmemtrack.so
+eb5b2000-eb5df000 r-xp 00000000 103:09 1487                              /system/lib/libstagefright_omx.so
+eb5df000-eb5e0000 ---p 00000000 00:00 0 
+eb5e0000-eb5e3000 r--p 0002d000 103:09 1487                              /system/lib/libstagefright_omx.so
+eb5e3000-eb5e4000 rw-p 00030000 103:09 1487                              /system/lib/libstagefright_omx.so
+eb5e4000-eb5e8000 r-xp 00000000 103:09 1426                              /system/lib/libnativebridge.so
+eb5e8000-eb5e9000 r--p 00003000 103:09 1426                              /system/lib/libnativebridge.so
+eb5e9000-eb5ea000 rw-p 00004000 103:09 1426                              /system/lib/libnativebridge.so
+eb5ea000-eb5ee000 r-xp 00000000 103:09 1522                              /system/lib/libusbhost.so
+eb5ee000-eb5ef000 ---p 00000000 00:00 0 
+eb5ef000-eb5f0000 r--p 00004000 103:09 1522                              /system/lib/libusbhost.so
+eb5f0000-eb5f1000 rw-p 00005000 103:09 1522                              /system/lib/libusbhost.so
+eb5f1000-eb5f4000 r-xp 00000000 103:09 1485                              /system/lib/libstagefright_http_support.so
+eb5f4000-eb5f5000 r--p 00002000 103:09 1485                              /system/lib/libstagefright_http_support.so
+eb5f5000-eb5f6000 rw-p 00003000 103:09 1485                              /system/lib/libstagefright_http_support.so
+eb5f6000-eb62b000 r-xp 00000000 103:09 1311                              /system/lib/libRS_internal.so
+eb62b000-eb62d000 r--p 00034000 103:09 1311                              /system/lib/libRS_internal.so
+eb62d000-eb62e000 rw-p 00036000 103:09 1311                              /system/lib/libRS_internal.so
+eb62e000-eb6a6000 r-xp 00000000 103:09 1382                              /system/lib/libhwui.so
+eb6a6000-eb6a7000 ---p 00000000 00:00 0 
+eb6a7000-eb6aa000 r--p 00078000 103:09 1382                              /system/lib/libhwui.so
+eb6aa000-eb6ab000 rw-p 0007b000 103:09 1382                              /system/lib/libhwui.so
+eb6ab000-eb6b0000 r-xp 00000000 103:09 1477                              /system/lib/libspeexresampler.so
+eb6b0000-eb6b1000 ---p 00000000 00:00 0 
+eb6b1000-eb6b2000 r--p 00005000 103:09 1477                              /system/lib/libspeexresampler.so
+eb6b2000-eb6b3000 rw-p 00006000 103:09 1477                              /system/lib/libspeexresampler.so
+eb6b3000-eb6c3000 r-xp 00000000 103:09 1465                              /system/lib/libselinux.so
+eb6c3000-eb6c4000 ---p 00000000 00:00 0 
+eb6c4000-eb6c5000 r--p 00010000 103:09 1465                              /system/lib/libselinux.so
+eb6c5000-eb6c6000 rw-p 00011000 103:09 1465                              /system/lib/libselinux.so
+eb6c6000-eb6dd000 r-xp 00000000 103:09 1419                              /system/lib/libmemunreachable.so
+eb6dd000-eb6de000 ---p 00000000 00:00 0 
+eb6de000-eb6df000 r--p 00017000 103:09 1419                              /system/lib/libmemunreachable.so
+eb6df000-eb6e0000 rw-p 00018000 103:09 1419                              /system/lib/libmemunreachable.so
+eb6e0000-eb6e4000 r-xp 00000000 103:09 1448                              /system/lib/libprocessgroup.so
+eb6e4000-eb6e5000 r--p 00003000 103:09 1448                              /system/lib/libprocessgroup.so
+eb6e5000-eb6e6000 rw-p 00004000 103:09 1448                              /system/lib/libprocessgroup.so
+eb6e6000-eb706000 r-xp 00000000 103:09 1406                              /system/lib/libm.so
+eb706000-eb707000 r--p 0001f000 103:09 1406                              /system/lib/libm.so
+eb707000-eb708000 rw-p 00020000 103:09 1406                              /system/lib/libm.so
+eb708000-eb739000 r-xp 00000000 103:09 1318                              /system/lib/libandroidfw.so
+eb739000-eb73b000 r--p 00030000 103:09 1318                              /system/lib/libandroidfw.so
+eb73b000-eb73c000 rw-p 00032000 103:09 1318                              /system/lib/libandroidfw.so
+eb73c000-eb748000 r-xp 00000000 103:09 1455                              /system/lib/libradio.so
+eb748000-eb74b000 r--p 0000b000 103:09 1455                              /system/lib/libradio.so
+eb74b000-eb74c000 rw-p 0000e000 103:09 1455                              /system/lib/libradio.so
+eb74c000-ebbcc000 r-xp 00000000 103:09 1442                              /system/lib/libpdfium.so
+ebbcc000-ebbd8000 r--p 0047f000 103:09 1442                              /system/lib/libpdfium.so
+ebbd8000-ebbdc000 rw-p 0048b000 103:09 1442                              /system/lib/libpdfium.so
+ebbdc000-ebbf1000 r-xp 00000000 103:09 1521                              /system/lib/libunwind.so
+ebbf1000-ebbf2000 r--p 00014000 103:09 1521                              /system/lib/libunwind.so
+ebbf2000-ebbf3000 rw-p 00015000 103:09 1521                              /system/lib/libunwind.so
+ebbf3000-ebc39000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ebc39000-ebc3c000 r-xp 00000000 103:09 1377                              /system/lib/libhardware.so
+ebc3c000-ebc3d000 r--p 00002000 103:09 1377                              /system/lib/libhardware.so
+ebc3d000-ebc3e000 rw-p 00003000 103:09 1377                              /system/lib/libhardware.so
+ebc3e000-ebc52000 r-xp 00000000 103:09 1441                              /system/lib/libpcre.so
+ebc52000-ebc53000 r--p 00013000 103:09 1441                              /system/lib/libpcre.so
+ebc53000-ebc54000 rw-p 00014000 103:09 1441                              /system/lib/libpcre.so
+ebc54000-ebca0000 r-xp 00000000 103:09 1379                              /system/lib/libharfbuzz_ng.so
+ebca0000-ebca1000 r--p 0004b000 103:09 1379                              /system/lib/libharfbuzz_ng.so
+ebca1000-ebca2000 rw-p 0004c000 103:09 1379                              /system/lib/libharfbuzz_ng.so
+ebca2000-ebd80000 r-xp 00000000 103:09 1316                              /system/lib/libandroid_runtime.so
+ebd80000-ebd81000 ---p 00000000 00:00 0 
+ebd81000-ebd8f000 r--p 000de000 103:09 1316                              /system/lib/libandroid_runtime.so
+ebd8f000-ebd90000 rw-p 000ec000 103:09 1316                              /system/lib/libandroid_runtime.so
+ebd90000-ebd91000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ebd91000-ebe15000 r-xp 00000000 103:09 1342                              /system/lib/libc.so
+ebe15000-ebe19000 r--p 00083000 103:09 1342                              /system/lib/libc.so
+ebe19000-ebe1b000 rw-p 00087000 103:09 1342                              /system/lib/libc.so
+ebe1b000-ebe1c000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ebe1c000-ebe1d000 r--p 00000000 00:00 0                                  [anon:.bss]
+ebe1d000-ebe23000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ebe23000-ebe2a000 r-xp 00000000 103:09 1427                              /system/lib/libnativehelper.so
+ebe2a000-ebe2b000 r--p 00006000 103:09 1427                              /system/lib/libnativehelper.so
+ebe2b000-ebe2c000 rw-p 00007000 103:09 1427                              /system/lib/libnativehelper.so
+ebe2c000-ebe34000 r-xp 00000000 103:09 1299                              /system/lib/libGLESv1_CM.so
+ebe34000-ebe35000 r--p 00007000 103:09 1299                              /system/lib/libGLESv1_CM.so
+ebe35000-ebe36000 rw-p 00008000 103:09 1299                              /system/lib/libGLESv1_CM.so
+ebe36000-ebe4c000 r-xp 00000000 103:09 1296                              /system/lib/libEGL.so
+ebe4c000-ebe4d000 ---p 00000000 00:00 0 
+ebe4d000-ebe4f000 r--p 00016000 103:09 1296                              /system/lib/libEGL.so
+ebe4f000-ebe50000 rw-p 00018000 103:09 1296                              /system/lib/libEGL.so
+ebe50000-ebe53000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ebe53000-ebecc000 r-xp 00000000 103:09 1478                              /system/lib/libsqlite.so
+ebecc000-ebece000 r--p 00078000 103:09 1478                              /system/lib/libsqlite.so
+ebece000-ebecf000 rw-p 0007a000 103:09 1478                              /system/lib/libsqlite.so
+ebecf000-ebed0000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ebed0000-ec002000 r-xp 00000000 103:09 1480                              /system/lib/libstagefright.so
+ec002000-ec019000 r--p 00131000 103:09 1480                              /system/lib/libstagefright.so
+ec019000-ec01a000 rw-p 00148000 103:09 1480                              /system/lib/libstagefright.so
+ec01a000-ec02f000 r-xp 00000000 103:09 1526                              /system/lib/libvulkan.so
+ec02f000-ec030000 ---p 00000000 00:00 0 
+ec030000-ec031000 r--p 00015000 103:09 1526                              /system/lib/libvulkan.so
+ec031000-ec032000 rw-p 00016000 103:09 1526                              /system/lib/libvulkan.so
+ec032000-ec042000 r-xp 00000000 103:09 1300                              /system/lib/libGLESv2.so
+ec042000-ec043000 r--p 0000f000 103:09 1300                              /system/lib/libGLESv2.so
+ec043000-ec044000 rw-p 00010000 103:09 1300                              /system/lib/libGLESv2.so
+ec044000-ec0c9000 r-xp 00000000 103:09 1362                              /system/lib/libdng_sdk.so
+ec0c9000-ec0ca000 ---p 00000000 00:00 0 
+ec0ca000-ec0ce000 r--p 00085000 103:09 1362                              /system/lib/libdng_sdk.so
+ec0ce000-ec0cf000 rw-p 00089000 103:09 1362                              /system/lib/libdng_sdk.so
+ec0cf000-ec0d9000 r-xp 00000000 103:09 1308                              /system/lib/libRS.so
+ec0d9000-ec0da000 r--p 00009000 103:09 1308                              /system/lib/libRS.so
+ec0da000-ec0db000 rw-p 0000a000 103:09 1308                              /system/lib/libRS.so
+ec0db000-ec0de000 r-xp 00000000 103:09 1456                              /system/lib/libradio_metadata.so
+ec0de000-ec0df000 r--p 00002000 103:09 1456                              /system/lib/libradio_metadata.so
+ec0df000-ec0e0000 rw-p 00003000 103:09 1456                              /system/lib/libradio_metadata.so
+ec0e0000-ec145000 r-xp 00000000 103:09 1372                              /system/lib/libft2.so
+ec145000-ec146000 ---p 00000000 00:00 0 
+ec146000-ec148000 r--p 00065000 103:09 1372                              /system/lib/libft2.so
+ec148000-ec149000 rw-p 00067000 103:09 1372                              /system/lib/libft2.so
+ec149000-ec14e000 r-xp 00000000 103:09 1532                              /system/lib/libwpa_client.so
+ec14e000-ec14f000 r--p 00004000 103:09 1532                              /system/lib/libwpa_client.so
+ec14f000-ec150000 rw-p 00005000 103:09 1532                              /system/lib/libwpa_client.so
+ec150000-ec15e000 r-xp 00000000 103:09 1403                              /system/lib/liblog.so
+ec15e000-ec15f000 ---p 00000000 00:00 0 
+ec15f000-ec160000 r--p 0000e000 103:09 1403                              /system/lib/liblog.so
+ec160000-ec161000 rw-p 0000f000 103:09 1403                              /system/lib/liblog.so
+ec161000-ec19c000 r-xp 00000000 103:09 1394                              /system/lib/libjpeg.so
+ec19c000-ec19d000 r--p 0003a000 103:09 1394                              /system/lib/libjpeg.so
+ec19d000-ec19e000 rw-p 0003b000 103:09 1394                              /system/lib/libjpeg.so
+ec19e000-ec1b6000 r-xp 00000000 103:09 1523                              /system/lib/libutils.so
+ec1b6000-ec1b7000 r--p 00017000 103:09 1523                              /system/lib/libutils.so
+ec1b7000-ec1b8000 rw-p 00018000 103:09 1523                              /system/lib/libutils.so
+ec1b8000-eccc7000 r-xp 00000000 103:09 1302                              /system/lib/libLLVM.so
+eccc7000-eccc8000 ---p 00000000 00:00 0 
+eccc8000-ecd15000 r--p 00b0f000 103:09 1302                              /system/lib/libLLVM.so
+ecd15000-ecd16000 rw-p 00b5c000 103:09 1302                              /system/lib/libLLVM.so
+ecd16000-ecd22000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ecd22000-ecd3f000 r-xp 00000000 103:09 1387                              /system/lib/libinput.so
+ecd3f000-ecd43000 r--p 0001c000 103:09 1387                              /system/lib/libinput.so
+ecd43000-ecd44000 rw-p 00020000 103:09 1387                              /system/lib/libinput.so
+ecd44000-ecd69000 r-xp 00000000 103:09 1479                              /system/lib/libssl.so
+ecd69000-ecd6b000 r--p 00024000 103:09 1479                              /system/lib/libssl.so
+ecd6b000-ecd6c000 rw-p 00026000 103:09 1479                              /system/lib/libssl.so
+ecd6c000-ecd76000 r-xp 00000000 103:09 1333                              /system/lib/libbase.so
+ecd76000-ecd77000 r--p 00009000 103:09 1333                              /system/lib/libbase.so
+ecd77000-ecd78000 rw-p 0000a000 103:09 1333                              /system/lib/libbase.so
+ecd78000-ecd7d000 r-xp 00000000 103:09 1336                              /system/lib/libbinary_parse.so
+ecd7d000-ecd7e000 r--p 00004000 103:09 1336                              /system/lib/libbinary_parse.so
+ecd7e000-ecd7f000 rw-p 00005000 103:09 1336                              /system/lib/libbinary_parse.so
+ecd7f000-ecdb5000 r-xp 00000000 103:09 1335                              /system/lib/libbcinfo.so
+ecdb5000-ecdb6000 r--p 00035000 103:09 1335                              /system/lib/libbcinfo.so
+ecdb6000-ecdb7000 rw-p 00036000 103:09 1335                              /system/lib/libbcinfo.so
+ecdb7000-ecdbd000 r-xp 00000000 103:09 1517                              /system/lib/libtiff_directory.so
+ecdbd000-ecdbe000 ---p 00000000 00:00 0 
+ecdbe000-ecdbf000 r--p 00006000 103:09 1517                              /system/lib/libtiff_directory.so
+ecdbf000-ecdc0000 rw-p 00007000 103:09 1517                              /system/lib/libtiff_directory.so
+ecdc0000-ecdd6000 r-xp 00000000 103:09 1405                              /system/lib/liblzma.so
+ecdd6000-ecdd7000 ---p 00000000 00:00 0 
+ecdd7000-ecdd8000 r--p 00016000 103:09 1405                              /system/lib/liblzma.so
+ecdd8000-ecdd9000 rw-p 00017000 103:09 1405                              /system/lib/liblzma.so
+ecdd9000-ecdde000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ecdde000-ecde6000 r-xp 00000000 103:09 1482                              /system/lib/libstagefright_avc_common.so
+ecde6000-ecde7000 r--p 00007000 103:09 1482                              /system/lib/libstagefright_avc_common.so
+ecde7000-ecde8000 rw-p 00008000 103:09 1482                              /system/lib/libstagefright_avc_common.so
+ecde8000-ecdeb000 r-xp 00000000 103:09 1440                              /system/lib/libpackagelistparser.so
+ecdeb000-ecdec000 r--p 00002000 103:09 1440                              /system/lib/libpackagelistparser.so
+ecdec000-ecded000 rw-p 00003000 103:09 1440                              /system/lib/libpackagelistparser.so
+ecded000-ecdf4000 r-xp 00000000 103:09 1385                              /system/lib/libimage_type_recognition.so
+ecdf4000-ecdf5000 r--p 00006000 103:09 1385                              /system/lib/libimage_type_recognition.so
+ecdf5000-ecdf6000 rw-p 00007000 103:09 1385                              /system/lib/libimage_type_recognition.so
+ecdf6000-ecdfa000 r-xp 00000000 103:09 1297                              /system/lib/libETC1.so
+ecdfa000-ecdfb000 r--p 00003000 103:09 1297                              /system/lib/libETC1.so
+ecdfb000-ecdfc000 rw-p 00004000 103:09 1297                              /system/lib/libETC1.so
+ecdfc000-ece85000 r-xp 00000000 103:09 1341                              /system/lib/libc++.so
+ece85000-ece89000 r--p 00088000 103:09 1341                              /system/lib/libc++.so
+ece89000-ece8a000 rw-p 0008c000 103:09 1341                              /system/lib/libc++.so
+ece8a000-ece8b000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ece8b000-ece94000 r-xp 00000000 103:09 1443                              /system/lib/libpiex.so
+ece94000-ece95000 r--p 00008000 103:09 1443                              /system/lib/libpiex.so
+ece95000-ece96000 rw-p 00009000 103:09 1443                              /system/lib/libpiex.so
+ece96000-ececd000 r-xp 00000000 103:09 1437                              /system/lib/libopus.so
+ececd000-ecece000 r--p 00036000 103:09 1437                              /system/lib/libopus.so
+ecece000-ececf000 rw-p 00037000 103:09 1437                              /system/lib/libopus.so
+ececf000-eced4000 r-xp 00000000 103:09 1447                              /system/lib/libpowermanager.so
+eced4000-eced5000 ---p 00000000 00:00 0 
+eced5000-eced6000 r--p 00005000 103:09 1447                              /system/lib/libpowermanager.so
+eced6000-eced7000 rw-p 00006000 103:09 1447                              /system/lib/libpowermanager.so
+eced7000-eceed000 r-xp 00000000 103:09 1533                              /system/lib/libz.so
+eceed000-eceee000 ---p 00000000 00:00 0 
+eceee000-eceef000 r--p 00016000 103:09 1533                              /system/lib/libz.so
+eceef000-ecef0000 rw-p 00017000 103:09 1533                              /system/lib/libz.so
+ecef0000-ed281000 r-xp 00000000 103:09 1469                              /system/lib/libskia.so
+ed281000-ed282000 ---p 00000000 00:00 0 
+ed282000-ed29f000 r--p 00391000 103:09 1469                              /system/lib/libskia.so
+ed29f000-ed2a1000 rw-p 003ae000 103:09 1469                              /system/lib/libskia.so
+ed2a1000-ed2a7000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ed2a7000-ed2b4000 r-xp 00000000 103:09 1332                              /system/lib/libbacktrace.so
+ed2b4000-ed2b5000 ---p 00000000 00:00 0 
+ed2b5000-ed2b6000 r--p 0000d000 103:09 1332                              /system/lib/libbacktrace.so
+ed2b6000-ed2b7000 rw-p 0000e000 103:09 1332                              /system/lib/libbacktrace.so
+ed2b7000-ed2ba000 r-xp 00000000 103:09 1515                              /system/lib/libsync.so
+ed2ba000-ed2bb000 r--p 00002000 103:09 1515                              /system/lib/libsync.so
+ed2bb000-ed2bc000 rw-p 00003000 103:09 1515                              /system/lib/libsync.so
+ed2bc000-ed30c000 r-xp 00000000 103:09 1337                              /system/lib/libbinder.so
+ed30c000-ed30d000 ---p 00000000 00:00 0 
+ed30d000-ed316000 r--p 00050000 103:09 1337                              /system/lib/libbinder.so
+ed316000-ed317000 rw-p 00059000 103:09 1337                              /system/lib/libbinder.so
+ed317000-ed33b000 r-xp 00000000 103:09 1445                              /system/lib/libpng.so
+ed33b000-ed33c000 r--p 00023000 103:09 1445                              /system/lib/libpng.so
+ed33c000-ed33d000 rw-p 00024000 103:09 1445                              /system/lib/libpng.so
+ed33d000-ed352000 r-xp 00000000 103:09 1368                              /system/lib/libexpat.so
+ed352000-ed354000 r--p 00014000 103:09 1368                              /system/lib/libexpat.so
+ed354000-ed355000 rw-p 00016000 103:09 1368                              /system/lib/libexpat.so
+ed355000-ed35c000 r-xp 00000000 103:09 1331                              /system/lib/libaudioutils.so
+ed35c000-ed35d000 r--p 00006000 103:09 1331                              /system/lib/libaudioutils.so
+ed35d000-ed35e000 rw-p 00007000 103:09 1331                              /system/lib/libaudioutils.so
+ed35e000-ed363000 r-xp 00000000 103:09 1509                              /system/lib/libstagefright_yuv.so
+ed363000-ed364000 r--p 00004000 103:09 1509                              /system/lib/libstagefright_yuv.so
+ed364000-ed365000 rw-p 00005000 103:09 1509                              /system/lib/libstagefright_yuv.so
+ed365000-ed37c000 r-xp 00000000 103:09 1363                              /system/lib/libdrmframework.so
+ed37c000-ed37d000 ---p 00000000 00:00 0 
+ed37d000-ed380000 r--p 00017000 103:09 1363                              /system/lib/libdrmframework.so
+ed380000-ed381000 rw-p 0001a000 103:09 1363                              /system/lib/libdrmframework.so
+ed381000-ed421000 r-xp 00000000 103:09 1356                              /system/lib/libcrypto.so
+ed421000-ed422000 ---p 00000000 00:00 0 
+ed422000-ed42d000 r--p 000a0000 103:09 1356                              /system/lib/libcrypto.so
+ed42d000-ed42e000 rw-p 000ab000 103:09 1356                              /system/lib/libcrypto.so
+ed42e000-ed44e000 r-xp 00000000 103:09 1484                              /system/lib/libstagefright_foundation.so
+ed44e000-ed44f000 ---p 00000000 00:00 0 
+ed44f000-ed450000 r--p 00020000 103:09 1484                              /system/lib/libstagefright_foundation.so
+ed450000-ed451000 rw-p 00021000 103:09 1484                              /system/lib/libstagefright_foundation.so
+ed451000-ed45a000 r-xp 00000000 103:09 1416                              /system/lib/libmediautils.so
+ed45a000-ed45b000 ---p 00000000 00:00 0 
+ed45b000-ed45c000 r--p 00009000 103:09 1416                              /system/lib/libmediautils.so
+ed45c000-ed45d000 rw-p 0000a000 103:09 1416                              /system/lib/libmediautils.so
+ed45d000-ed460000 r-xp 00000000 103:09 1483                              /system/lib/libstagefright_enc_common.so
+ed460000-ed461000 r--p 00002000 103:09 1483                              /system/lib/libstagefright_enc_common.so
+ed461000-ed462000 rw-p 00003000 103:09 1483                              /system/lib/libstagefright_enc_common.so
+ed462000-ed5de000 r-xp 00000000 103:09 1383                              /system/lib/libicui18n.so
+ed5de000-ed5df000 ---p 00000000 00:00 0 
+ed5df000-ed5e9000 r--p 0017c000 103:09 1383                              /system/lib/libicui18n.so
+ed5e9000-ed5ea000 rw-p 00186000 103:09 1383                              /system/lib/libicui18n.so
+ed5ea000-ed6f3000 r-xp 00000000 103:09 1384                              /system/lib/libicuuc.so
+ed6f3000-ed6f4000 ---p 00000000 00:00 0 
+ed6f4000-ed6fe000 r--p 00109000 103:09 1384                              /system/lib/libicuuc.so
+ed6fe000-ed6ff000 rw-p 00113000 103:09 1384                              /system/lib/libicuuc.so
+ed6ff000-ed701000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ed701000-ed756000 r-xp 00000000 103:09 1473                              /system/lib/libsonivox.so
+ed756000-ed757000 r--p 00054000 103:09 1473                              /system/lib/libsonivox.so
+ed757000-ed758000 rw-p 00055000 103:09 1473                              /system/lib/libsonivox.so
+ed758000-ed75d000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ed75d000-ed765000 r-xp 00000000 103:09 1428                              /system/lib/libnativeloader.so
+ed765000-ed766000 r--p 00007000 103:09 1428                              /system/lib/libnativeloader.so
+ed766000-ed767000 rw-p 00008000 103:09 1428                              /system/lib/libnativeloader.so
+ed767000-ed781000 r-xp 00000000 103:09 1450                              /system/lib/libprotobuf-cpp-lite.so
+ed781000-ed782000 ---p 00000000 00:00 0 
+ed782000-ed783000 r--p 0001a000 103:09 1450                              /system/lib/libprotobuf-cpp-lite.so
+ed783000-ed784000 rw-p 0001b000 103:09 1450                              /system/lib/libprotobuf-cpp-lite.so
+ed784000-ed828000 r-xp 00000000 103:09 1408                              /system/lib/libmedia.so
+ed828000-ed848000 r--p 000a3000 103:09 1408                              /system/lib/libmedia.so
+ed848000-ed849000 rw-p 000c3000 103:09 1408                              /system/lib/libmedia.so
+ed849000-ed860000 r-xp 00000000 103:09 1357                              /system/lib/libcutils.so
+ed860000-ed861000 ---p 00000000 00:00 0 
+ed861000-ed862000 r--p 00017000 103:09 1357                              /system/lib/libcutils.so
+ed862000-ed863000 rw-p 00018000 103:09 1357                              /system/lib/libcutils.so
+ed863000-ed86b000 r-xp 00000000 103:09 1429                              /system/lib/libnbaio.so
+ed86b000-ed86c000 ---p 00000000 00:00 0 
+ed86c000-ed86d000 r--p 00008000 103:09 1429                              /system/lib/libnbaio.so
+ed86d000-ed86e000 rw-p 00009000 103:09 1429                              /system/lib/libnbaio.so
+ed86e000-ed8ad000 r-xp 00000000 103:09 1388                              /system/lib/libinputflinger.so
+ed8ad000-ed8b0000 r--p 0003e000 103:09 1388                              /system/lib/libinputflinger.so
+ed8b0000-ed8b1000 rw-p 00041000 103:09 1388                              /system/lib/libinputflinger.so
+ed8b1000-ed8ec000 r-xp 00000000 103:09 1312                              /system/lib/libRScpp.so
+ed8ec000-ed8ed000 ---p 00000000 00:00 0 
+ed8ed000-ed8ee000 r--p 0003b000 103:09 1312                              /system/lib/libRScpp.so
+ed8ee000-ed8ef000 rw-p 0003c000 103:09 1312                              /system/lib/libRScpp.so
+ed8ef000-ed8f4000 r-xp 00000000 103:09 1511                              /system/lib/libstdc++.so
+ed8f4000-ed8f5000 r--p 00004000 103:09 1511                              /system/lib/libstdc++.so
+ed8f5000-ed8f6000 rw-p 00005000 103:09 1511                              /system/lib/libstdc++.so
+ed8f6000-ed8fb000 r-xp 00000000 103:09 1365                              /system/lib/libeffects.so
+ed8fb000-ed8fc000 r--p 00004000 103:09 1365                              /system/lib/libeffects.so
+ed8fc000-ed8fd000 rw-p 00005000 103:09 1365                              /system/lib/libeffects.so
+ed8fd000-ed90a000 r-xp 00000000 103:09 1520                              /system/lib/libui.so
+ed90a000-ed90b000 r--p 0000c000 103:09 1520                              /system/lib/libui.so
+ed90b000-ed90c000 rw-p 0000d000 103:09 1520                              /system/lib/libui.so
+ed90c000-ed95c000 r-xp 00000000 103:09 1376                              /system/lib/libgui.so
+ed95c000-ed95d000 ---p 00000000 00:00 0 
+ed95d000-ed969000 r--p 00050000 103:09 1376                              /system/lib/libgui.so
+ed969000-ed96a000 rw-p 0005c000 103:09 1376                              /system/lib/libgui.so
+ed96a000-ed976000 r-xp 00000000 103:09 1475                              /system/lib/libsoundtrigger.so
+ed976000-ed977000 ---p 00000000 00:00 0 
+ed977000-ed97a000 r--p 0000c000 103:09 1475                              /system/lib/libsoundtrigger.so
+ed97a000-ed97b000 rw-p 0000f000 103:09 1475                              /system/lib/libsoundtrigger.so
+ed97b000-ed9a6000 r-xp 00000000 103:09 1531                              /system/lib/libwilhelm.so
+ed9a6000-ed9a7000 ---p 00000000 00:00 0 
+ed9a7000-ed9ab000 r--p 0002b000 103:09 1531                              /system/lib/libwilhelm.so
+ed9ab000-ed9ac000 rw-p 0002f000 103:09 1531                              /system/lib/libwilhelm.so
+ed9ac000-ed9c3000 r-xp 00000000 103:09 1421                              /system/lib/libminikin.so
+ed9c3000-ed9c4000 ---p 00000000 00:00 0 
+ed9c4000-ed9c5000 r--p 00017000 103:09 1421                              /system/lib/libminikin.so
+ed9c5000-ed9c7000 rw-p 00018000 103:09 1421                              /system/lib/libminikin.so
+ed9c7000-ed9cf000 r-xp 00000000 103:09 1347                              /system/lib/libcamera_metadata.so
+ed9cf000-ed9d0000 r--p 00007000 103:09 1347                              /system/lib/libcamera_metadata.so
+ed9d0000-ed9d1000 rw-p 00008000 103:09 1347                              /system/lib/libcamera_metadata.so
+ed9d1000-ed9d7000 r-xp 00000000 103:09 1378                              /system/lib/libhardware_legacy.so
+ed9d7000-ed9d8000 r--p 00005000 103:09 1378                              /system/lib/libhardware_legacy.so
+ed9d8000-ed9d9000 rw-p 00006000 103:09 1378                              /system/lib/libhardware_legacy.so
+ed9d9000-ed9da000 rw-p 00000000 00:00 0                                  [anon:.bss]
+ed9da000-ed9e8000 r-xp 00000000 103:09 1386                              /system/lib/libimg_utils.so
+ed9e8000-ed9ea000 r--p 0000d000 103:09 1386                              /system/lib/libimg_utils.so
+ed9ea000-ed9eb000 rw-p 0000f000 103:09 1386                              /system/lib/libimg_utils.so
+ed9eb000-ed9ef000 r-xp 00000000 103:09 1430                              /system/lib/libnetd_client.so
+ed9ef000-ed9f0000 r--p 00003000 103:09 1430                              /system/lib/libnetd_client.so
+ed9f0000-ed9f1000 rw-p 00004000 103:09 1430                              /system/lib/libnetd_client.so
+ed9f1000-eda23000 r-xp 00000000 103:09 1346                              /system/lib/libcamera_client.so
+eda23000-eda2c000 r--p 00031000 103:09 1346                              /system/lib/libcamera_client.so
+eda2c000-eda2d000 rw-p 0003a000 103:09 1346                              /system/lib/libcamera_client.so
+eda2d000-eda4b000 r--s 00000000 103:09 979                               /system/fonts/NotoSansDevanagariUI-Bold.ttf
+eda4b000-edb13000 rw-p 00000000 00:04 16645                              /dev/ashmem/dalvik-indirect ref table (deleted)
+edb13000-edb14000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edb14000-edb16000 r--s 00000000 103:09 1032                              /system/fonts/NotoSansRejang-Regular.ttf
+edb16000-edb1f000 r--s 00000000 103:09 1048                              /system/fonts/NotoSansTamilUI-Regular.ttf
+edb1f000-edb20000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edb20000-edb21000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+edb21000-edb25000 r--s 00000000 103:09 964                               /system/fonts/NotoSansBatak-Regular.ttf
+edb25000-edb42000 r--s 00000000 103:09 958                               /system/fonts/NotoNaskhArabicUI-Bold.ttf
+edb42000-edb5f000 r--s 00000000 103:09 959                               /system/fonts/NotoNaskhArabicUI-Regular.ttf
+edb5f000-edb61000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edb61000-edb63000 r--s 00000000 103:09 1027                              /system/fonts/NotoSansOlChiki-Regular.ttf
+edb63000-edb67000 r--s 00000000 103:09 1053                              /system/fonts/NotoSansThaana-Bold.ttf
+edb67000-edb70000 r--s 00000000 103:09 1045                              /system/fonts/NotoSansTamil-Bold.ttf
+edb70000-edb8d000 r--s 00000000 103:09 956                               /system/fonts/NotoNaskhArabic-Bold.ttf
+edb8d000-edb8e000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+edb8e000-edb97000 r--s 00000000 103:09 1046                              /system/fonts/NotoSansTamil-Regular.ttf
+edb97000-edb9f000 r--s 00000000 103:09 992                               /system/fonts/NotoSansGurmukhiUI-Bold.ttf
+edb9f000-edbbc000 r--s 00000000 103:09 957                               /system/fonts/NotoNaskhArabic-Regular.ttf
+edbbc000-edbbd000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edbbd000-edbbf000 r--s 00000000 103:09 1013                              /system/fonts/NotoSansLisu-Regular.ttf
+edbbf000-edbc3000 r--s 00000000 103:09 1054                              /system/fonts/NotoSansThaana-Regular.ttf
+edbc3000-edbc4000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edbc4000-edbc5000 r--s 00000000 103:09 2261                              /system/usr/hyphen-data/hyph-eu.hyb
+edbc5000-edbcd000 r--s 00000000 103:09 993                               /system/fonts/NotoSansGurmukhiUI-Regular.ttf
+edbcd000-edbd5000 r--s 00000000 103:09 990                               /system/fonts/NotoSansGurmukhi-Bold.ttf
+edbd5000-edbdd000 r--s 00000000 103:09 991                               /system/fonts/NotoSansGurmukhi-Regular.ttf
+edbdd000-edbde000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edbde000-edbdf000 r--s 00000000 103:09 2241                              /system/usr/hyphen-data/hyph-bn.hyb
+edbdf000-edbe4000 r--s 00000000 103:09 983                               /system/fonts/NotoSansGeorgian-Bold.ttf
+edbe4000-edbe9000 r--s 00000000 103:09 984                               /system/fonts/NotoSansGeorgian-Regular.ttf
+edbe9000-edbed000 r--s 00000000 103:09 960                               /system/fonts/NotoSansArmenian-Bold.ttf
+edbed000-edc0d000 rw-p 00000000 00:04 16748                              /dev/ashmem/dalvik-LinearAlloc (deleted)
+edc0d000-edc0e000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edc0e000-edc0f000 r--s 00000000 103:09 2239                              /system/usr/hyphen-data/hyph-as.hyb
+edc0f000-edc13000 r--s 00000000 103:09 961                               /system/fonts/NotoSansArmenian-Regular.ttf
+edc13000-edc18000 r--s 00000000 103:09 1057                              /system/fonts/NotoSansThaiUI-Bold.ttf
+edc18000-edc19000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_vector]
+edc19000-edc1b000 r--s 00000000 103:09 1002                              /system/fonts/NotoSansKayahLi-Regular.ttf
+edc1b000-edc1c000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+edc1c000-edc1d000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edc1d000-edc1f000 r--s 00000000 103:09 994                               /system/fonts/NotoSansHanunoo-Regular.ttf
+edc1f000-edc25000 r--s 00000000 103:09 1058                              /system/fonts/NotoSansThaiUI-Regular.ttf
+edc25000-edc2a000 r--s 00000000 103:09 1055                              /system/fonts/NotoSansThai-Bold.ttf
+edc2a000-edc30000 r--s 00000000 103:09 1056                              /system/fonts/NotoSansThai-Regular.ttf
+edc30000-edc35000 r--s 00000000 103:09 995                               /system/fonts/NotoSansHebrew-Bold.ttf
+edc35000-edc37000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edc37000-edc39000 r--s 00000000 103:09 970                               /system/fonts/NotoSansBuhid-Regular.ttf
+edc39000-edc54000 r--s 00178000 103:09 1166                              /system/framework/ext.jar
+edc54000-edc74000 rw-p 00000000 00:04 15209                              /dev/ashmem/dalvik-LinearAlloc (deleted)
+edc74000-edc94000 r--s 00000000 00:0c 5009                               /dev/__properties__/u:object_r:radio_prop:s0
+edc94000-edc95000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edc95000-edc96000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+edc96000-edc97000 r--p 00000000 00:00 0                                  [anon:atexit handlers]
+edc97000-edc99000 r--s 00000000 103:09 969                               /system/fonts/NotoSansBuginese-Regular.ttf
+edc99000-edc9e000 r--s 00000000 103:09 996                               /system/fonts/NotoSansHebrew-Regular.ttf
+edc9e000-edc9f000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edc9f000-edca3000 rw-p 00000000 00:04 16813                              /dev/ashmem/dalvik-large object space allocation (deleted)
+edca3000-edca8000 rw-p 00000000 103:09 651                               /system/etc/event-log-tags
+edca8000-edcab000 r-xp 00000000 103:09 1289                              /system/lib/hw/memtrack.msm8992.so
+edcab000-edcac000 r--p 00002000 103:09 1289                              /system/lib/hw/memtrack.msm8992.so
+edcac000-edcad000 rw-p 00003000 103:09 1289                              /system/lib/hw/memtrack.msm8992.so
+edcad000-edcd7000 r-xp 00000000 103:09 1435                              /system/lib/libopenjdk.so
+edcd7000-edcd8000 ---p 00000000 00:00 0 
+edcd8000-edcd9000 r--p 0002a000 103:09 1435                              /system/lib/libopenjdk.so
+edcd9000-edcda000 rw-p 0002b000 103:09 1435                              /system/lib/libopenjdk.so
+edcda000-edcdc000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edcdc000-edcdd000 r--s 00000000 103:09 1247                              /system/framework/org.apache.http.legacy.boot.jar
+edcdd000-edcde000 r--s 00004000 103:09 1089                              /system/framework/apache-xml.jar
+edcde000-edcdf000 r--s 00000000 103:09 1171                              /system/framework/ims-common.jar
+edcdf000-edce0000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edce0000-edce1000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+edce1000-edce3000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+edce3000-edce5000 rw-p 00000000 00:04 5304850                            /dev/ashmem/dalvik-indirect ref table (deleted)
+edce5000-edced000 r-xp 00000000 103:09 1436                              /system/lib/libopenjdkjvm.so
+edced000-edcee000 r--p 00007000 103:09 1436                              /system/lib/libopenjdkjvm.so
+edcee000-edcef000 rw-p 00008000 103:09 1436                              /system/lib/libopenjdkjvm.so
+edcef000-edcf0000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+edcf0000-edcf2000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+edcf2000-edd1a000 r-xp 00000000 103:09 1391                              /system/lib/libjavacore.so
+edd1a000-edd1b000 r--p 00027000 103:09 1391                              /system/lib/libjavacore.so
+edd1b000-edd1c000 rw-p 00028000 103:09 1391                              /system/lib/libjavacore.so
+edd1c000-edd1d000 rw-p 00000000 00:00 0                                  [anon:.bss]
+edd1d000-edd2b000 r-xp 00000000 103:09 1411                              /system/lib/libmediadrm.so
+edd2b000-edd2d000 r--p 0000d000 103:09 1411                              /system/lib/libmediadrm.so
+edd2d000-edd2e000 rw-p 0000f000 103:09 1411                              /system/lib/libmediadrm.so
+edd2e000-edd2f000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+edd2f000-edd30000 r--s 00000000 103:09 1260                              /system/framework/voip-common.jar
+edd30000-edd31000 r--s 00000000 103:09 1258                              /system/framework/telephony-common.jar
+edd31000-edd42000 r-xp 00000000 103:09 1414                              /system/lib/libmediandk.so
+edd42000-edd43000 ---p 00000000 00:00 0 
+edd43000-edd44000 r--p 00011000 103:09 1414                              /system/lib/libmediandk.so
+edd44000-edd45000 rw-p 00012000 103:09 1414                              /system/lib/libmediandk.so
+edd45000-edd55000 r-xp 00000000 103:09 1301                              /system/lib/libGLESv3.so
+edd55000-edd56000 r--p 0000f000 103:09 1301                              /system/lib/libGLESv3.so
+edd56000-edd57000 rw-p 00010000 103:09 1301                              /system/lib/libGLESv3.so
+edd57000-edd6c000 r-xp 00000000 103:09 1345                              /system/lib/libcamera2ndk.so
+edd6c000-edd6e000 r--p 00014000 103:09 1345                              /system/lib/libcamera2ndk.so
+edd6e000-edd6f000 rw-p 00016000 103:09 1345                              /system/lib/libcamera2ndk.so
+edd6f000-eddaf000 rw-p 00000000 00:04 16639                              /dev/ashmem/dalvik-mark stack (deleted)
+eddaf000-eddcf000 rw-p 00000000 00:04 16637                              /dev/ashmem/dalvik-large marked objects (deleted)
+eddcf000-eddd0000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+eddd0000-eddd1000 r--s 00000000 103:09 1168                              /system/framework/framework.jar
+eddd1000-eddd2000 r--s 00000000 103:09 1146                              /system/framework/bouncycastle.jar
+eddd2000-edde4000 r-xp 00000000 103:09 1315                              /system/lib/libandroid.so
+edde4000-edde5000 ---p 00000000 00:00 0 
+edde5000-edde7000 r--p 00012000 103:09 1315                              /system/lib/libandroid.so
+edde7000-edde8000 rw-p 00014000 103:09 1315                              /system/lib/libandroid.so
+edde8000-ede08000 rw-p 00000000 00:04 16636                              /dev/ashmem/dalvik-large live objects (deleted)
+ede08000-ede09000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+ede09000-ede0b000 r--s 00003000 103:09 1162                              /system/framework/core-libart.jar
+ede0b000-ede0f000 r-xp 00000000 103:09 1529                              /system/lib/libwebviewchromium_plat_support.so
+ede0f000-ede10000 r--p 00003000 103:09 1529                              /system/lib/libwebviewchromium_plat_support.so
+ede10000-ede11000 rw-p 00004000 103:09 1529                              /system/lib/libwebviewchromium_plat_support.so
+ede11000-ede15000 r-xp 00000000 103:09 1307                              /system/lib/libOpenSLES.so
+ede15000-ede16000 r--p 00003000 103:09 1307                              /system/lib/libOpenSLES.so
+ede16000-ede17000 rw-p 00004000 103:09 1307                              /system/lib/libOpenSLES.so
+ede17000-ede18000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+ede18000-ede19000 r--s 00000000 103:09 1161                              /system/framework/core-junit.jar
+ede19000-ede1b000 rw-p 00000000 00:04 5304849                            /dev/ashmem/dalvik-indirect ref table (deleted)
+ede1b000-ede3b000 rw-p 00000000 00:04 16633                              /dev/ashmem/dalvik-rosalloc page map (deleted)
+ede3b000-ede3c000 rw-s 00000000 00:04 5304081                            /dev/ashmem/GFXStats-10314 (deleted)
+ede3c000-ede3d000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ede3d000-ede3f000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ede3f000-ede40000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ede40000-ede42000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ede42000-ede43000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ede43000-ede45000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ede45000-ede47000 rw-p 00000000 00:04 5305345                            /dev/ashmem/dalvik-indirect ref table (deleted)
+ede47000-ede49000 rw-p 00000000 00:04 5303296                            /dev/ashmem/dalvik-indirect ref table (deleted)
+ede49000-ede4a000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ede4a000-ede4c000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ede4c000-ede4e000 rw-p 00000000 00:04 5303295                            /dev/ashmem/dalvik-indirect ref table (deleted)
+ede4e000-ede4f000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ede4f000-ede51000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ede51000-ede53000 rw-p 00000000 00:04 5299840                            /dev/ashmem/dalvik-indirect ref table (deleted)
+ede53000-ede55000 rw-p 00000000 00:04 5303291                            /dev/ashmem/dalvik-indirect ref table (deleted)
+ede55000-ede56000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ede56000-ede58000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ede58000-ede59000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ede59000-ede5b000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ede5b000-ede7b000 r--s 00000000 00:0c 4985                               /dev/__properties__/u:object_r:fingerprint_prop:s0
+ede7b000-ede9b000 r--s 00000000 00:0c 5002                               /dev/__properties__/u:object_r:debug_prop:s0
+ede9b000-edebb000 r--s 00000000 00:0c 5008                               /dev/__properties__/u:object_r:system_prop:s0
+edebb000-edebc000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_vector]
+edebc000-edebd000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_small_objects]
+edebd000-edebe000 r--s 00000000 103:09 1246                              /system/framework/okhttp.jar
+edebe000-edec0000 rw-p 00000000 00:04 5304069                            /dev/ashmem/dalvik-indirect ref table (deleted)
+edec0000-edec2000 rw-p 00000000 00:04 5303290                            /dev/ashmem/dalvik-indirect ref table (deleted)
+edec2000-edec6000 r-xp 00000000 103:09 1306                              /system/lib/libOpenMAXAL.so
+edec6000-edec7000 r--p 00003000 103:09 1306                              /system/lib/libOpenMAXAL.so
+edec7000-edec8000 rw-p 00004000 103:09 1306                              /system/lib/libOpenMAXAL.so
+edec8000-edecb000 r-xp 00000000 103:09 1393                              /system/lib/libjnigraphics.so
+edecb000-edecc000 r--p 00002000 103:09 1393                              /system/lib/libjnigraphics.so
+edecc000-edecd000 rw-p 00003000 103:09 1393                              /system/lib/libjnigraphics.so
+edecd000-edeed000 r--s 00000000 00:0c 4986                               /dev/__properties__/u:object_r:vold_prop:s0
+edeed000-edeee000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+edeee000-edeef000 r--s 00000000 103:09 1159                              /system/framework/conscrypt.jar
+edeef000-edef0000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edef0000-edef1000 r--s 0001d000 103:09 1163                              /system/framework/core-oj.jar
+edef1000-edef2000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edef2000-edef3000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+edef3000-edef5000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+edef5000-edf15000 r--s 00000000 00:0c 4983                               /dev/__properties__/u:object_r:config_prop:s0
+edf15000-edf16000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edf16000-edf17000 r--s 00000000 00:04 24380                              /dev/ashmem/5d7c6f4a-280c-46e7-8e14-2426232a019b (deleted)
+edf17000-edf18000 rw-p 00000000 00:04 27923                              /dev/ashmem/dalvik-mod union bitmap (deleted)
+edf18000-edf19000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edf19000-edf39000 r--s 00000000 00:0c 4982                               /dev/__properties__/u:object_r:dalvik_prop:s0
+edf39000-edf3a000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_vector]
+edf3a000-edf3c000 rw-p 00000000 00:04 15123                              /dev/ashmem/dalvik-indirect ref table (deleted)
+edf3c000-edf3d000 rw-p 00000000 00:04 16644                              /dev/ashmem/dalvik-mark sweep sweep array free buffer (deleted)
+edf3d000-edf3e000 rw-p 00000000 00:04 16643                              /dev/ashmem/dalvik-mark sweep sweep array free buffer (deleted)
+edf3e000-edf3f000 rw-p 00000000 00:04 16642                              /dev/ashmem/dalvik-mark sweep sweep array free buffer (deleted)
+edf3f000-edf4f000 r--p 004f8000 fd:00 32729                              /data/dalvik-cache/arm/system@framework@boot.art
+edf4f000-edf59000 r-xp 00000000 103:09 1404                              /system/lib/liblz4.so
+edf59000-edf5a000 ---p 00000000 00:00 0 
+edf5a000-edf5b000 r--p 0000a000 103:09 1404                              /system/lib/liblz4.so
+edf5b000-edf5c000 rw-p 0000b000 103:09 1404                              /system/lib/liblz4.so
+edf5c000-edf5f000 r-xp 00000000 103:09 1468                              /system/lib/libsigchain.so
+edf5f000-edf60000 r--p 00002000 103:09 1468                              /system/lib/libsigchain.so
+edf60000-edf61000 rw-p 00003000 103:09 1468                              /system/lib/libsigchain.so
+edf61000-edf62000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edf62000-edf63000 r--p 00011000 fd:00 32753                              /data/dalvik-cache/arm/system@framework@boot-org.apache.http.legacy.boot.art
+edf63000-edf64000 r--p 00018000 fd:00 32750                              /data/dalvik-cache/arm/system@framework@boot-apache-xml.art
+edf64000-edf65000 r--p 00003000 fd:00 32748                              /data/dalvik-cache/arm/system@framework@boot-ims-common.art
+edf65000-edf69000 r--p 00415000 fd:00 32742                              /data/dalvik-cache/arm/system@framework@boot-framework.art
+edf69000-edf89000 r--s 00000000 00:0c 4993                               /dev/__properties__/u:object_r:logd_prop:s0
+edf89000-edf8a000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+edf8a000-edf8b000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_vector]
+edf8b000-edf8c000 r--p 00004000 fd:00 32747                              /data/dalvik-cache/arm/system@framework@boot-voip-common.art
+edf8c000-edf8d000 r--p 00024000 fd:00 32745                              /data/dalvik-cache/arm/system@framework@boot-telephony-common.art
+edf8d000-edf8e000 r--p 0001d000 fd:00 32741                              /data/dalvik-cache/arm/system@framework@boot-ext.art
+edf8e000-edf8f000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+edf8f000-edf90000 r--p 00024000 fd:00 32740                              /data/dalvik-cache/arm/system@framework@boot-bouncycastle.art
+edf90000-edf91000 r--p 00001000 fd:00 32739                              /data/dalvik-cache/arm/system@framework@boot-core-junit.art
+edf91000-edf92000 r--p 00023000 fd:00 32738                              /data/dalvik-cache/arm/system@framework@boot-okhttp.art
+edf92000-edf93000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_small_objects]
+edf93000-edf94000 r--p 0001b000 fd:00 32733                              /data/dalvik-cache/arm/system@framework@boot-conscrypt.art
+edf94000-edf96000 r--p 000e3000 fd:00 32730                              /data/dalvik-cache/arm/system@framework@boot-core-libart.art
+edf96000-edfb6000 r--s 00000000 00:0c 4998                               /dev/__properties__/u:object_r:log_tag_prop:s0
+edfb6000-edfb8000 r--p 00000000 00:00 0                                  [anon:atexit handlers]
+edfb8000-edfd8000 r--s 00000000 00:0c 4987                               /dev/__properties__/u:object_r:default_prop:s0
+edfd8000-edff8000 r--s 00000000 00:0c 5012                               /dev/__properties__/properties_serial
+edff8000-ee018000 r--s 00000000 00:0c 5012                               /dev/__properties__/properties_serial
+ee018000-ee019000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_vector]
+ee019000-ee01a000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_small_objects]
+ee01a000-ee01b000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_vector]
+ee01b000-ee01d000 rw-p 00000000 00:00 0                                  [anon:linker_alloc]
+ee01d000-ee01e000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+ee01e000-ee01f000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_lob]
+ee01f000-ee020000 r--p 00000000 00:00 0                                  [anon:linker_alloc]
+ee020000-ee022000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_small_objects]
+ee022000-ee023000 r--p 00000000 00:00 0                                  [anon:atexit handlers]
+ee023000-ee024000 rw-p 00000000 00:00 0                                  [anon:linker_alloc_small_objects]
+ee024000-ee025000 rw-p 00000000 00:00 0                                  [anon:arc4random _rsx structure]
+ee025000-ee026000 rw-p 00000000 00:00 0                                  [anon:arc4random _rs structure]
+ee026000-ee027000 r--p 00000000 00:00 0                                  [anon:atexit handlers]
+ee027000-ee028000 ---p 00000000 00:00 0                                  [anon:thread signal stack guard page]
+ee028000-ee02a000 rw-p 00000000 00:00 0                                  [anon:thread signal stack]
+ee02a000-ee088000 r-xp 00000000 103:09 449                               /system/bin/linker
+ee088000-ee08a000 r--p 0005d000 103:09 449                               /system/bin/linker
+ee08a000-ee08b000 rw-p 0005f000 103:09 449                               /system/bin/linker
+ee08b000-ee08d000 rw-p 00000000 00:00 0 
+ee08d000-ee08e000 r--p 00000000 00:00 0 
+ee08e000-ee090000 rw-p 00000000 00:00 0 
+ff349000-ff349000 rw-p 00000000 00:00 0 
+ff349000-ff34a000 ---p 00000000 00:00 0 
+ff34a000-ffb49000 rw-p 00000000 00:00 0                                  [stack]
+ffff0000-ffff1000 r-xp 00000000 00:00 0                                  [vectors]

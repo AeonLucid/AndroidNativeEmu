@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 
 
 class Emulator:
-
     """
     :type mu Uc
     :type modules Modules
@@ -41,7 +40,7 @@ class Emulator:
             self._enable_vfp()
 
         # Android
-        self.system_properties = {}
+        self.system_properties = {"libc.debug.malloc.options":""}
 
         # Stack.
         self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
@@ -109,8 +108,17 @@ class Emulator:
         finally:
             self.mu.mem_unmap(address, mem_size)
 
-    def load_library(self, filename):
-        return self.modules.load_module(filename)
+    def _call_init_array(self):
+        pass
+
+    def load_library(self, filename, do_init=True):
+        libmod = self.modules.load_module(filename)
+        if do_init:
+            logger.debug("Calling Init for: %s " % filename)
+            for fun_ptr in libmod.init_array:
+                logger.debug("Calling Init function: %x " % fun_ptr)
+                self.call_native(fun_ptr)
+        return libmod
 
     def call_symbol(self, module, symbol_name, *argv):
         symbol = module.find_symbol(symbol_name)
@@ -132,6 +140,7 @@ class Emulator:
 
         try:
             # Execute native call.
+
             native_write_args(self, *argv)
             stop_pos = randint(HOOK_MEMORY_BASE, HOOK_MEMORY_BASE + HOOK_MEMORY_SIZE) | 1
             self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
