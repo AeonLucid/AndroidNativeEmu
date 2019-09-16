@@ -108,7 +108,7 @@ class Emulator:
         finally:
             self.mu.mem_unmap(address, mem_size)
 
-    def load_library(self, filename, do_init=True):
+    def load_library(self, filename, do_init=False):
         libmod = self.modules.load_module(filename)
         if do_init:
             logger.debug("Calling Init for: %s " % filename)
