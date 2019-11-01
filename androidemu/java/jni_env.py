@@ -651,8 +651,28 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_boolean_method_v(self, mu, env):
-        raise NotImplementedError()
+    def call_boolean_method_v(self, mu, env, obj_idx, method_id, args):
+        obj = self.get_reference(obj_idx)
+
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        method = obj.value.__class__.find_method_by_id(method_id)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method %d in object %s by id." % (method_id, obj.value.jvm_name))
+
+        logger.debug("JNIEnv->CallBooleanMethodV(%s, %s <%s>, 0x%x) was called" % (
+            obj.value.jvm_name,
+            method.name,
+            method.signature, args))
+
+        # Parse arguments.
+        constructor_args = self.read_args_v(mu, args, method.args_list)
+        result = method.func(obj.value, self._emu, *constructor_args)
+
+        return result
 
     @native_method
     def call_boolean_method_a(self, mu, env):
@@ -699,8 +719,28 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_int_method_v(self, mu, env):
-        raise NotImplementedError()
+    def call_int_method_v(self, mu, env,  obj_idx, method_id, args):
+        obj = self.get_reference(obj_idx)
+
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
+
+        method = obj.value.__class__.find_method_by_id(method_id)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method %d in object %s by id." % (method_id, obj.value.jvm_name))
+
+        logger.debug("JNIEnv->CallIntMethodV(%s, %s <%s>, 0x%x) was called" % (
+            obj.value.jvm_name,
+            method.name,
+            method.signature, args))
+
+        # Parse arguments.
+        constructor_args = self.read_args_v(mu, args, method.args_list)
+        result = method.func(obj.value, self._emu, *constructor_args)
+
+        return result
 
     @native_method
     def call_int_method_a(self, mu, env):
@@ -1612,8 +1652,12 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_java_vm(self, mu, env):
-        raise NotImplementedError()
+    def get_java_vm(self, mu, env, vm):
+        logger.debug("JNIEnv->GetJavaVM(0x%08x) was called" % vm)
+
+        mu.mem_write(vm, self._emu.java_vm.address_ptr.to_bytes(4, byteorder='little'))
+
+        return JNI_OK
 
     @native_method
     def get_string_region(self, mu, env):
