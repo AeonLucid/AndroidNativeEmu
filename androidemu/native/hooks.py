@@ -64,7 +64,6 @@ class NativeHooks:
                 memory_helpers.write_uints(uc, addr, [dli_fname, mod.base, 0, 0])
                 return 1
 
-
     def nop(self, name):
         @native_method
         def nop_inside(emu):

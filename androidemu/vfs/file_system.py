@@ -166,7 +166,9 @@ class VirtualFileSystem:
             for i in range(0, vlen):
                 addr = memory_helpers.read_ptr(mu, (i * 8) + vec)
                 size = memory_helpers.read_ptr(mu, (i * 8) + vec + 4)
-                sys.stderr.buffer.write(mu.mem_read(addr, size))
+                data = bytes(mu.mem_read(addr, size)).decode(encoding='UTF-8')
+
+                logger.error('Writev %s' % data)
 
             return 0
 

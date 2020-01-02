@@ -1,5 +1,6 @@
 import logging
 import math
+import os
 import time
 from random import randint
 
@@ -31,13 +32,16 @@ class SyscallHooks:
     def __init__(self, mu, syscall_handler):
         self._mu = mu
         self._syscall_handler = syscall_handler
+        self._syscall_handler.set_handler(0x14, "getpid", 0, self._getpid)
         self._syscall_handler.set_handler(0x4E, "gettimeofday", 2, self._handle_gettimeofday)
         self._syscall_handler.set_handler(0xAC, "prctl", 5, self._handle_prctl)
+        self._syscall_handler.set_handler(0xE0, "gettid", 0, self._gettid)
         self._syscall_handler.set_handler(0xF0, "futex", 6, self._handle_futex)
         self._syscall_handler.set_handler(0x107, "clock_gettime", 2, self._handle_clock_gettime)
         self._syscall_handler.set_handler(0x119, "socket", 3, self._socket)
         self._syscall_handler.set_handler(0x11a, "bind", 3, self._bind)
         self._syscall_handler.set_handler(0x11b, "connect", 3, self._connect)
+        self._syscall_handler.set_handler(0x14e, "faccessat", 4, self._faccessat)
         self._syscall_handler.set_handler(0x159, "getcpu", 3, self._getcpu)
         self._syscall_handler.set_handler(0x14e, "faccessat", 4, self._faccessat)
         self._syscall_handler.set_handler(0x14, "getpid", 0, self._getpid)
@@ -49,14 +53,11 @@ class SyscallHooks:
         self._socket_id = 0x100000
         self._sockets = dict()
 
-    def _null(self, mu):
-        return 0
-
-    def _gettid(self, mu):
-        return  0x2211
-
     def _getpid(self, mu):
         return 0x1122
+
+    def _gettid(self, mu):
+        return 0x2211
 
     def _faccessat(self, mu, filename, pathname, mode, flag):
         return 0
