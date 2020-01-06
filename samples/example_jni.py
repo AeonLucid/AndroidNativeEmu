@@ -2,18 +2,17 @@ import logging
 import posixpath
 import sys
 
-from unicorn import UcError, UC_HOOK_CODE, UC_HOOK_MEM_UNMAPPED
+from unicorn import UcError, UC_HOOK_MEM_UNMAPPED
 from unicorn.arm_const import *
 
 from androidemu.emulator import Emulator
 from androidemu.java.java_class_def import JavaClassDef
 from androidemu.java.java_method_def import java_method_def
 
-
-# Create java class.
 from samples import debug_utils
 
 
+# Create java class.
 class MainActivity(metaclass=JavaClassDef, jvm_name='local/myapp/testnativeapp/MainActivity'):
 
     def __init__(self):
@@ -42,6 +41,9 @@ emulator = Emulator(
     vfs_root=posixpath.join(posixpath.dirname(__file__), "vfs")
 )
 
+# emulator.mu.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
+emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
+
 # Register Java class.
 emulator.java_classloader.add_class(MainActivity)
 
@@ -68,10 +70,8 @@ try:
     # Run JNI_OnLoad.
     #   JNI_OnLoad will call 'RegisterNatives'.
     emulator.call_symbol(lib_module, 'JNI_OnLoad', emulator.java_vm.address_ptr, 0x00)
-    emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
 
     # Do native stuff.
-    emulator.mu.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
     main_activity = MainActivity()
     logger.info("Response from JNI call: %s" % main_activity.string_from_jni(emulator))
 

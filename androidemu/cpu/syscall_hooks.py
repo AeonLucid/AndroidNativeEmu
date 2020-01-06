@@ -1,3 +1,4 @@
+import calendar
 import logging
 import math
 import os
@@ -12,6 +13,7 @@ from androidemu.const.linux import *
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.data import socket_info
 from androidemu.data.socket_info import SocketInfo
+from androidemu.utils import memory_helpers
 
 OVERRIDE_TIMEOFDAY = False
 OVERRIDE_TIMEOFDAY_SEC = 0
@@ -60,6 +62,7 @@ class SyscallHooks:
         return 0x2211
 
     def _faccessat(self, mu, filename, pathname, mode, flag):
+        file = memory_helpers.read_utf8(mu, pathname)
         return 0
 
     def _getcpu(self, mu, _cpu, node, cache):
@@ -138,7 +141,14 @@ class SyscallHooks:
         errno is set appropriately).
         """
 
-        if clk_id == CLOCK_MONOTONIC or clk_id == CLOCK_MONOTONIC_COARSE:
+        if clk_id == CLOCK_REALTIME:
+            # Its time represents seconds and nanoseconds since the Epoch.
+            clock_real = calendar.timegm(time.gmtime())
+
+            mu.mem_write(tp_ptr + 0, int(clock_real).to_bytes(4, byteorder='little'))
+            mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
+            return 0
+        elif clk_id == CLOCK_MONOTONIC or clk_id == CLOCK_MONOTONIC_COARSE:
             if OVERRIDE_CLOCK:
                 mu.mem_write(tp_ptr + 0, int(OVERRIDE_CLOCK_TIME).to_bytes(4, byteorder='little'))
                 mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
@@ -180,7 +190,13 @@ class SyscallHooks:
         return 0
 
     def _connect(self, mu, fd, addr, addr_len):
-        print('Connect syscall', hexdump.hexdump(mu.mem_read(addr, addr_len)))
+        """
+        If the connection or binding succeeds, zero is returned.
+        On error, -1 is returned, and errno is set appropriately.
+        """
+        hexdump.hexdump(mu.mem_read(addr, addr_len))
+        
+        # return 0
         raise NotImplementedError()
 
     def _getrandom(self, mu, buf, count, flags):

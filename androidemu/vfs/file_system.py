@@ -1,7 +1,6 @@
 import logging
 import os
 import posixpath
-import sys
 
 from androidemu.config import WRITE_FSTAT_TIMES
 from androidemu.cpu.syscall_handlers import SyscallHandlers

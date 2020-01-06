@@ -22,11 +22,10 @@ class NativeMemory:
         self._syscall_handler.set_handler(0xDC, "madvise", 3, self._handle_madvise)
 
     def allocate(self, length, prot=UC_PROT_READ | UC_PROT_WRITE):
-        return self._heap.malloc(length, prot)
+        return self._heap.map(length, prot)
 
     def _handle_munmap(self, uc, addr, len_in):
-        # TODO: Use len_in
-        self._heap.free(addr)
+        self._heap.unmap(addr, len_in)
 
     def _handle_mmap2(self, mu, addr, length, prot, flags, fd, offset):
         """
@@ -39,7 +38,7 @@ class NativeMemory:
         # MAP_FIXED	    0x10
         # MAP_ANONYMOUS	0x20
 
-        return self._heap.malloc(length, prot)
+        return self._heap.map(length, prot)
 
     def _handle_madvise(self, mu, start, len_in, behavior):
         """
@@ -59,6 +58,3 @@ class NativeMemory:
         """
         self._heap.protect(addr, len_in, prot)
         return 0
-
-    def free(self, addr):
-        self._heap.free(addr)

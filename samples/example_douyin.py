@@ -108,26 +108,6 @@ emulator = Emulator(
     vfs_root=posixpath.join(posixpath.dirname(__file__), "vfs")
 )
 
-# Overwrite some symbols
-@native_method
-def malloc(uc: Uc, size):
-    return emulator.native_memory._heap.malloc(size, UC_PROT_ALL)
-
-
-@native_method
-def free(uc: Uc, ptr):
-    emulator.native_memory._heap.free(ptr)
-
-
-@native_method
-def calloc(uc: Uc, nmemb, size):
-    return emulator.native_memory._heap.malloc(nmemb * size, UC_PROT_ALL)
-
-
-emulator.modules.add_symbol_hook('malloc', emulator.hooker.write_function(malloc) + 1)
-emulator.modules.add_symbol_hook('free', emulator.hooker.write_function(free) + 1)
-emulator.modules.add_symbol_hook('calloc', emulator.hooker.write_function(calloc) + 1)
-
 # Register Java class.
 # emulator.java_classloader.add_class(MainActivity)
 emulator.java_classloader.add_class(XGorgen)
@@ -138,11 +118,11 @@ emulator.java_classloader.add_class(java_lang_Thread)
 emulator.java_classloader.add_class(java_lang_StackTraceElement)
 
 # Load all libraries.
-emulator.load_library("./example_binaries/libdl.so", do_init=True)
-emulator.load_library("./example_binaries/libc.so", do_init=False)
-emulator.load_library("./example_binaries/libstdc++.so", do_init=True)
-emulator.load_library("./example_binaries/libm.so", do_init=True)
-lib_module = emulator.load_library("./example_binaries/libcms.so", do_init=True)
+emulator.load_library("./example_binaries/libdl.so")
+emulator.load_library("./example_binaries/libc.so")
+emulator.load_library("./example_binaries/libstdc++.so")
+emulator.load_library("./example_binaries/libm.so")
+lib_module = emulator.load_library("./example_binaries/libcms.so")
 
 # Show loaded modules.
 logger.info("Loaded modules:")

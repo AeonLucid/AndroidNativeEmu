@@ -40,7 +40,7 @@ class Emulator:
             self._enable_vfp()
 
         # Android
-        self.system_properties = {"libc.debug.malloc.options":""}
+        self.system_properties = {"libc.debug.malloc.options": ""}
 
         # Stack.
         self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
@@ -108,7 +108,7 @@ class Emulator:
         finally:
             self.mu.mem_unmap(address, mem_size)
 
-    def load_library(self, filename, do_init=False):
+    def load_library(self, filename, do_init=True):
         libmod = self.modules.load_module(filename)
         if do_init:
             logger.debug("Calling init for: %s " % filename)

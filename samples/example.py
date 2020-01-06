@@ -16,9 +16,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Initialize emulator
-emulator = Emulator()
-emulator.load_library("samples/example_binaries/libc.so")
-lib_module = emulator.load_library("samples/example_binaries/libnative-lib.so")
+emulator = Emulator(vfp_inst_set=True)
+emulator.load_library("example_binaries/libc.so", do_init=False)
+lib_module = emulator.load_library("example_binaries/libnative-lib.so", do_init=False)
 
 # Show loaded modules.
 logger.info("Loaded modules:")
