@@ -1411,6 +1411,7 @@ class JNIEnv:
 
     @native_method
     def release_string_utf_chars(self, mu, env, string, utf_ptr):
+        logger.debug("JNIEnv->ReleaseStringUTFChars(%x, %x) was called" % (string, utf_ptr))
         pass
 
     @native_method

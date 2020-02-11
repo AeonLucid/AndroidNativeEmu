@@ -124,7 +124,7 @@ class Emulator:
             logger.error('Unable to find symbol \'%s\' in module \'%s\'.' % (symbol_name, module.filename))
             return
 
-        self.call_native(symbol.address, *argv)
+        return self.call_native(symbol.address, *argv)
 
     def call_native(self, addr, *argv):
         # Detect JNI call
