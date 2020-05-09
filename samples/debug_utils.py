@@ -17,6 +17,14 @@ def hook_code(mu, address, size, user_data):
         mu.emu_stop()
 
 
+def hook_block(mu, address, size, user_data):
+    instruction = mu.mem_read(address, size)
+    instruction_str = ''.join('{:02x} '.format(x) for x in instruction)
+
+    logger.debug('# Block at 0x%x, instruction size = 0x%x, instruction = %s' %
+                 (address, size, instruction_str))
+
+
 def hook_unmapped(mu, access, address, length, value, context):
     pc = mu.reg_read(UC_ARM_REG_PC)
 

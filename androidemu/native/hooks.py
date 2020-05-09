@@ -91,7 +91,7 @@ class NativeHooks:
         logger.debug("Called dlsym(0x%x, %s)" % (handle, symbol_str))
 
         if handle == 0xffffffff:
-            sym = self._modules.find_symbol_str(symbol_str)
+            sym = self._modules.find_symbol_name(symbol_str)
         else:
             module = self._modules.find_module(handle)
 

@@ -53,7 +53,7 @@ class Emulator:
         # CPU
         self.interrupt_handler = InterruptHandler(self.mu)
         self.syscall_handler = SyscallHandlers(self.interrupt_handler)
-        self.syscall_hooks = SyscallHooks(self.mu, self.syscall_handler)
+        self.syscall_hooks = SyscallHooks(self.mu, self.syscall_handler, self.modules)
 
         # File System
         if vfs_root is not None:

@@ -33,12 +33,8 @@ class Modules:
                 return module.symbol_lookup[addr]
         return None, None
 
-    def find_symbol_str(self, symbol_str):
-        for module in self.modules:
-            sym = module.find_symbol(symbol_str)
-            if sym is not None:
-                return sym
-        return None
+    def find_symbol_name(self, name):
+        return self._elf_lookup_symbol(name)
 
     def find_module(self, addr):
         for module in self.modules:

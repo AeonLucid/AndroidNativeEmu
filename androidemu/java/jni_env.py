@@ -962,7 +962,7 @@ class JNIEnv:
         sig = memory_helpers.read_utf8(mu, sig_ptr)
         clazz = self.get_reference(clazz_idx)
 
-        logger.debug("JNIEnv->GetFieldId(%d, %s, %s) was called" % (clazz_idx, name, sig))
+        logger.debug("JNIEnv->GetFieldId(%d [%s], %s, %s) was called" % (clazz_idx, clazz.value.jvm_name, name, sig))
 
         field = clazz.value.find_field(name, sig, False)
 

@@ -25,7 +25,7 @@ class Module:
 
     def is_symbol_addr(self, addr):
         if addr in self.symbol_lookup:
-            return  self.symbol_lookup[addr](0)
+            return self.symbol_lookup[addr](0)
         else:
             return None
 

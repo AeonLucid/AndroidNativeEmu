@@ -12,7 +12,9 @@ from androidemu.const.android import *
 from androidemu.const.linux import *
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.data import socket_info
+from androidemu.data.fork_info import ForkInfo
 from androidemu.data.socket_info import SocketInfo
+from androidemu.internal.modules import Modules
 from androidemu.utils import memory_helpers
 
 OVERRIDE_TIMEOFDAY = False
@@ -31,14 +33,21 @@ class SyscallHooks:
     :type mu Uc
     :type syscall_handler SyscallHandlers
     """
-    def __init__(self, mu, syscall_handler):
+    def __init__(self, mu, syscall_handler, modules: Modules):
         self._mu = mu
         self._syscall_handler = syscall_handler
+        self._syscall_handler.set_handler(0xB, "execve", 3, self._handle_execve)
+        self._syscall_handler.set_handler(0x43, "sigaction", 3, self._null)
+        self._syscall_handler.set_handler(0x48, "sigsuspend", 3, self._null)
         self._syscall_handler.set_handler(0x14, "getpid", 0, self._getpid)
         self._syscall_handler.set_handler(0x4E, "gettimeofday", 2, self._handle_gettimeofday)
+        self._syscall_handler.set_handler(0x72, "wait4", 4, self._handle_wait4)
         self._syscall_handler.set_handler(0xAC, "prctl", 5, self._handle_prctl)
         self._syscall_handler.set_handler(0xE0, "gettid", 0, self._gettid)
+        self._syscall_handler.set_handler(0xAF, "sigprocmask", 3, self._null)
+        self._syscall_handler.set_handler(0xBE, "vfork", 0, self._handle_vfork)
         self._syscall_handler.set_handler(0xF0, "futex", 6, self._handle_futex)
+        self._syscall_handler.set_handler(0xF8, "exit_group", 1, self._exit_group)
         self._syscall_handler.set_handler(0x107, "clock_gettime", 2, self._handle_clock_gettime)
         self._syscall_handler.set_handler(0x119, "socket", 3, self._socket)
         self._syscall_handler.set_handler(0x11a, "bind", 3, self._bind)
@@ -50,13 +59,38 @@ class SyscallHooks:
         self._syscall_handler.set_handler(0xe0, "gettid", 0, self._gettid)
         # self._syscall_handler.set_handler(0x180,"null1",0, self._null)
         self._syscall_handler.set_handler(0x180, "getrandom", 3, self._getrandom)
+        self._modules = modules
         self._clock_start = time.time()
         self._clock_offset = randint(1000, 2000)
         self._socket_id = 0x100000
         self._sockets = dict()
+        self._fork = None
 
     def _getpid(self, mu):
-        return 0x1122
+        return 21458
+
+    def _handle_execve(self, mu, pathname_ptr, argv, envp):
+        pathname = memory_helpers.read_utf8(mu, pathname_ptr)
+        args = []
+        while True:
+            arg_ptr = int.from_bytes(mu.mem_read(argv, 4), byteorder='little')
+
+            if arg_ptr == 0:
+                break
+
+            args.append(memory_helpers.read_utf8(mu, arg_ptr))
+            argv = argv + 4
+
+        # Set errno.
+        errno_ptr = self._modules.find_symbol_name('__errno')
+        mu.mem_write(errno_ptr, int(13).to_bytes(4, byteorder='little'))
+
+        logger.warning('Exec %s %s' % (pathname, args))
+        return 0
+
+    def _null(self, mu, *args):
+        logger.warning('Skipping syscall, returning 0')
+        return 0
 
     def _gettid(self, mu):
         return 0x2211
@@ -93,6 +127,12 @@ class SyscallHooks:
 
         return 0
 
+    def _handle_wait4(self, mu, upid, stat_addr, options,  ru):
+        """
+        on success, returns the process ID of the terminated child; on error, -1 is returned.
+        """
+        return upid
+
     def _handle_prctl(self, mu, option, arg2, arg3, arg4, arg5):
         """
         int prctl(int option, unsigned long arg2, unsigned long arg3, unsigned long arg4, unsigned long arg5);
@@ -110,6 +150,25 @@ class SyscallHooks:
             return 0
         else:
             raise NotImplementedError("Unsupported prctl option %d (0x%x)" % (option, option))
+
+    def _handle_vfork(self, mu):
+        """
+        Upon successful completion, vfork() shall return 0 to the child process
+        and return the process ID of the child process to the parent process.
+
+        Otherwise, -1 shall be returned to the parent, no child process shall be created,
+        and errno shall be set to indicate the error.
+        """
+        if self._fork is not None:
+            raise NotImplementedError('Already forked.')
+
+        self._fork = ForkInfo(mu, self._getpid(mu) + 1)
+
+        # Current execution becomes the fork, save all registers so we can return to vfork later for the main process.
+        # See exit_group.
+        self._fork.save_state()
+
+        return 0
 
     def _handle_futex(self, mu, uaddr, op, val, timeout, uaddr2, val3):
         """
@@ -129,6 +188,18 @@ class SyscallHooks:
             raise NotImplementedError()
 
         return 0
+
+    def _exit_group(self, mu, status):
+        if self._fork is not None:
+            pid = self._fork.pid
+
+            self._fork.load_state()
+            self._fork = None
+
+            # We exit the child process, registers were restored to vfork.
+            return pid
+
+        raise Exception('Application shutdown all threads, status %u' % status)
 
     def _handle_clock_gettime(self, mu, clk_id, tp_ptr):
         """
