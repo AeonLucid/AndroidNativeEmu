@@ -50,13 +50,15 @@ class NativeHooks:
     @native_method
     def dlopen(self, uc, path):
         path = memory_helpers.read_utf8(uc, path)
-        logger.debug("Called dlopen(%s)" % path)
+        logger.info("Called dlopen(%s)" % path)
 
-        if path == 'libvendorconn.so':
-            lib = os.path.realpath(os.path.join(__file__, '..', '..', '..', 'samples', 'example_binaries', 'libvendorconn.so'))
-            mod = self._emu.load_library(lib)
+        if path is not None:
+            lib = os.path.realpath(os.path.join(__file__, '..', '..', '..', 'samples', 'example_binaries', path))
+            if lib is not None:
+                mod = self._emu.load_library(lib)
+                return mod.base
 
-            return mod.base
+            logger.warning("This %s is needed." % lib)
 
         return None
 
@@ -109,4 +111,5 @@ class NativeHooks:
         @native_method
         def nop_inside(emu):
             raise NotImplementedError('Symbol hook not implemented %s' % name)
+
         return nop_inside

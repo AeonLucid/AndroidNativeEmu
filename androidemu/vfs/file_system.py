@@ -8,7 +8,7 @@ from androidemu.config import WRITE_FSTAT_TIMES
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.utils import memory_helpers
 from androidemu.vfs import file_helpers
-from samples import debug_utils
+from androidemu.utils import debug_utils
 
 logger = logging.getLogger(__name__)
 
