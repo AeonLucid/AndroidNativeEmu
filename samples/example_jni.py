@@ -8,9 +8,6 @@ from unicorn.arm_const import *
 from androidemu.emulator import Emulator
 from androidemu.java.java_class_def import JavaClassDef
 from androidemu.java.java_method_def import java_method_def
-
-
-# Create java class.
 from androidemu.utils import debug_utils
 
 
