@@ -44,7 +44,7 @@ class TestNative(unittest.TestCase):
         emulator.load_library(os.path.join(dir_samples, "example_binaries", "libdl.so"))
         emulator.load_library(os.path.join(dir_samples, "example_binaries", "libc.so"))
         emulator.load_library(os.path.join(dir_samples, "example_binaries", "libstdc++.so"))
-        module = emulator.load_library(os.path.join(os.path.dirname(__file__), "example_binaries", "test_native.so"))
+        module = emulator.load_library(os.path.join(dir_samples, "example_binaries", "test_native.so"))
 
         res = emulator.call_symbol(module, 'Java_com_aeonlucid_nativetesting_MainActivity_testSixArg', emulator.java_vm.jni_env.address_ptr, 0x00, 'One', 'Two', 'Three', 'Four', 'Five', 'Six')
 
