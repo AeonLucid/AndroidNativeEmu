@@ -33,6 +33,15 @@ class Modules:
                 return module.symbol_lookup[addr]
         return None, None
 
+    def find_symbol_name(self, name):
+        return self._elf_lookup_symbol(name)
+
+    def find_module(self, addr):
+        for module in self.modules:
+            if module.base == addr:
+                return module
+        return None
+
     def load_module(self, filename):
         logger.debug("Loading module '%s'." % filename)
 

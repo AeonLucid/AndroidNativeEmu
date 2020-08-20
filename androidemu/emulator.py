@@ -40,7 +40,7 @@ class Emulator:
             self._enable_vfp()
 
         # Android
-        self.system_properties = {"libc.debug.malloc.options":""}
+        self.system_properties = {"libc.debug.malloc.options": ""}
 
         # Stack.
         self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
@@ -53,7 +53,7 @@ class Emulator:
         # CPU
         self.interrupt_handler = InterruptHandler(self.mu)
         self.syscall_handler = SyscallHandlers(self.interrupt_handler)
-        self.syscall_hooks = SyscallHooks(self.mu, self.syscall_handler)
+        self.syscall_hooks = SyscallHooks(self.mu, self.syscall_handler, self.modules)
 
         # File System
         if vfs_root is not None:
@@ -108,10 +108,10 @@ class Emulator:
         finally:
             self.mu.mem_unmap(address, mem_size)
 
-    def load_library(self, filename, do_init=False):
+    def load_library(self, filename, do_init=True):
         libmod = self.modules.load_module(filename)
         if do_init:
-            logger.debug("Calling Init for: %s " % filename)
+            logger.debug("Calling init for: %s " % filename)
             for fun_ptr in libmod.init_array:
                 logger.debug("Calling Init function: %x " % fun_ptr)
                 self.call_native(fun_ptr)
@@ -124,7 +124,7 @@ class Emulator:
             logger.error('Unable to find symbol \'%s\' in module \'%s\'.' % (symbol_name, module.filename))
             return
 
-        self.call_native(symbol.address, *argv)
+        return self.call_native(symbol.address, *argv)
 
     def call_native(self, addr, *argv):
         # Detect JNI call

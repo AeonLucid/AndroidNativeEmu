@@ -281,3 +281,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/venv,macos,python,windows,pycharm+all
+
+!/tests/test_binaries/test_native.so
+*.idb

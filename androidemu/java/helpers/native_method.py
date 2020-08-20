@@ -30,12 +30,14 @@ def native_write_args(emu, *argv):
     if amount >= 5:
         sp_start = emu.mu.reg_read(UC_ARM_REG_SP)
         sp_current = sp_start - STACK_OFFSET  # Need to offset because our hook pushes one register on the stack.
+        sp_current = sp_current - (4 * (amount - 4))  # Reserve space for arguments.
+        sp_end = sp_current
 
         for arg in argv[4:]:
-            emu.mu.mem_write(sp_current - STACK_OFFSET, native_translate_arg(emu, arg).to_bytes(4, byteorder='little'))
-            sp_current = sp_current - 4
+            emu.mu.mem_write(sp_current, native_translate_arg(emu, arg).to_bytes(4, byteorder='little'))
+            sp_current = sp_current + 4
 
-        emu.mu.reg_write(UC_ARM_REG_SP, sp_current)
+        emu.mu.reg_write(UC_ARM_REG_SP, sp_end)
 
 
 def native_read_args(mu, args_count):

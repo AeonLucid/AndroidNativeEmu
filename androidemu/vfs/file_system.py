@@ -1,12 +1,14 @@
 import logging
 import os
 import posixpath
-import sys
+
+from unicorn import UC_HOOK_MEM_UNMAPPED, UC_HOOK_MEM_WRITE, UC_HOOK_MEM_READ, UC_HOOK_BLOCK
 
 from androidemu.config import WRITE_FSTAT_TIMES
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.utils import memory_helpers
 from androidemu.vfs import file_helpers
+from samples import debug_utils
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +44,7 @@ class VirtualFileSystem:
         syscall_handler.set_handler(0x6, "close", 1, self._handle_close)
         syscall_handler.set_handler(0x21, "access", 2, self._handle_access)
         syscall_handler.set_handler(0x92, "writev", 3, self._handle_writev)
+        syscall_handler.set_handler(0xC3, "stat64", 2, self._handle_stat64)
         syscall_handler.set_handler(0xC5, "fstat64", 2, self._handle_fstat64)
         syscall_handler.set_handler(0x142, "openat", 4, self._handle_openat)
         syscall_handler.set_handler(0x147, "fstatat64", 4, self._handle_fstatat64)
@@ -148,6 +151,12 @@ class VirtualFileSystem:
 
         file = self._file_descriptors[fd]
 
+        if fd <= 2:
+            # if file.name == 'stdin':
+            #     mu.hook_add(UC_HOOK_BLOCK, debug_utils.hook_block)
+            logger.info("File closed '%s'" % file.name)
+            return 0
+
         if file.descriptor != 'urandom':
             logger.info("File closed '%s'" % file.name)
             os.close(file.descriptor)
@@ -158,19 +167,46 @@ class VirtualFileSystem:
 
     def _handle_access(self, mu, filename_ptr, flags):
         filename = memory_helpers.read_utf8(mu, filename_ptr)
-        logger.warning("Path '%s'" % filename)
-        return 0
+        filename_virt = self.translate_path(filename)
+
+        logger.warning("Path '%s' exists %s" % (filename, os.path.isfile(filename_virt)))
+
+        if os.path.isfile(filename_virt):
+            return 0
+
+        return -1
 
     def _handle_writev(self, mu, fd, vec, vlen):
         if fd == 2:
             for i in range(0, vlen):
                 addr = memory_helpers.read_ptr(mu, (i * 8) + vec)
                 size = memory_helpers.read_ptr(mu, (i * 8) + vec + 4)
-                sys.stderr.buffer.write(mu.mem_read(addr, size))
+                data = bytes(mu.mem_read(addr, size)).decode(encoding='UTF-8')
+
+                logger.error('Writev %s' % data)
 
             return 0
 
         raise NotImplementedError()
+
+    def _handle_stat64(self, mu, filename_ptr, buf_ptr):
+        filename = memory_helpers.read_utf8(mu, filename_ptr)
+
+        logger.info("File stat64 '%s'" % filename)
+
+        pathname = self.translate_path(filename)
+
+        if not os.path.exists(pathname):
+            logger.warning('> File was not found.')
+            return -1
+
+        logger.warning('> File was found.')
+
+        # stat = file_helpers.stat64(path=pathname)
+        # stat = os.stat(path=file_path, dir_fd=None, follow_symlinks=False)
+        # file_helpers.stat_to_memory(mu, buf_ptr, stat, WRITE_FSTAT_TIMES)
+
+        return 0
 
     def _handle_fstat64(self, mu, fd, buf_ptr):
         """
