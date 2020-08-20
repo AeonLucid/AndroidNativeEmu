@@ -24,6 +24,9 @@ class NativeMemory:
     def allocate(self, length, prot=UC_PROT_READ | UC_PROT_WRITE):
         return self._heap.map(length, prot)
 
+    def free(self, addr, length):
+        self._heap.unmap(addr, length)
+
     def _handle_munmap(self, uc, addr, len_in):
         self._heap.unmap(addr, len_in)
 
