@@ -6,7 +6,7 @@ from unicorn.arm_const import *
 from androidemu.hooker import STACK_OFFSET
 from androidemu.java.java_class_def import JavaClassDef
 from androidemu.java.jni_const import JNI_ERR
-from androidemu.java.jni_ref import jobject, jstring, jobjectArray, jbyteArray
+from androidemu.java.jni_ref import jobject, jstring, jobjectArray, jbyteArray, jclass
 
 
 def native_write_args(emu, *argv):
@@ -78,7 +78,7 @@ def native_translate_arg(emu, val):
         # TODO: Look into this, seems wrong..
         return emu.java_vm.jni_env.add_local_reference(jobject(val))
     elif isinstance(val, JavaClassDef):
-        return emu.java_vm.jni_env.add_local_reference(jobject(val))
+        return emu.java_vm.jni_env.add_local_reference(jclass(val))
     else:
         raise NotImplementedError("Unable to write response '%s' type '%s' to emulator." % (str(val), type(val)))
 
