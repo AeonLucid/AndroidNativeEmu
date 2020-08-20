@@ -329,6 +329,10 @@ class JNIEnv:
                 ref = int.from_bytes(mu.mem_read(args_ptr, 4), byteorder='little')
                 result.append(self.get_reference(ref))
                 args_ptr = args_ptr + 4
+            elif arg_name == 'jbyteArray':
+                ref = int.from_bytes(mu.mem_read(args_ptr, 4), byteorder='little')
+                result.append(self.get_reference(ref))
+                args_ptr = args_ptr + 4
             else:
                 raise NotImplementedError('Unknown arg name %s' % arg_name)
 
@@ -573,7 +577,10 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_object_class(self, mu, env):
+    def get_object_class(self, mu, env, jobj):
+        ref = self.get_reference(jobj)
+        if isinstance(ref, jobject):
+            return ref.value.__class__
         raise NotImplementedError()
 
     @native_method
@@ -1483,8 +1490,15 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_byte_array_elements(self, mu, env):
-        raise NotImplementedError()
+    def get_byte_array_elements(self, mu, env, array_idx, is_copy_ptr):
+        ref = self.get_reference(array_idx)
+
+        if not isinstance(ref, jbyteArray):
+            raise ValueError('Expected a jbyteArray.')
+
+        alloc_addr = self._emu.native_memory.allocate(len(ref.value))
+        mu.mem_write(alloc_addr, bytes(ref.value))
+        return alloc_addr
 
     @native_method
     def get_char_array_elements(self, mu, env):
@@ -1515,8 +1529,13 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def release_byte_array_elements(self, mu, env):
-        raise NotImplementedError()
+    def release_byte_array_elements(self, mu, env, array_idx, buf_ptr, mode):
+        ref = self.get_local_reference(array_idx)
+
+        if not isinstance(ref, jbyteArray):
+            raise ValueError('Expected a jbyteArray.')
+
+        self._emu.native_memory.free(buf_ptr, len(ref.value))
 
     @native_method
     def release_char_array_elements(self, mu, env):

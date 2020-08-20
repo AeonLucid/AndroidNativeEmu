@@ -5,7 +5,7 @@ from androidemu.hooker import Hooker
 from androidemu.internal.modules import Modules
 from androidemu.native.memory import NativeMemory
 
-from androidemu.java.helpers.native_method import native_method
+from androidemu.java.helpers.native_method import native_method, native_read_args
 from androidemu.utils import memory_helpers
 
 logger = logging.getLogger(__name__)
@@ -25,6 +25,7 @@ class NativeHooks:
         self.atexit = []
 
         modules.add_symbol_hook('__system_property_get', hooker.write_function(self.system_property_get) + 1)
+        modules.add_symbol_hook('__android_log_print', hooker.write_function(self.android_log_print) + 1)
         modules.add_symbol_hook('dlopen', hooker.write_function(self.dlopen) + 1)
         modules.add_symbol_hook('dlclose', hooker.write_function(self.dlclose) + 1)
         modules.add_symbol_hook('dladdr', hooker.write_function(self.dladdr) + 1)
@@ -44,6 +45,37 @@ class NativeHooks:
             memory_helpers.write_utf8(uc, buf_ptr, self._emu.system_properties[name])
         else:
             raise ValueError('%s was not found in system_properties dictionary.' % name)
+
+        return None
+
+    @native_method
+    def android_log_print(self, uc, log_level, log_tag_ptr, log_format_ptr):
+        params_count = len(locals())
+        log_tag = memory_helpers.read_utf8(uc, log_tag_ptr)
+        fmt = memory_helpers.read_utf8(uc, log_format_ptr)
+
+        args_type = []
+        args_count = 0
+        i = 0
+        while i < len(fmt):
+            if fmt[i] == '%':
+                if fmt[i+1] in ['s', 'd', 'p']:
+                    args_type.append(fmt[i+1])
+                    args_count += 1
+                    i += 1
+            i += 1
+
+        other_args = native_read_args(uc, params_count - 2 + args_count)[params_count-2:]
+        args = []
+        for i in range(args_count):
+            if args_type[i] == 's':
+                args.append(memory_helpers.read_utf8(uc, other_args[i]))
+            elif args_type[i] == 'd' or args_type[i] == 'p':
+                args.append(other_args[i])
+
+        # python not support %p format
+        fmt = fmt.replace('%p', '0x%x')
+        logger.debug("Called __android_log_print(%d, %s, %s)" % (log_level, log_tag, fmt % tuple(args)))
 
         return None
 
