@@ -186,7 +186,7 @@ class Modules:
                             value = load_base + value_orig
 
                             # Write the new value
-                            self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
+                            self.emu.mu.mem_write(rel_addr, value.to_bytes((value.bit_length() + 7) // 8, byteorder='little'))
                         else:
                             raise NotImplementedError()
                     else:

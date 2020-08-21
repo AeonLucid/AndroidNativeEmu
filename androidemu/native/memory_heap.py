@@ -42,7 +42,10 @@ class UnicornSimpleHeap:
 
         # Check if nothing was found.
         if data_addr is None:
-            raise Exception('Failed to mmap memory.')
+            if available_start is None:
+                raise Exception('Failed to mmap memory.')
+            else:
+                data_addr = available_start
 
         # Reserve.
         for addr in range(data_addr, data_addr + data_size, PAGE_SIZE):
