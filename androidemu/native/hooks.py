@@ -90,7 +90,7 @@ class NativeHooks:
                 mod = self._emu.load_library(lib)
                 return mod.base
 
-            logger.warning("This %s is needed." % lib)
+            logger.warning("This %s is needed." % path)
 
         return None
 
