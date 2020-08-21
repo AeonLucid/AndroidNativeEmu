@@ -40,7 +40,22 @@ class Emulator:
             self._enable_vfp()
 
         # Android
-        self.system_properties = {"libc.debug.malloc.options": ""}
+        self.system_properties = {"libc.debug.malloc.options": "",
+                                  "ro.build.version.sdk":"21",
+                                  "ro.build.version.release":"5.0.0",
+                                  "persist.sys.dalvik.vm.lib":"libdvm.so",
+                                  "ro.product.cpu.abi":"armeabi-v7a",
+                                  "ro.product.cpu.abi2":"armeabi",
+                                  "ro.product.manufacturer":"Samsung",
+                                  "ro.debuggable":"0",
+                                  "ro.product.model":"AOSP on Samsung",
+                                  "ro.hardware":"Samsung",
+                                  "ro.product.board":"Samsung",
+                                  "ro.product.device":"Samsung",
+                                  "ro.build.type":"user",
+                                  "ro.secure":"1",
+                                  "wifi.interface":"wlan0",
+                                  "ro.product.brand":"Android"}
 
         # Stack.
         self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
