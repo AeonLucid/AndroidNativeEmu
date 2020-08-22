@@ -79,7 +79,7 @@ class Modules:
 
             for segment in load_segments:
                 prot = get_segment_protection(segment.header.p_flags)
-                prot = prot if prot is not 0 else UC_PROT_ALL
+                prot = prot if prot != 0 else UC_PROT_ALL
 
                 self.emu.memory.mem_map(load_base + segment.header.p_vaddr, segment.header.p_memsz, prot)
                 self.emu.memory.mem_write(load_base + segment.header.p_vaddr, segment.data())
