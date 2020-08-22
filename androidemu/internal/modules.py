@@ -158,25 +158,27 @@ class Modules:
                     rel_addr = load_base + rel['r_offset']  # Location where relocation should happen
                     rel_info_type = rel['r_info_type']
 
+                    # https://static.docs.arm.com/ihi0044/e/IHI0044E_aaelf.pdf
                     # Relocation table for ARM
                     if rel_info_type == arm.R_ARM_ABS32:
+                        # Read value.
+                        offset = int.from_bytes(self.emu.mu.mem_read(rel_addr, 4), byteorder='little')
                         # Create the new value.
-                        value = load_base + sym_value
+                        value = load_base + sym_value + offset
+                        # Check thumb.
+                        if sym['st_info']['type'] == 'STT_FUNC':
+                            value = value | 1
                         # Write the new value
                         self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
-
                     elif rel_info_type == arm.R_ARM_GLOB_DAT or \
-                            rel_info_type == arm.R_ARM_JUMP_SLOT or \
-                            rel_info_type == arm.R_AARCH64_GLOB_DAT or \
-                            rel_info_type == arm.R_AARCH64_JUMP_SLOT:
+                            rel_info_type == arm.R_ARM_JUMP_SLOT:
                         # Resolve the symbol.
                         if sym.name in symbols_resolved:
                             value = symbols_resolved[sym.name].address
 
                             # Write the new value
                             self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
-                    elif rel_info_type == arm.R_ARM_RELATIVE or \
-                            rel_info_type == arm.R_AARCH64_RELATIVE:
+                    elif rel_info_type == arm.R_ARM_RELATIVE:
                         if sym_value == 0:
                             # Load address at which it was linked originally.
                             value_orig_bytes = self.emu.mu.mem_read(rel_addr, 4)
