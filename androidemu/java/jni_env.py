@@ -1419,7 +1419,12 @@ class JNIEnv:
     @native_method
     def release_string_utf_chars(self, mu, env, string, utf_ptr):
         logger.debug("JNIEnv->ReleaseStringUTFChars(%x, %x) was called" % (string, utf_ptr))
-        pass
+        ref = self.get_local_reference(string)
+
+        if not isinstance(ref, jstring):
+            raise ValueError('Expected a jstring.')
+
+        self._emu.native_memory.free(utf_ptr, len(ref.value)+1)
 
     @native_method
     def get_array_length(self, mu, env, array):
