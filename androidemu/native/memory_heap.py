@@ -1,6 +1,9 @@
+import logging
 from collections import OrderedDict
 
 from unicorn import *
+
+logger = logging.getLogger(__name__)
 
 PAGE_SIZE = 0x1000
 MAX_ALLOWABLE_SEG_SIZE = 1024 * 1024 * 1024
@@ -50,6 +53,7 @@ class UnicornSimpleHeap:
 
         # Actually map in emulator.
         self._uc.mem_map(data_addr, data_size, perms=prot)
+        logger.debug("mmap heap memory at 0x%x, size %d" % (data_addr, data_size))
 
         return data_addr
 
