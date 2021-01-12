@@ -4,7 +4,7 @@ from androidemu.hooker import Hooker
 from androidemu.java.classes.constructor import Constructor
 from androidemu.java.classes.method import Method
 from androidemu.java.constant_values import MODIFIER_STATIC
-from androidemu.java.helpers.native_method import native_method
+from androidemu.java.helpers.native_method import native_method, native_read_args
 from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.jni_const import *
 from androidemu.java.jni_ref import *
@@ -335,6 +335,19 @@ class JNIEnv:
                 args_ptr = args_ptr + 4
             else:
                 raise NotImplementedError('Unknown arg name %s' % arg_name)
+
+        return result
+
+    def read_args(self, mu, params_count, args_list):
+        if args_list is None:
+            return []
+
+        result = []
+        args_count = len(args_list)
+        args_ptrs = native_read_args(mu, params_count + args_count)
+
+        for ref in args_ptrs[params_count:params_count+args_count]:
+            result.append(self.get_reference(ref))
 
         return result
 
@@ -1111,8 +1124,27 @@ class JNIEnv:
         return method.jvm_id
 
     @native_method
-    def call_static_object_method(self, mu, env):
-        raise NotImplementedError()
+    def call_static_object_method(self, mu, env, clazz_idx, method_id):
+        params_count = len(locals())
+        clazz = self.get_reference(clazz_idx)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method_by_id(method_id)
+
+        if method is None:
+            # TODO: Proper Java error?
+            raise RuntimeError("Could not find method %d in class %s by id." % (method_id, clazz.value.jvm_name))
+
+        logger.debug("JNIEnv->CallStaticObjectMethod(%s, %s <%s>) was called" % (
+            clazz.value.jvm_name,
+            method.name,
+            method.signature))
+
+        # Parse arguments.
+        constructor_args = self.read_args(mu, params_count - 2, method.args_list)
+        return method.func(self._emu, *constructor_args)
 
     @native_method
     def call_static_object_method_v(self, mu, env, clazz_idx, method_id, args):
