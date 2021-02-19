@@ -32,6 +32,23 @@ def read_utf8(mu, address):
     return buffer[:null_pos].decode("utf-8")
 
 
+def read_cString(mu, address):
+    # read string null-terminated, return string and length
+    buffer_address = address
+    buffer_read_size = 1
+    buffer = b""
+    null_pos = None
+
+    while null_pos is None:
+        buf_read = mu.mem_read(buffer_address, buffer_read_size)
+        if b'\x00' in buf_read:
+            null_pos = len(buffer) + buf_read.index(b'\x00')
+        buffer += buf_read
+        buffer_address += buffer_read_size
+
+    return buffer[:null_pos].decode("utf-8"),null_pos
+
+
 def read_uints(mu, address, num=1):
     data = mu.mem_read(address, num * 4)
     return struct.unpack("I" * num, data)

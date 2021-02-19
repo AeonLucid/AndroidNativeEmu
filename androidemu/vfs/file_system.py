@@ -107,8 +107,8 @@ class VirtualFileSystem:
             raise NotImplementedError("Unsupported read operation for file descriptor %d." % fd)
 
         if fd not in self._file_descriptors:
-            # TODO: Return valid error.
-            raise NotImplementedError()
+            logger.warning("No such file descriptor index %s in VirtualFileSystem" % fd)
+            mu.emu_stop()
 
         file = self._file_descriptors[fd]
 
