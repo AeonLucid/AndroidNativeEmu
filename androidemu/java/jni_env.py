@@ -590,9 +590,13 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_object_class(self, mu, env, jobj):
+    def get_object_class(self, mu, env, jobj): # when you call this function 0xFA(defined in androidemu.java.java_method_def.java_method_def)
+                                                # always cast to jobj, this is a bug right?
+        # logger.debug("JNIEnv->GetObjectClass(%s) was called" % jobj)
         ref = self.get_reference(jobj)
-        if isinstance(ref, jobject):
+        if isinstance(ref, jclass):
+            return ref.value
+        elif isinstance(ref, jobject):
             return ref.value.__class__
         raise NotImplementedError()
 
@@ -1174,12 +1178,48 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def call_static_boolean_method(self, mu, env):
-        raise NotImplementedError()
+    def call_static_boolean_method(self, mu, env, clazz_idx, method_id):
+        params_count = len(locals())
+        clazz = self.get_reference(clazz_idx)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method_by_id(method_id)
+
+        if method is None:
+            raise RuntimeError("Could not find method %d in class %s by id." % (method_id, clazz.value.jvm_name))
+
+        logger.debug("JNIEnv->CallStaticBooleanMethod(%s, %s <%s>) was called" % (
+            clazz.value.jvm_name,
+            method.name,
+            method.signature))
+
+        # Parse arguments.
+        constructor_args = self.read_args(mu, params_count - 2, method.args_list)
+        return method.func(self._emu, *constructor_args)
 
     @native_method
-    def call_static_boolean_method_v(self, mu, env):
-        raise NotImplementedError()
+    def call_static_boolean_method_v(self, mu, env, clazz_idx, method_id, args):
+        clazz = self.get_reference(clazz_idx)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        method = clazz.value.find_method_by_id(method_id)
+
+        if method is None:
+            raise RuntimeError("Could not find method %d in class %s by id." % (method_id, clazz.value.jvm_name))
+
+        logger.debug("JNIEnv->CallStaticBooleanMethodV(%s, %s <%s>, 0x%x) was called" % (
+            clazz.value.jvm_name,
+            method.name,
+            method.signature, args))
+
+        # Parse arguments.
+        constructor_args = self.read_args_v(mu, args, method.args_list)
+
+        return method.func(self._emu, *constructor_args)
 
     @native_method
     def call_static_boolean_method_a(self, mu, env):
