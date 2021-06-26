@@ -8,7 +8,6 @@ from androidemu.config import WRITE_FSTAT_TIMES
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.utils import memory_helpers
 from androidemu.vfs import file_helpers
-from samples import debug_utils
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +28,7 @@ class VirtualFileSystem:
     """
     :type syscall_handler SyscallHandlers
     """
+
     def __init__(self, root_path, syscall_handler):
         self._root_path = root_path
 
@@ -47,7 +47,8 @@ class VirtualFileSystem:
         syscall_handler.set_handler(0xC3, "stat64", 2, self._handle_stat64)
         syscall_handler.set_handler(0xC5, "fstat64", 2, self._handle_fstat64)
         syscall_handler.set_handler(0x142, "openat", 4, self._handle_openat)
-        syscall_handler.set_handler(0x147, "fstatat64", 4, self._handle_fstatat64)
+        syscall_handler.set_handler(
+            0x147, "fstatat64", 4, self._handle_fstatat64)
 
     def translate_path(self, filename):
         if filename.startswith("/"):
@@ -67,7 +68,8 @@ class VirtualFileSystem:
     def _store_fd(self, name, name_virt, file_descriptor):
         next_fd = self._file_descriptor_counter
         self._file_descriptor_counter += 1
-        self._file_descriptors[next_fd] = VirtualFile(name, file_descriptor, name_virt=name_virt)
+        self._file_descriptors[next_fd] = VirtualFile(
+            name, file_descriptor, name_virt=name_virt)
         return next_fd
 
     def _open_file(self, filename):
@@ -104,10 +106,12 @@ class VirtualFileSystem:
         If count is greater than SSIZE_MAX, the result is unspecified.
         """
         if fd <= 2:
-            raise NotImplementedError("Unsupported read operation for file descriptor %d." % fd)
+            raise NotImplementedError(
+                "Unsupported read operation for file descriptor %d." % fd)
 
         if fd not in self._file_descriptors:
-            logger.warning("No such file descriptor index %s in VirtualFileSystem" % fd)
+            logger.warning(
+                "No such file descriptor index %s in VirtualFileSystem" % fd)
             mu.emu_stop()
 
         file = self._file_descriptors[fd]
@@ -169,7 +173,8 @@ class VirtualFileSystem:
         filename = memory_helpers.read_utf8(mu, filename_ptr)
         filename_virt = self.translate_path(filename)
 
-        logger.warning("Path '%s' exists %s" % (filename, os.path.isfile(filename_virt)))
+        logger.warning("Path '%s' exists %s" %
+                       (filename, os.path.isfile(filename_virt)))
 
         if os.path.isfile(filename_virt):
             return 0
@@ -243,7 +248,8 @@ class VirtualFileSystem:
         filename = memory_helpers.read_utf8(mu, filename_ptr)
 
         if not filename.startswith("/") and dfd != 0:
-            raise NotImplementedError("Directory file descriptor has not been implemented yet.")
+            raise NotImplementedError(
+                "Directory file descriptor has not been implemented yet.")
 
         return self._open_file(filename)
 
@@ -267,7 +273,8 @@ class VirtualFileSystem:
         pathname = memory_helpers.read_utf8(mu, pathname_ptr)
 
         if not pathname.startswith('/'):
-            raise NotImplementedError("Directory file descriptor has not been implemented yet.")
+            raise NotImplementedError(
+                "Directory file descriptor has not been implemented yet.")
 
         if not flags == 0:
             if flags & 0x100:  # AT_SYMLINK_NOFOLLOW
