@@ -6,12 +6,6 @@ This is an educational project to learn more about the ELF file format and [Unic
 
 [中文README](README_cn.md)
 
-## Installation
-
-```
-pip3 install git+https://github.com/Python3WebSpider/AndroidNativeEmu.git@master
-```
-
 ## Features
 
 - Emulation of the [JNI Invocation API](https://docs.oracle.com/javase/7/docs/technotes/guides/jni/spec/invocation.html) so `JNI_OnLoad` can be called properly.
