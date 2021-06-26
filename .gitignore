@@ -7,7 +7,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
-
 # Icon must end with two \r
 Icon
 
@@ -284,3 +283,6 @@ $RECYCLE.BIN/
 
 !/tests/test_binaries/test_native.so
 *.idb
+
+# VS Code
+.vscode/
