@@ -151,6 +151,8 @@ class Emulator:
                     return result
 
                 return result.value
+            else:
+                return self.mu.reg_read(UC_ARM_REG_R0)
         finally:
             # Clear locals if jni.
             if is_jni:
