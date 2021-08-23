@@ -7,10 +7,10 @@ STACK_OFFSET = 8
 
 # Utility class to create a bridge between ARM and Python.
 class Hooker:
-
     """
     :type emu androidemu.emulator.Emulator
     """
+
     def __init__(self, emu, base_addr, size):
         self._emu = emu
         self._keystone = Ks(KS_ARCH_ARM, KS_MODE_THUMB)
@@ -36,7 +36,7 @@ class Hooker:
         # Make sure to update STACK_OFFSET if you change the PUSH/POP.
         asm = "PUSH {R4,LR}\n" \
               "MOV R4, #" + hex(hook_id) + "\n" \
-              "IT AL\n" \
+              "MOV R4, R4\n" \
               "POP {R4,PC}"
 
         asm_bytes_list, asm_count = self._keystone.asm(bytes(asm, encoding='ascii'))
@@ -84,8 +84,8 @@ class Hooker:
         return ptr_address, table_address
 
     def _hook(self, mu, address, size, user_data):
-        # Check if instruction is "IT AL"
-        if size != 2 or self._emu.mu.mem_read(address, size) != b"\xE8\xBF":
+        # Check if instruction is "MOV R4, R4"
+        if size != 2 or self._emu.mu.mem_read(address, size) != b"\x24\x46":
             return
 
         # Find hook.
