@@ -17,4 +17,5 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
+        cd androidemu
         pylint `ls -R|grep .py$|xargs`
