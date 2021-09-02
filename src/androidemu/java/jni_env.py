@@ -1480,7 +1480,7 @@ class JNIEnv:
 
         str_ref = self.get_reference(string)
         str_val = str_ref.value
-        str_ptr = self._emu.native_memory.allocate(len(str_val) + 1)
+        str_ptr = self._emu.memory_manager.allocate(len(str_val) + 1)
 
         logger.debug("=> %s" % str_val)
 
@@ -1496,7 +1496,7 @@ class JNIEnv:
         if not isinstance(ref, jstring):
             raise ValueError('Expected a jstring.')
 
-        self._emu.native_memory.free(utf_ptr, len(ref.value)+1)
+        self._emu.memory_manager.free(utf_ptr)
 
     @native_method
     def get_array_length(self, mu, env, array):
@@ -1573,7 +1573,7 @@ class JNIEnv:
         if not isinstance(ref, jbyteArray):
             raise ValueError('Expected a jbyteArray.')
 
-        alloc_addr = self._emu.native_memory.allocate(len(ref.value))
+        alloc_addr = self._emu.memory_manager.allocate(len(ref.value))
         mu.mem_write(alloc_addr, bytes(ref.value))
         return alloc_addr
 
@@ -1612,7 +1612,7 @@ class JNIEnv:
         if not isinstance(ref, jbyteArray):
             raise ValueError('Expected a jbyteArray.')
 
-        self._emu.native_memory.free(buf_ptr, len(ref.value))
+        self._emu.memory_manager.free(buf_ptr)
 
     @native_method
     def release_char_array_elements(self, mu, env):

@@ -3,22 +3,17 @@ import os
 
 from androidemu.hooker import Hooker
 from androidemu.internal.modules import Modules
-from androidemu.native.memory import NativeMemory
 
 from androidemu.java.helpers.native_method import native_method, native_read_args
+from androidemu.memory.memory_manager import MemoryManager
 from androidemu.utils import memory_helpers
 
 logger = logging.getLogger(__name__)
 
 
 class NativeHooks:
-    """
-    :type memory NativeMemory
-    :type modules Modules
-    :type hooker Hooker
-    """
 
-    def __init__(self, emu, memory, modules, hooker):
+    def __init__(self, emu, memory: MemoryManager, modules: Modules, hooker: Hooker):
         self._emu = emu
         self._memory = memory
         self._modules = modules
@@ -108,11 +103,10 @@ class NativeHooks:
         infos = memory_helpers.read_uints(uc, info, 4)
         Dl_info = {}
 
-        nm = self._emu.native_memory
         isfind = False
         for mod in self._modules.modules:
             if mod.base <= addr < mod.base + mod.size:
-                dli_fname = nm.allocate(len(mod.filename) + 1)
+                dli_fname = self._memory.allocate(len(mod.filename) + 1)
                 memory_helpers.write_utf8(uc, dli_fname, mod.filename + '\x00')
                 memory_helpers.write_uints(uc, addr, [dli_fname, mod.base, 0, 0])
                 return 1

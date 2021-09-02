@@ -1,7 +1,5 @@
 import logging
 import os
-import pathlib
-import time
 from random import randint
 
 import hexdump
@@ -13,14 +11,14 @@ from androidemu.config import HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE
 from androidemu.cpu.interrupt_handler import InterruptHandler
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.cpu.syscall_hooks import SyscallHooks
+from androidemu.cpu.syscall_hooks_memory import SyscallHooksMemory
 from androidemu.hooker import Hooker
-from androidemu.internal.memory import Memory
 from androidemu.internal.modules import Modules
 from androidemu.java.helpers.native_method import native_write_args
 from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.java_vm import JavaVM
+from androidemu.memory.memory_manager import MemoryManager
 from androidemu.native.hooks import NativeHooks
-from androidemu.native.memory import NativeMemory
 from androidemu.tracer import Tracer
 from androidemu.vfs.file_system import VirtualFileSystem
 
@@ -31,7 +29,6 @@ class Emulator:
     """
     :type mu Uc
     :type modules Modules
-    :type memory Memory
     """
     def __init__(self, vfs_root: str = None, vfp_inst_set: bool = False):
         # Unicorn.
@@ -49,12 +46,13 @@ class Emulator:
 
         # Executable data.
         self.modules = Modules(self)
-        self.memory = Memory(self)
+        self.memory_manager = MemoryManager(self.mu)
 
         # CPU
         self.interrupt_handler = InterruptHandler(self.mu)
         self.syscall_handler = SyscallHandlers(self.interrupt_handler)
         self.syscall_hooks = SyscallHooks(self.mu, self.syscall_handler, self.modules)
+        self.syscall_hooks_memory = SyscallHooksMemory(self.mu, self.memory_manager, self.syscall_handler)
 
         # File System
         if vfs_root is not None:
@@ -71,8 +69,7 @@ class Emulator:
         self.java_vm = JavaVM(self, self.java_classloader, self.hooker)
 
         # Native
-        self.native_memory = NativeMemory(self.mu, config.HEAP_BASE, config.HEAP_SIZE, self.syscall_handler)
-        self.native_hooks = NativeHooks(self, self.native_memory, self.modules, self.hooker)
+        self.native_hooks = NativeHooks(self, self.memory_manager, self.modules, self.hooker)
 
         # Tracer
         self.tracer = Tracer(self.mu, self.modules)

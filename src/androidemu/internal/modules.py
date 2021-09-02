@@ -11,6 +11,8 @@ from androidemu.internal.symbol_resolved import SymbolResolved
 
 import struct
 
+from androidemu.memory import align
+
 logger = logging.getLogger(__name__)
 
 
@@ -75,14 +77,16 @@ class Modules:
                     bound_high = high
 
             # Retrieve a base address for this module.
-            load_base = self.emu.memory.mem_reserve(bound_high - bound_low)
+            (load_base, _) = self.emu.memory_manager.reserve_module(bound_high - bound_low)
 
             for segment in load_segments:
                 prot = get_segment_protection(segment.header.p_flags)
                 prot = prot if prot != 0 else UC_PROT_ALL
 
-                self.emu.memory.mem_map(load_base + segment.header.p_vaddr, segment.header.p_memsz, prot)
-                self.emu.memory.mem_write(load_base + segment.header.p_vaddr, segment.data())
+                (seg_addr, seg_size) = align(load_base + segment.header.p_vaddr, segment.header.p_memsz, True)
+
+                self.emu.mu.mem_map(seg_addr, seg_size, prot)
+                self.emu.mu.mem_write(load_base + segment.header.p_vaddr, segment.data())
 
             rel_section = None
             for section in elf.iter_sections():

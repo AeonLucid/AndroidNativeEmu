@@ -1,6 +1,6 @@
 import unittest
 
-from androidemu.memory.heap_allocator import HeapAllocator
+from androidemu.memory.allocator_heap import HeapAllocator
 
 HEAP_START = 0x1000
 HEAP_END = 0x2000

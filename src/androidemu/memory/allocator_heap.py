@@ -1,8 +1,8 @@
 from typing import Optional
 
+from unicorn import Uc, UC_PROT_READ, UC_PROT_WRITE
 
-class HeapError(Exception):
-    pass
+from androidemu.memory.allocator import HeapAllocatorError
 
 
 class HeapBlock:
@@ -16,8 +16,12 @@ class HeapBlock:
 
 
 class HeapAllocator:
+    """
+    Distributes allocated memory using a simple malloc implementation.
+    https://danluu.com/malloc-tutorial/
+    """
 
-    def __init__(self, start: int, end: int):
+    def __init__(self, start: int, end: int, uc: Uc = None):
         """
         :param int start: Start address of the heap.
         :param int end: End address of the heap.
@@ -26,6 +30,9 @@ class HeapAllocator:
         self._pos = start
         self._end = end
         self._head = None
+
+        if uc is not None:
+            self._init_uc(uc)
 
     def allocate(self, size: int) -> int:
         """
@@ -58,7 +65,7 @@ class HeapAllocator:
         block, prev = self._find_block(address)
 
         if block is None:
-            raise HeapError('Attempted to free non existing block at 0x%x' % address)
+            raise HeapAllocatorError('Attempted to free non existing block at 0x%x' % address)
 
         block.free = True
 
@@ -125,7 +132,7 @@ class HeapAllocator:
         and appending the remainder as a new block.
         """
         if not block.free:
-            raise HeapError('Attempted to split non-free block')
+            raise HeapAllocatorError('Attempted to split non-free block')
 
         # Create new block.
         new_block = HeapBlock()
@@ -150,3 +157,6 @@ class HeapAllocator:
         res = self._pos
         self._pos += size
         return res
+
+    def _init_uc(self, uc: Uc):
+        uc.mem_map(self._start, self._end - self._start, UC_PROT_READ | UC_PROT_WRITE)
