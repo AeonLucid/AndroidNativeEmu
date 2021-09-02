@@ -2,3 +2,4 @@ include README.md
 include LICENSE.txt
 include requirements.txt
 recursive-exclude tests *
+recursive-include src/androidemu *.so
