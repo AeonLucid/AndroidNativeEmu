@@ -85,7 +85,7 @@ class NativeHooks:
         logger.debug("Called dlopen(%s)" % path)
 
         if path == 'libvendorconn.so':
-            lib = os.path.realpath(os.path.join(__file__, '..', '..', '..', 'samples', 'example_binaries', 'libvendorconn.so'))
+            lib = os.path.realpath(os.path.join(__file__, '..', '..', '..', '..', 'examples', 'example_binaries', 'libvendorconn.so'))
             mod = self._emu.load_library(lib)
 
             return mod.base
