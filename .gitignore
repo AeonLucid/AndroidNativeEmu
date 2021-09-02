@@ -1,4 +1,3 @@
-
 # Created by https://www.gitignore.io/api/venv,macos,python,windows,pycharm+all
 # Edit at https://www.gitignore.io/?templates=venv,macos,python,windows,pycharm+all
 
@@ -282,5 +281,6 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/venv,macos,python,windows,pycharm+all
 
-!/tests/test_binaries/test_native.so
+!/examples/**/*.so
+!/tests/**/*.so
 *.idb
