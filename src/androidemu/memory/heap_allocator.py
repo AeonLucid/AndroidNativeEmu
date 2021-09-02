@@ -40,10 +40,10 @@ class HeapAllocator:
             block = self._create_block(size)
             self._head = block
         else:
-            block, last = self._find_free_block(size)
+            block, prev = self._find_free_block(size)
 
             if not block:
-                block = self._create_block(size, last)
+                block = self._create_block(size, prev)
             else:
                 block.free = False
 
@@ -53,12 +53,15 @@ class HeapAllocator:
         if address == 0:
             return
 
-        block = self._find_block(address)
+        block, prev = self._find_block(address)
 
         if block is None:
             raise HeapError('Attempted to free non existing block at 0x%x' % address)
 
         block.free = True
+
+        self._merge_block(block)
+        self._merge_block(prev)
 
     def _create_block(self, size: int, last: HeapBlock = None) -> HeapBlock:
         """
@@ -77,29 +80,39 @@ class HeapAllocator:
 
         return block
 
-    def _find_block(self, address: int):
+    def _find_block(self, address: int) -> (Optional[HeapBlock], Optional[HeapBlock]):
         """
         Finds the block that was assigned to the given address.
         """
+        prev = None
         block = self._head
 
         while block is not None and block.address != address:
+            prev = block
             block = block.next
 
-        return block
+        return block, prev
 
     def _find_free_block(self, size: int) -> (Optional[HeapBlock], Optional[HeapBlock]):
         """
         Attempts to find a free block that can contain the requested size.
         """
-        last = None
+        prev = None
         block = self._head
 
         while block is not None and not (block.free and block.size >= size):
-            last = block
+            prev = block
             block = block.next
 
-        return block, last
+        return block, prev
+
+    def _merge_block(self, block: HeapBlock):
+        if block is None:
+            return
+
+        if block.free and block.next is not None and block.next.free:
+            block.size = block.size + block.next.size
+            block.next = block.next.next
 
     def _increment_data(self, size: int):
         """
