@@ -2,7 +2,7 @@ import logging
 import posixpath
 import sys
 
-from unicorn import UcError, UC_HOOK_MEM_UNMAPPED
+from unicorn import UcError, UC_HOOK_MEM_UNMAPPED, UC_HOOK_CODE
 from unicorn.arm_const import *
 
 from androidemu.emulator import Emulator
@@ -42,7 +42,7 @@ emulator = Emulator(
 )
 
 # emulator.mu.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
-emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
+# emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
 
 # Register Java class.
 emulator.java_classloader.add_class(MainActivity)
