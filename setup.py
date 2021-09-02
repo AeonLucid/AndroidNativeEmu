@@ -14,7 +14,7 @@ setup(
     keywords=["python"],
     author="AeonLucid",
     author_email="aeonlucid@gmail.com",
-    url="https://github.com/johnthagen/python-blueprint",
+    url="https://github.com/AeonLucid/AndroidNativeEmu",
     packages=find_packages("src"),
     package_dir={"": "src"},
     python_requires=">=3.7",
