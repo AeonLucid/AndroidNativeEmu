@@ -1,5 +1,6 @@
 import json
 import os
+import pathlib
 from os import stat_result
 
 from unicorn import Uc
@@ -7,8 +8,8 @@ from unicorn import Uc
 from androidemu.config import WRITE_FSTAT_TIMES
 
 
-def stat64(path):
-    meta_path = path + '.meta_emu'
+def stat64(path: pathlib.Path):
+    meta_path = path.with_suffix(".meta_emu")
 
     if not os.path.exists(meta_path):
         meta_path_dir = os.path.dirname(meta_path)

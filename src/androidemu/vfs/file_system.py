@@ -1,5 +1,6 @@
 import logging
 import os
+import pathlib
 import posixpath
 
 from unicorn import UC_HOOK_MEM_UNMAPPED, UC_HOOK_MEM_WRITE, UC_HOOK_MEM_READ, UC_HOOK_BLOCK
@@ -25,11 +26,8 @@ class VirtualFile:
 
 class VirtualFileSystem:
 
-    """
-    :type syscall_handler SyscallHandlers
-    """
-    def __init__(self, root_path, syscall_handler):
-        self._root_path = root_path
+    def __init__(self, root_path: str, syscall_handler: SyscallHandlers):
+        self._root_path = pathlib.Path(root_path).resolve()
 
         # TODO: Improve fd logic.
         self._file_descriptor_counter = 3
@@ -48,19 +46,17 @@ class VirtualFileSystem:
         syscall_handler.set_handler(0x142, "openat", 4, self._handle_openat)
         syscall_handler.set_handler(0x147, "fstatat64", 4, self._handle_fstatat64)
 
-    def translate_path(self, filename):
+    def translate_path(self, filename) -> pathlib.Path:
         if filename.startswith("/"):
             filename = filename[1:]
 
         if os.name == 'nt':
             filename = filename.replace(':', '_')
 
-        file_path = posixpath.join(self._root_path, filename)
-        file_path = posixpath.normpath(file_path)
-        common_path = posixpath.commonpath([file_path, self._root_path])
+        file_path = self._root_path.joinpath(filename).resolve()
 
-        if common_path != self._root_path:
-            raise RuntimeError("Emulator tried to read outside vfs ('%s' != '%s')." % (common_path, self._root_path))
+        if not file_path.is_relative_to(self._root_path):
+            raise RuntimeError("Emulator tried to read outside vfs ('%s' not in '%s')." % (file_path, self._root_path))
 
         return file_path
 

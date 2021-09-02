@@ -1,5 +1,6 @@
 import logging
 import os
+import pathlib
 import time
 from random import randint
 
@@ -32,7 +33,7 @@ class Emulator:
     :type modules Modules
     :type memory Memory
     """
-    def __init__(self, vfs_root=None, vfp_inst_set=False):
+    def __init__(self, vfs_root: str = None, vfp_inst_set: bool = False):
         # Unicorn.
         self.mu = Uc(UC_ARCH_ARM, UC_MODE_ARM)
 
