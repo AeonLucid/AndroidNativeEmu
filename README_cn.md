@@ -115,12 +115,12 @@ emulator.java_classloader.add_class(java_lang_StackTraceElement)
 init array 已经自动调用了，SO如果有加密也没关系。
 ```python
 # 添加依赖库
-emulator.load_library("samples/example_binaries/libdl.so")
-emulator.load_library("samples/example_binaries/libc.so")
-emulator.load_library("samples/example_binaries/libstdc++.so")
-emulator.load_library("samples/example_binaries/libm.so")
+emulator.load_library("samples/example_binaries/32/libdl.so")
+emulator.load_library("samples/example_binaries/32/libc.so")
+emulator.load_library("samples/example_binaries/32/libstdc++.so")
+emulator.load_library("samples/example_binaries/32/libm.so")
 
-lib_module = emulator.load_library("samples/example_binaries/libcms.so")
+lib_module = emulator.load_library("samples/example_binaries/32/libcms.so")
 
 #   JNI_OnLoad will call 'RegisterNatives'.
 emulator.call_symbol(lib_module, 'JNI_OnLoad', emulator.java_vm.address_ptr, 0x00)
