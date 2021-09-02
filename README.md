@@ -1,10 +1,14 @@
 # AndroidNativeEmu
 
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AeonLucid/AndroidNativeEmu/Python%20Package?style=for-the-badge)](https://github.com/AeonLucid/AndroidNativeEmu/actions)
+[![PyPI](https://img.shields.io/pypi/v/androidemu?style=for-the-badge)](https://pypi.org/project/androidemu/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/androidemu?style=for-the-badge)
+
 Allows you to partly emulate an Android native library.
 
 This is an educational project to learn more about the ELF file format and [Unicorn](https://github.com/unicorn-engine/unicorn).
 
-[中文README](README_cn.md)
+> Read me for chinese readers [中文README](README_cn.md)
 
 ## Features
 
@@ -15,22 +19,13 @@ This is an educational project to learn more about the ELF file format and [Unic
 - All JavaVM, JNIEnv and hooked functions are handled by python.
 - Enable VFP support.
 
-## Usage
+## Installation
 
-> In the future this will be possible through pypi.
+You can install AndroidNativeEmu with pip.
 
-Make sure you are using python 3.7.
-
-1. Clone the repository
-2. Run `pip install -r requirements.txt`
-3. Run `python example.py`
-
-> If you have trouble getting the `keystone-engine` dependency on Windows (as I did):
-> 1. Clone their [repository](https://github.com/keystone-engine/keystone)
-> 2. Open a terminal in `bindings/python`
-> 3. Run `python setup.py install` (Make sure you are using python 3.7)
-> 4. Download their `Windows - Core engine` package [here](http://www.keystone-engine.org/download/) for your python arch.
-> 5. Put the `keystone.dll` in `C:\location_to_python\Lib\site-packages\keystone\`.
+```
+pip install androidemu
+```
 
 ## TODO
 
