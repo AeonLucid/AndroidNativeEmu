@@ -57,9 +57,10 @@ class VirtualFileSystem:
 
         file_path = posixpath.join(self._root_path, filename)
         file_path = posixpath.normpath(file_path)
+        common_path = posixpath.commonpath([file_path, self._root_path])
 
-        if posixpath.commonpath([file_path, self._root_path]) != self._root_path:
-            raise RuntimeError("Emulated binary tried to escape vfs jail.")
+        if common_path != self._root_path:
+            raise RuntimeError("Emulator tried to read outside vfs ('%s' != '%s')." % (common_path, self._root_path))
 
         return file_path
 
