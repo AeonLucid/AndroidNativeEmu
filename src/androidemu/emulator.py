@@ -6,8 +6,6 @@ import hexdump
 from unicorn import Uc, UC_ARCH_ARM, UC_MODE_ARM
 from unicorn.arm_const import UC_ARM_REG_SP, UC_ARM_REG_LR, UC_ARM_REG_R0
 
-from androidemu import config
-from androidemu.config import HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE
 from androidemu.cpu.interrupt_handler import InterruptHandler
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.cpu.syscall_hooks import SyscallHooks
@@ -17,6 +15,7 @@ from androidemu.internal.modules import Modules
 from androidemu.java.helpers.native_method import native_write_args
 from androidemu.java.java_classloader import JavaClassLoader
 from androidemu.java.java_vm import JavaVM
+from androidemu.memory import STACK_ADDR, STACK_SIZE, HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE
 from androidemu.memory.memory_manager import MemoryManager
 from androidemu.native.hooks import NativeHooks
 from androidemu.tracer import Tracer
@@ -41,8 +40,8 @@ class Emulator:
         self.system_properties = {"libc.debug.malloc.options": ""}
 
         # Stack.
-        self.mu.mem_map(config.STACK_ADDR, config.STACK_SIZE)
-        self.mu.reg_write(UC_ARM_REG_SP, config.STACK_ADDR + config.STACK_SIZE)
+        self.mu.mem_map(STACK_ADDR, STACK_SIZE)
+        self.mu.reg_write(UC_ARM_REG_SP, STACK_ADDR + STACK_SIZE)
 
         # Executable data.
         self.modules = Modules(self)
@@ -61,8 +60,8 @@ class Emulator:
             self.vfs = None
 
         # Hooker
-        self.mu.mem_map(config.HOOK_MEMORY_BASE, config.HOOK_MEMORY_SIZE)
-        self.hooker = Hooker(self, config.HOOK_MEMORY_BASE, config.HOOK_MEMORY_SIZE)
+        self.mu.mem_map(HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE)
+        self.hooker = Hooker(self, HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE)
 
         # JavaVM
         self.java_classloader = JavaClassLoader()
@@ -112,7 +111,7 @@ class Emulator:
             logger.debug("Calling init for: %s " % filename)
             for fun_ptr in libmod.init_array:
                 logger.debug("Calling Init function: %x " % fun_ptr)
-                self.call_native(fun_ptr)
+                self.call_native(fun_ptr, 0, 0, 0)
         return libmod
 
     def call_symbol(self, module, symbol_name, *argv):
@@ -135,6 +134,7 @@ class Emulator:
 
         try:
             # Execute native call.
+            self.mu.reg_write(UC_ARM_REG_SP, STACK_ADDR + STACK_SIZE)
             native_write_args(self, *argv)
             stop_pos = randint(HOOK_MEMORY_BASE, HOOK_MEMORY_BASE + HOOK_MEMORY_SIZE) | 1
             self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
