@@ -44,8 +44,10 @@ class HeapAllocator:
 
             if not block:
                 block = self._create_block(size, prev)
-            else:
-                block.free = False
+            elif block.size != size:
+                block = self._split_block(block, size)
+
+            block.free = False
 
         return block.address
 
@@ -107,12 +109,38 @@ class HeapAllocator:
         return block, prev
 
     def _merge_block(self, block: HeapBlock):
+        """
+        Merges the given block and it's next block together if both are free.
+        """
         if block is None:
             return
 
         if block.free and block.next is not None and block.next.free:
             block.size = block.size + block.next.size
             block.next = block.next.next
+
+    def _split_block(self, block: HeapBlock, size: int) -> HeapBlock:
+        """
+        Splits a block into the requested size by making the given block smaller
+        and appending the remainder as a new block.
+        """
+        if not block.free:
+            raise HeapError('Attempted to split non-free block')
+
+        # Create new block.
+        new_block = HeapBlock()
+        new_block.address = block.address + size
+        new_block.size = block.size - size
+        new_block.free = True
+        new_block.next = block.next
+
+        # Assign the block as the next of the current block.
+        block.next = new_block
+
+        # Resize current block.
+        block.size = size
+
+        return block
 
     def _increment_data(self, size: int):
         """
