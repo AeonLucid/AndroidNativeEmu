@@ -3,10 +3,7 @@ import os
 import sys
 import unittest
 
-from unicorn import *
-
 from androidemu.emulator import Emulator
-from samples import debug_utils
 
 logging.basicConfig(
     stream=sys.stdout,
@@ -14,7 +11,7 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)7s %(name)34s | %(message)s"
 )
 
-dir_samples = os.path.join(os.path.dirname(__file__), "..", "samples")
+dir_samples = os.path.join(os.path.dirname(__file__), "..", "examples")
 
 
 class TestNative(unittest.TestCase):
