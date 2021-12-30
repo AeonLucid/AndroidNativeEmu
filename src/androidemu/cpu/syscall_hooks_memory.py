@@ -30,8 +30,10 @@ class SyscallHooksMemory:
         # MAP_ANONYMOUS	0x20
 
         if((flags & 0x10) != 0):
-            self._handle_mprotect(uc, addr, length, prot)
-            return addr
+            if self._handle_mprotect(uc, addr, length, prot) == 0:
+                return addr
+
+            return -1
        
         return self._memory.mapping_map(length, prot)
 
