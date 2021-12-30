@@ -2,6 +2,7 @@ from unicorn import Uc
 from androidemu.cpu.syscall_handlers import SyscallHandlers
 from androidemu.memory.memory_manager import MemoryManager
 
+from androidemu.memory import UC_MEM_ALIGN, align
 
 class SyscallHooksMemory:
 
@@ -28,6 +29,12 @@ class SyscallHooksMemory:
         # MAP_FIXED	    0x10
         # MAP_ANONYMOUS	0x20
 
+        if((flags & 0x10) != 0):
+            if self._handle_mprotect(uc, addr, length, prot) == 0:
+                return addr
+
+            return -1
+       
         return self._memory.mapping_map(length, prot)
 
     def _handle_madvise(self, uc, start, len_in, behavior):
@@ -46,6 +53,10 @@ class SyscallHooksMemory:
         mprotect() changes protection for the calling process's memory page(s) containing any part of the address
         range in the interval [addr, addr+len-1]. addr must be aligned to a page boundary.
         """
+
+        addr2, len_in = align(addr, len_in, True)
+        if addr2 != addr:
+            return -1
 
         self._memory.mapping_protect(addr, len_in, prot)
         return 0
