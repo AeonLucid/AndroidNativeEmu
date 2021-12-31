@@ -146,16 +146,16 @@ class Emulator:
                 self.call_native(fun_ptr, 0, 0, 0)
         return libmod
 
-    def call_symbol(self, module, symbol_name, *argv):
+    def call_symbol(self, module, symbol_name, *argv, is_return_jobject=True):
         symbol = module.find_symbol(symbol_name)
 
         if symbol is None:
             logger.error('Unable to find symbol \'%s\' in module \'%s\'.' % (symbol_name, module.filename))
             return
 
-        return self.call_native(symbol.address, *argv)
+        return self.call_native(symbol.address, *argv, is_return_jobject=is_return_jobject)
 
-    def call_native(self, addr, *argv):
+    def call_native(self, addr, *argv, is_return_jobject=True):
         # Detect JNI call
         is_jni = False
 
@@ -173,7 +173,7 @@ class Emulator:
             self.mu.emu_start(addr, stop_pos - 1)
 
             # Read result from locals if jni.
-            if is_jni:
+            if is_jni and is_return_jobject:
                 result_idx = self.mu.reg_read(UC_ARM_REG_R0)
                 result = self.java_vm.jni_env.get_local_reference(result_idx)
 
