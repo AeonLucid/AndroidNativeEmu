@@ -55,8 +55,15 @@ class VirtualFileSystem:
 
         file_path = self._root_path.joinpath(filename).resolve()
 
-        if not file_path.is_relative_to(self._root_path):
-            raise RuntimeError("Emulator tried to read outside vfs ('%s' not in '%s')." % (file_path, self._root_path))
+        # when system is macos, the pathlib.Path return was PosixPath, The PosixPath object does not have the is_relative_to method
+        if os.name == "posix":
+            try:
+                file_path.relative_to(self._root_path)
+            except:
+                raise RuntimeError("Emulator tried to read outside vfs ('%s' not in '%s')." % (file_path, self._root_path))
+        else:
+            if not file_path.is_relative_to(self._root_path):
+                raise RuntimeError("Emulator tried to read outside vfs ('%s' not in '%s')." % (file_path, self._root_path))
 
         return file_path
 
