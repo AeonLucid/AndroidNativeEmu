@@ -1519,8 +1519,8 @@ class JNIEnv:
 
         obj = self.get_reference(array_idx)
 
-        if not isinstance(obj, jarray):
-            raise ValueError('Expected a jarray.')
+        if not isinstance(obj, jobject):
+            raise ValueError('Expected a jobject.')
 
         return obj.value[item_idx]
 
