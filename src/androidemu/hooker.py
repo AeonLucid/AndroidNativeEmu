@@ -20,7 +20,7 @@ class Hooker:
         self._hook_magic = base_addr
         self._hook_start = base_addr + 4
         self._hook_current = self._hook_start
-        self._emu.mu.hook_add(UC_HOOK_CODE, self._hook, None, self._hook_start, self._hook_start + size)
+        self._emu.uc.hook_add(UC_HOOK_CODE, self._hook, None, self._hook_start, self._hook_start + size)
 
     def _get_next_id(self):
         idx = self._current_id
@@ -45,7 +45,7 @@ class Hooker:
             raise ValueError("Expected asm_count to be 4 instead of %u." % asm_count)
 
         # Write assembly code to the emulator.
-        self._emu.mu.mem_write(hook_addr, bytes(asm_bytes_list))
+        self._emu.uc.mem_write(hook_addr, bytes(asm_bytes_list))
 
         # Save results.
         self._hook_current += len(asm_bytes_list)
@@ -73,23 +73,23 @@ class Hooker:
             address = hook_map[index] if index in hook_map else 0
             table_bytes += int(address + 1).to_bytes(4, byteorder='little')  # + 1 because THUMB.
 
-        self._emu.mu.mem_write(table_address, table_bytes)
+        self._emu.uc.mem_write(table_address, table_bytes)
         self._hook_current += len(table_bytes)
 
         # Then we write the a pointer to the table.
         ptr_address = self._hook_current
-        self._emu.mu.mem_write(ptr_address, table_address.to_bytes(4, byteorder='little'))
+        self._emu.uc.mem_write(ptr_address, table_address.to_bytes(4, byteorder='little'))
         self._hook_current += 4
 
         return ptr_address, table_address
 
-    def _hook(self, mu, address, size, user_data):
+    def _hook(self, uc, address, size, user_data):
         # Check if instruction is "MOV R4, R4"
-        if size != 2 or self._emu.mu.mem_read(address, size) != b"\x24\x46":
+        if size != 2 or self._emu.uc.mem_read(address, size) != b"\x24\x46":
             return
 
         # Find hook.
-        hook_id = self._emu.mu.reg_read(UC_ARM_REG_R4)
+        hook_id = self._emu.uc.reg_read(UC_ARM_REG_R4)
         hook_func = self._hooks[hook_id]
 
         # Call hook.
@@ -97,5 +97,5 @@ class Hooker:
             hook_func(self._emu)
         except:
             # Make sure we catch exceptions inside hooks and stop emulation.
-            mu.emu_stop()
+            uc.emu_stop()
             raise

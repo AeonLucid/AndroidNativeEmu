@@ -87,8 +87,8 @@ class Modules:
 
                 (seg_addr, seg_size) = align(load_base + segment.header.p_vaddr, segment.header.p_memsz, True)
 
-                self.emu.mu.mem_map(seg_addr, seg_size, prot)
-                self.emu.mu.mem_write(load_base + segment.header.p_vaddr, segment.data())
+                self.emu.uc.mem_map(seg_addr, seg_size, prot)
+                self.emu.uc.mem_write(load_base + segment.header.p_vaddr, segment.data())
 
             rel_section = None
             for section in elf.iter_sections():
@@ -168,14 +168,14 @@ class Modules:
                     # Relocation table for ARM
                     if rel_info_type == arm.R_ARM_ABS32:
                         # Read value.
-                        offset = int.from_bytes(self.emu.mu.mem_read(rel_addr, 4), byteorder='little')
+                        offset = int.from_bytes(self.emu.uc.mem_read(rel_addr, 4), byteorder='little')
                         # Create the new value.
                         value = load_base + sym_value + offset
                         # Check thumb.
                         if sym['st_info']['type'] == 'STT_FUNC':
                             value = value | 1
                         # Write the new value
-                        self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
+                        self.emu.uc.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
                     elif rel_info_type == arm.R_ARM_GLOB_DAT or \
                             rel_info_type == arm.R_ARM_JUMP_SLOT:
                         # Resolve the symbol.
@@ -183,18 +183,18 @@ class Modules:
                             value = symbols_resolved[sym.name].address
 
                             # Write the new value
-                            self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
+                            self.emu.uc.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
                     elif rel_info_type == arm.R_ARM_RELATIVE:
                         if sym_value == 0:
                             # Load address at which it was linked originally.
-                            value_orig_bytes = self.emu.mu.mem_read(rel_addr, 4)
+                            value_orig_bytes = self.emu.uc.mem_read(rel_addr, 4)
                             value_orig = int.from_bytes(value_orig_bytes, byteorder='little')
 
                             # Create the new value
                             value = load_base + value_orig
 
                             # Write the new value
-                            self.emu.mu.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
+                            self.emu.uc.mem_write(rel_addr, value.to_bytes(4, byteorder='little'))
                         else:
                             raise NotImplementedError()
                     else:

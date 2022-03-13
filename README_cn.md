@@ -63,7 +63,7 @@ class XGorgen(metaclass=JavaClassDef, jvm_name='com/ss/sys/ces/a'):
         pass
 
     @java_method_def(name='leviathan', signature='(I[B)[B', native=True)
-    def leviathan(self, mu):
+    def leviathan(self, uc):
         pass
 
     def test(self):
