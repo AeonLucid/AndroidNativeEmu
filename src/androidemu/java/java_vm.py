@@ -29,30 +29,30 @@ class JavaVM:
         self.jni_env = JNIEnv(emu, class_loader, hooker)
 
     @native_method
-    def destroy_java_vm(self, mu):
+    def destroy_java_vm(self, uc):
         raise NotImplementedError()
 
     @native_method
-    def attach_current_thread(self, mu):
+    def attach_current_thread(self, uc):
         raise NotImplementedError()
 
     @native_method
-    def detach_current_thread(self, mu):
+    def detach_current_thread(self, uc):
         # TODO: NooOO idea.
         pass
 
     @native_method
-    def get_env(self, mu, java_vm, env, version):
+    def get_env(self, uc, java_vm, env, version):
         logger.debug("java_vm: 0x%08x" % java_vm)
         logger.debug("env: 0x%08x" % env)
         logger.debug("version: 0x%08x" % version)
 
-        mu.mem_write(env, self.jni_env.address_ptr.to_bytes(4, byteorder='little'))
+        uc.mem_write(env, self.jni_env.address_ptr.to_bytes(4, byteorder='little'))
 
         logger.debug("JavaVM->GetENV() was called!")
 
         return JNI_OK
 
     @native_method
-    def attach_current_thread_as_daemon(self, mu):
+    def attach_current_thread_as_daemon(self, uc):
         raise NotImplementedError()

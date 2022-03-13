@@ -5,29 +5,29 @@ from unicorn.arm_const import *
 logger = logging.getLogger(__name__)
 
 
-def hook_code(mu, address, size, user_data):
-    instruction = mu.mem_read(address, size)
+def hook_code(uc, address, size, user_data):
+    instruction = uc.mem_read(address, size)
     instruction_str = ''.join('{:02x} '.format(x) for x in instruction)
 
     logger.debug('# Tracing instruction at 0x%x, instruction size = 0x%x, instruction = %s' % (address, size, instruction_str))
 
     if instruction == b"\x00\x00\x00\x00":
         logger.error("Uh oh, we messed up.")
-        mu.emu_stop()
+        uc.emu_stop()
 
 
-def hook_block(mu, address, size, user_data):
-    instruction = mu.mem_read(address, size)
+def hook_block(uc, address, size, user_data):
+    instruction = uc.mem_read(address, size)
     instruction_str = ''.join('{:02x} '.format(x) for x in instruction)
 
     logger.debug('# Block at 0x%x, instruction size = 0x%x, instruction = %s' % (address, size, instruction_str))
 
 
-def hook_unmapped(mu, access, address, length, value, context):
-    pc = mu.reg_read(UC_ARM_REG_PC)
+def hook_unmapped(uc, access, address, length, value, context):
+    pc = uc.reg_read(UC_ARM_REG_PC)
 
     logger.debug("mem unmapped: pc: %x access: %x address: %x length: %x value: %x" % (pc, access, address, length, value))
-    mu.emu_stop()
+    uc.emu_stop()
     return True
 
 

@@ -18,7 +18,7 @@ class XGorgen(metaclass=JavaClassDef, jvm_name='com/ss/sys/ces/a'):
         pass
 
     @java_method_def(name='leviathan', signature='(I[B)[B', native=True)
-    def leviathan(self, mu):
+    def leviathan(self, uc):
         pass
 
     def test(self):
@@ -30,11 +30,11 @@ class secuni_b(metaclass=JavaClassDef, jvm_name='com/ss/sys/secuni/b/c'):
         pass
 
     @java_method_def(name='n0', signature='(Landroid/content/Context;)[B', native=True)
-    def n0(self, mu):
+    def n0(self, uc):
         pass
 
     @java_method_def(name='n1', signature='(Landroid/content/Context;Ljava/lang/String;)I', native=True)
-    def n1(self, mu):
+    def n1(self, uc):
         pass
 
 
@@ -131,10 +131,10 @@ for module in emulator.modules:
     logger.info("=> 0x%08x - %s" % (module.base, module.filename))
 
 # Debug
-# emulator.mu.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
-emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
-# emulator.mu.hook_add(UC_HOOK_MEM_WRITE, debug_utils.hook_mem_write)
-# emulator.mu.hook_add(UC_HOOK_MEM_READ, debug_utils.hook_mem_read)
+# emulator.uc.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
+emulator.uc.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
+# emulator.uc.hook_add(UC_HOOK_MEM_WRITE, debug_utils.hook_mem_write)
+# emulator.uc.hook_add(UC_HOOK_MEM_READ, debug_utils.hook_mem_read)
 
 try:
     # Run JNI_OnLoad.
@@ -145,8 +145,8 @@ try:
     with open("./misc/app_process32", 'rb') as ap:
         data = ap.read()
         len1 = len(data) + 1024 - (len(data) % 1024)
-        emulator.mu.mem_map(0xab006000, len1)
-        emulator.mu.mem_write(0xab006000, data)
+        emulator.uc.mem_map(0xab006000, len1)
+        emulator.uc.mem_write(0xab006000, data)
 
     x = XGorgen()
     data = 'acde74a94e6b493a3399fac83c7c08b35D58B21D9582AF77647FC9902E36AE70f9c001e9334e6e94916682224fbe4e5f00000000000000000000000000000000'
@@ -167,5 +167,5 @@ try:
 #      if method.native:
 #         logger.info("- [0x%08x] %s - %s" % (method.native_addr, method.name, method.signature))
 except UcError as e:
-    print("Exit at %x" % emulator.mu.reg_read(UC_ARM_REG_PC))
+    print("Exit at %x" % emulator.uc.reg_read(UC_ARM_REG_PC))
     raise

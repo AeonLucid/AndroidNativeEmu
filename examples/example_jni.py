@@ -19,7 +19,7 @@ class MainActivity(metaclass=JavaClassDef, jvm_name='local/myapp/testnativeapp/M
         pass
 
     @java_method_def(name='stringFromJNI', signature='()Ljava/lang/String;', native=True)
-    def string_from_jni(self, mu):
+    def string_from_jni(self, uc):
         pass
 
     def test(self):
@@ -41,8 +41,8 @@ emulator = Emulator(
     vfs_root=posixpath.join(posixpath.dirname(__file__), "vfs")
 )
 
-# emulator.mu.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
-# emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
+# emulator.uc.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
+# emulator.uc.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
 
 # Register Java class.
 emulator.java_classloader.add_class(MainActivity)
@@ -61,10 +61,10 @@ for module in emulator.modules:
     logger.info("=> 0x%08x - %s" % (module.base, module.filename))
 
 # Debug
-# emulator.mu.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
-# emulator.mu.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
-# emulator.mu.hook_add(UC_HOOK_MEM_WRITE, debug_utils.hook_mem_write)
-# emulator.mu.hook_add(UC_HOOK_MEM_READ, debug_utils.hook_mem_read)
+# emulator.uc.hook_add(UC_HOOK_CODE, debug_utils.hook_code)
+# emulator.uc.hook_add(UC_HOOK_MEM_UNMAPPED, debug_utils.hook_unmapped)
+# emulator.uc.hook_add(UC_HOOK_MEM_WRITE, debug_utils.hook_mem_write)
+# emulator.uc.hook_add(UC_HOOK_MEM_READ, debug_utils.hook_mem_read)
 
 try:
     # Run JNI_OnLoad.
@@ -83,5 +83,5 @@ try:
         if method.native:
             logger.info("- [0x%08x] %s - %s" % (method.native_addr, method.name, method.signature))
 except UcError as e:
-    print("Exit at %x" % emulator.mu.reg_read(UC_ARM_REG_PC))
+    print("Exit at %x" % emulator.uc.reg_read(UC_ARM_REG_PC))
     raise

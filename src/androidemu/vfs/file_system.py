@@ -94,7 +94,7 @@ class VirtualFileSystem:
             logger.warning("File does not exist '%s'" % orig_filename)
             return -1
 
-    def _handle_read(self, mu, fd, buf_addr, count):
+    def _handle_read(self, uc, fd, buf_addr, count):
         """
         ssize_t read(int fd, void *buf, size_t count);
 
@@ -112,7 +112,7 @@ class VirtualFileSystem:
 
         if fd not in self._file_descriptors:
             logger.warning("No such file descriptor index %s in VirtualFileSystem" % fd)
-            mu.emu_stop()
+            uc.emu_stop()
 
         file = self._file_descriptors[fd]
 
@@ -127,20 +127,20 @@ class VirtualFileSystem:
             buf = os.read(file.descriptor, count)
 
         result = len(buf)
-        mu.mem_write(buf_addr, buf)
+        uc.mem_write(buf_addr, buf)
         return result
 
-    def _handle_open(self, mu, filename_ptr, flags, mode):
+    def _handle_open(self, uc, filename_ptr, flags, mode):
         """
         int open(const char *pathname, int flags, mode_t mode);
 
         return the new file descriptor, or -1 if an error occurred (in which case, errno is set appropriately).
         """
-        filename = memory_helpers.read_utf8(mu, filename_ptr)
+        filename = memory_helpers.read_utf8(uc, filename_ptr)
 
         return self._open_file(filename)
 
-    def _handle_close(self, mu, fd):
+    def _handle_close(self, uc, fd):
         """
         int close(int fd);
 
@@ -157,7 +157,7 @@ class VirtualFileSystem:
 
         if fd <= 2:
             # if file.name == 'stdin':
-            #     mu.hook_add(UC_HOOK_BLOCK, debug_utils.hook_block)
+            #     uc.hook_add(UC_HOOK_BLOCK, debug_utils.hook_block)
             logger.info("File closed '%s'" % file.name)
             return 0
 
@@ -169,8 +169,8 @@ class VirtualFileSystem:
 
         return 0
 
-    def _handle_access(self, mu, filename_ptr, flags):
-        filename = memory_helpers.read_utf8(mu, filename_ptr)
+    def _handle_access(self, uc, filename_ptr, flags):
+        filename = memory_helpers.read_utf8(uc, filename_ptr)
         filename_virt = self.translate_path(filename)
 
         logger.warning("Path '%s' exists %s" % (filename, os.path.isfile(filename_virt)))
@@ -180,12 +180,12 @@ class VirtualFileSystem:
 
         return -1
 
-    def _handle_writev(self, mu, fd, vec, vlen):
+    def _handle_writev(self, uc, fd, vec, vlen):
         if fd == 2:
             for i in range(0, vlen):
-                addr = memory_helpers.read_ptr(mu, (i * 8) + vec)
-                size = memory_helpers.read_ptr(mu, (i * 8) + vec + 4)
-                data = bytes(mu.mem_read(addr, size)).decode(encoding='UTF-8')
+                addr = memory_helpers.read_ptr(uc, (i * 8) + vec)
+                size = memory_helpers.read_ptr(uc, (i * 8) + vec + 4)
+                data = bytes(uc.mem_read(addr, size)).decode(encoding='UTF-8')
 
                 logger.error('Writev %s' % data)
 
@@ -193,8 +193,8 @@ class VirtualFileSystem:
 
         raise NotImplementedError()
 
-    def _handle_stat64(self, mu, filename_ptr, buf_ptr):
-        filename = memory_helpers.read_utf8(mu, filename_ptr)
+    def _handle_stat64(self, uc, filename_ptr, buf_ptr):
+        filename = memory_helpers.read_utf8(uc, filename_ptr)
 
         logger.info("File stat64 '%s'" % filename)
 
@@ -208,11 +208,11 @@ class VirtualFileSystem:
 
         # stat = file_helpers.stat64(path=pathname)
         # stat = os.stat(path=file_path, dir_fd=None, follow_symlinks=False)
-        # file_helpers.stat_to_memory(mu, buf_ptr, stat, WRITE_FSTAT_TIMES)
+        # file_helpers.stat_to_memory(uc, buf_ptr, stat, WRITE_FSTAT_TIMES)
 
         return 0
 
-    def _handle_fstat64(self, mu, fd, buf_ptr):
+    def _handle_fstat64(self, uc, fd, buf_ptr):
         """
         These functions return information about a file. No permissions are required on the file itself, but-in the
         case of stat() and lstat() - execute (search) permission is required on all of the directories in path that
@@ -228,11 +228,11 @@ class VirtualFileSystem:
 
         stat = file_helpers.stat64(file.name_virt)
         # stat = os.fstat(file.descriptor)
-        file_helpers.stat_to_memory(mu, buf_ptr, stat, WRITE_FSTAT_TIMES)
+        file_helpers.stat_to_memory(uc, buf_ptr, stat, WRITE_FSTAT_TIMES)
 
         return 0
 
-    def _handle_openat(self, mu, dfd, filename_ptr, flags, mode):
+    def _handle_openat(self, uc, dfd, filename_ptr, flags, mode):
         """
         int openat(int dirfd, const char *pathname, int flags, mode_t mode);
 
@@ -244,14 +244,14 @@ class VirtualFileSystem:
         ENOTDIR
             pathname is relative and dirfd is a file descriptor referring to a file other than a directory.
         """
-        filename = memory_helpers.read_utf8(mu, filename_ptr)
+        filename = memory_helpers.read_utf8(uc, filename_ptr)
 
         if not filename.startswith("/") and dfd != 0:
             raise NotImplementedError("Directory file descriptor has not been implemented yet.")
 
         return self._open_file(filename)
 
-    def _handle_fstatat64(self, mu, dirfd, pathname_ptr, buf, flags):
+    def _handle_fstatat64(self, uc, dirfd, pathname_ptr, buf, flags):
         """
         int fstatat(int dirfd, const char *pathname, struct stat *buf, int flags);
 
@@ -268,7 +268,7 @@ class VirtualFileSystem:
 
         On success, fstatat() returns 0. On error, -1 is returned and errno is set to indicate the error.
         """
-        pathname = memory_helpers.read_utf8(mu, pathname_ptr)
+        pathname = memory_helpers.read_utf8(uc, pathname_ptr)
 
         if not pathname.startswith('/'):
             raise NotImplementedError("Directory file descriptor has not been implemented yet.")
@@ -291,6 +291,6 @@ class VirtualFileSystem:
 
         stat = file_helpers.stat64(path=pathname)
         # stat = os.stat(path=file_path, dir_fd=None, follow_symlinks=False)
-        file_helpers.stat_to_memory(mu, buf, stat, WRITE_FSTAT_TIMES)
+        file_helpers.stat_to_memory(uc, buf, stat, WRITE_FSTAT_TIMES)
 
         return 0

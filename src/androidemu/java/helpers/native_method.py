@@ -28,39 +28,39 @@ def native_write_args(emu, *argv):
         native_write_arg_register(emu, UC_ARM_REG_R3, argv[3])
 
     if amount >= 5:
-        sp_start = emu.mu.reg_read(UC_ARM_REG_SP)
+        sp_start = emu.uc.reg_read(UC_ARM_REG_SP)
         sp_current = sp_start - STACK_OFFSET  # Need to offset because our hook pushes one register on the stack.
         sp_current = sp_current - (4 * (amount - 4))  # Reserve space for arguments.
         sp_end = sp_current
 
         for arg in argv[4:]:
-            emu.mu.mem_write(sp_current, native_translate_arg(emu, arg).to_bytes(4, byteorder='little'))
+            emu.uc.mem_write(sp_current, native_translate_arg(emu, arg).to_bytes(4, byteorder='little'))
             sp_current = sp_current + 4
 
-        emu.mu.reg_write(UC_ARM_REG_SP, sp_end)
+        emu.uc.reg_write(UC_ARM_REG_SP, sp_end)
 
 
-def native_read_args(mu, args_count):
+def native_read_args(uc, args_count):
     native_args = []
 
     if args_count >= 1:
-        native_args.append(mu.reg_read(UC_ARM_REG_R0))
+        native_args.append(uc.reg_read(UC_ARM_REG_R0))
 
     if args_count >= 2:
-        native_args.append(mu.reg_read(UC_ARM_REG_R1))
+        native_args.append(uc.reg_read(UC_ARM_REG_R1))
 
     if args_count >= 3:
-        native_args.append(mu.reg_read(UC_ARM_REG_R2))
+        native_args.append(uc.reg_read(UC_ARM_REG_R2))
 
     if args_count >= 4:
-        native_args.append(mu.reg_read(UC_ARM_REG_R3))
+        native_args.append(uc.reg_read(UC_ARM_REG_R3))
 
-    sp = mu.reg_read(UC_ARM_REG_SP)
+    sp = uc.reg_read(UC_ARM_REG_SP)
     sp = sp + STACK_OFFSET  # Need to offset by 4 because our hook pushes one register on the stack.
 
     if args_count >= 5:
         for x in range(0, args_count - 4):
-            native_args.append(int.from_bytes(mu.mem_read(sp + (x * 4), 4), byteorder='little'))
+            native_args.append(int.from_bytes(uc.mem_read(sp + (x * 4), 4), byteorder='little'))
 
     return native_args
 
@@ -84,7 +84,7 @@ def native_translate_arg(emu, val):
 
 
 def native_write_arg_register(emu, reg, val):
-    emu.mu.reg_write(reg, native_translate_arg(emu, val))
+    emu.uc.reg_write(reg, native_translate_arg(emu, val))
 
 
 def native_method(func):
@@ -92,28 +92,28 @@ def native_method(func):
         """
         :type self
         :type emu androidemu.emulator.Emulator
-        :type mu Uc
+        :type uc Uc
         """
 
         emu = argv[1] if len(argv) == 2 else argv[0]
-        mu = emu.mu
+        uc = emu.uc
 
         args = inspect.getfullargspec(func).args
         args_count = len(args) - (2 if 'self' in args else 1)
 
         if args_count < 0:
-            raise RuntimeError("NativeMethod accept at least (self, mu) or (mu).")
+            raise RuntimeError("NativeMethod accept at least (self, uc) or (uc).")
 
-        native_args = native_read_args(mu, args_count)
+        native_args = native_read_args(uc, args_count)
 
         if len(argv) == 1:
-            result = func(mu, *native_args)
+            result = func(uc, *native_args)
         else:
-            result = func(argv[0], mu, *native_args)
+            result = func(argv[0], uc, *native_args)
 
         if result is not None:
             native_write_arg_register(emu, UC_ARM_REG_R0, result)
         else:
-            mu.reg_write(UC_ARM_REG_R0, JNI_ERR)
+            uc.reg_write(UC_ARM_REG_R0, JNI_ERR)
 
     return native_method_wrapper

@@ -30,11 +30,11 @@ logger = logging.getLogger(__name__)
 class SyscallHooks:
 
     """
-    :type mu Uc
+    :type uc Uc
     :type syscall_handler SyscallHandlers
     """
-    def __init__(self, mu, syscall_handler, modules: Modules):
-        self._mu = mu
+    def __init__(self, uc, syscall_handler, modules: Modules):
+        self._uc = uc
         self._syscall_handler = syscall_handler
         self._syscall_handler.set_handler(0xB, "execve", 3, self._handle_execve)
         self._syscall_handler.set_handler(0x43, "sigaction", 3, self._null)
@@ -66,42 +66,42 @@ class SyscallHooks:
         self._sockets = dict()
         self._fork = None
 
-    def _getpid(self, mu):
+    def _getpid(self, uc):
         return 21458
 
-    def _handle_execve(self, mu, pathname_ptr, argv, envp):
-        pathname = memory_helpers.read_utf8(mu, pathname_ptr)
+    def _handle_execve(self, uc, pathname_ptr, argv, envp):
+        pathname = memory_helpers.read_utf8(uc, pathname_ptr)
         args = []
         while True:
-            arg_ptr = int.from_bytes(mu.mem_read(argv, 4), byteorder='little')
+            arg_ptr = int.from_bytes(uc.mem_read(argv, 4), byteorder='little')
 
             if arg_ptr == 0:
                 break
 
-            args.append(memory_helpers.read_utf8(mu, arg_ptr))
+            args.append(memory_helpers.read_utf8(uc, arg_ptr))
             argv = argv + 4
 
         # Set errno.
         errno_ptr = self._modules.find_symbol_name('__errno')
-        mu.mem_write(errno_ptr, int(13).to_bytes(4, byteorder='little'))
+        uc.mem_write(errno_ptr, int(13).to_bytes(4, byteorder='little'))
 
         logger.warning('Exec %s %s' % (pathname, args))
         return 0
 
-    def _null(self, mu, *args):
+    def _null(self, uc, *args):
         logger.warning('Skipping syscall, returning 0')
         return 0
 
-    def _gettid(self, mu):
+    def _gettid(self, uc):
         return 0x2211
 
-    def _faccessat(self, mu, filename, pathname, mode, flag):
-        file = memory_helpers.read_utf8(mu, pathname)
+    def _faccessat(self, uc, filename, pathname, mode, flag):
+        file = memory_helpers.read_utf8(uc, pathname)
         return 0
 
-    def _getcpu(self, mu, _cpu, node, cache):
+    def _getcpu(self, uc, _cpu, node, cache):
         if _cpu != 0:
-            mu.mem_write(_cpu, int(1).to_bytes(4, byteorder='little'))
+            uc.mem_write(_cpu, int(1).to_bytes(4, byteorder='little'))
         return 0
 
     def _handle_gettimeofday(self, uc, tv, tz):
@@ -127,13 +127,13 @@ class SyscallHooks:
 
         return 0
 
-    def _handle_wait4(self, mu, upid, stat_addr, options,  ru):
+    def _handle_wait4(self, uc, upid, stat_addr, options,  ru):
         """
         on success, returns the process ID of the terminated child; on error, -1 is returned.
         """
         return upid
 
-    def _handle_prctl(self, mu, option, arg2, arg3, arg4, arg5):
+    def _handle_prctl(self, uc, option, arg2, arg3, arg4, arg5):
         """
         int prctl(int option, unsigned long arg2, unsigned long arg3, unsigned long arg4, unsigned long arg5);
         See:
@@ -151,7 +151,7 @@ class SyscallHooks:
         else:
             raise NotImplementedError("Unsupported prctl option %d (0x%x)" % (option, option))
 
-    def _handle_vfork(self, mu):
+    def _handle_vfork(self, uc):
         """
         Upon successful completion, vfork() shall return 0 to the child process
         and return the process ID of the child process to the parent process.
@@ -162,7 +162,7 @@ class SyscallHooks:
         if self._fork is not None:
             raise NotImplementedError('Already forked.')
 
-        self._fork = ForkInfo(mu, self._getpid(mu) + 1)
+        self._fork = ForkInfo(uc, self._getpid(uc) + 1)
 
         # Current execution becomes the fork, save all registers so we can return to vfork later for the main process.
         # See exit_group.
@@ -170,7 +170,7 @@ class SyscallHooks:
 
         return 0
 
-    def _handle_futex(self, mu, uaddr, op, val, timeout, uaddr2, val3):
+    def _handle_futex(self, uc, uaddr, op, val, timeout, uaddr2, val3):
         """
         See: https://linux.die.net/man/2/futex
         """
@@ -189,7 +189,7 @@ class SyscallHooks:
 
         return 0
 
-    def _exit_group(self, mu, status):
+    def _exit_group(self, uc, status):
         if self._fork is not None:
             pid = self._fork.pid
 
@@ -201,7 +201,7 @@ class SyscallHooks:
 
         raise Exception('Application shutdown all threads, status %u' % status)
 
-    def _handle_clock_gettime(self, mu, clk_id, tp_ptr):
+    def _handle_clock_gettime(self, uc, clk_id, tp_ptr):
         """
         The functions clock_gettime() retrieve the time of the specified clock clk_id.
 
@@ -216,23 +216,23 @@ class SyscallHooks:
             # Its time represents seconds and nanoseconds since the Epoch.
             clock_real = calendar.timegm(time.gmtime())
 
-            mu.mem_write(tp_ptr + 0, int(clock_real).to_bytes(4, byteorder='little'))
-            mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
+            uc.mem_write(tp_ptr + 0, int(clock_real).to_bytes(4, byteorder='little'))
+            uc.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
             return 0
         elif clk_id == CLOCK_MONOTONIC or clk_id == CLOCK_MONOTONIC_COARSE:
             if OVERRIDE_CLOCK:
-                mu.mem_write(tp_ptr + 0, int(OVERRIDE_CLOCK_TIME).to_bytes(4, byteorder='little'))
-                mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
+                uc.mem_write(tp_ptr + 0, int(OVERRIDE_CLOCK_TIME).to_bytes(4, byteorder='little'))
+                uc.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
             else:
                 clock_add = time.time() - self._clock_start  # Seconds passed since clock_start was set.
 
-                mu.mem_write(tp_ptr + 0, int(self._clock_start + clock_add).to_bytes(4, byteorder='little'))
-                mu.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
+                uc.mem_write(tp_ptr + 0, int(self._clock_start + clock_add).to_bytes(4, byteorder='little'))
+                uc.mem_write(tp_ptr + 4, int(0).to_bytes(4, byteorder='little'))
             return 0
         else:
             raise NotImplementedError("Unsupported clk_id: %d (%x)" % (clk_id, clk_id))
 
-    def _socket(self, mu, family, type_in, protocol):
+    def _socket(self, uc, family, type_in, protocol):
         socket_id = self._socket_id + 1
         socket = SocketInfo()
         socket.domain = family
@@ -244,7 +244,7 @@ class SyscallHooks:
 
         return socket_id
 
-    def _bind(self, mu, fd, addr, addr_len):
+    def _bind(self, uc, fd, addr, addr_len):
         socket = self._sockets.get(fd, None)
 
         if socket is None:
@@ -254,22 +254,22 @@ class SyscallHooks:
             raise Exception('Unexpected socket domain / type.')
 
         # The struct is confusing..
-        socket.addr = mu.mem_read(addr + 3, addr_len - 3).decode(encoding="utf-8")
+        socket.addr = uc.mem_read(addr + 3, addr_len - 3).decode(encoding="utf-8")
 
         logger.info('Binding socket to ://%s' % socket.addr)
 
         return 0
 
-    def _connect(self, mu, fd, addr, addr_len):
+    def _connect(self, uc, fd, addr, addr_len):
         """
         If the connection or binding succeeds, zero is returned.
         On error, -1 is returned, and errno is set appropriately.
         """
-        hexdump.hexdump(mu.mem_read(addr, addr_len))
+        hexdump.hexdump(uc.mem_read(addr, addr_len))
         
         # return 0
         raise NotImplementedError()
 
-    def _getrandom(self, mu, buf, count, flags):
-        mu.mem_write(buf, b"\x01" * count)
+    def _getrandom(self, uc, buf, count, flags):
+        uc.mem_write(buf, b"\x01" * count)
         return count

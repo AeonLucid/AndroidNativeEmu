@@ -27,12 +27,12 @@ logger = logging.getLogger(__name__)
 
 class Emulator:
     """
-    :type mu Uc
+    :type uc Uc
     :type modules Modules
     """
     def __init__(self, vfs_root: str = None, vfp_inst_set: bool = False):
         # Unicorn.
-        self.mu = Uc(UC_ARCH_ARM, UC_MODE_ARM)
+        self.uc = Uc(UC_ARCH_ARM, UC_MODE_ARM)
 
         if vfp_inst_set:
             self._enable_vfp()
@@ -41,18 +41,18 @@ class Emulator:
         self.system_properties = {"libc.debug.malloc.options": ""}
 
         # Stack.
-        self.mu.mem_map(STACK_ADDR, STACK_SIZE)
-        self.mu.reg_write(UC_ARM_REG_SP, STACK_ADDR + STACK_SIZE)
+        self.uc.mem_map(STACK_ADDR, STACK_SIZE)
+        self.uc.reg_write(UC_ARM_REG_SP, STACK_ADDR + STACK_SIZE)
 
         # Executable data.
         self.modules = Modules(self)
-        self.memory_manager = MemoryManager(self.mu)
+        self.memory_manager = MemoryManager(self.uc)
 
         # CPU
-        self.interrupt_handler = InterruptHandler(self.mu)
+        self.interrupt_handler = InterruptHandler(self.uc)
         self.syscall_handler = SyscallHandlers(self.interrupt_handler)
-        self.syscall_hooks = SyscallHooks(self.mu, self.syscall_handler, self.modules)
-        self.syscall_hooks_memory = SyscallHooksMemory(self.mu, self.memory_manager, self.syscall_handler)
+        self.syscall_hooks = SyscallHooks(self.uc, self.syscall_handler, self.modules)
+        self.syscall_hooks_memory = SyscallHooksMemory(self.uc, self.memory_manager, self.syscall_handler)
 
         # File System
         if vfs_root is not None:
@@ -61,7 +61,7 @@ class Emulator:
             self.vfs = None
 
         # Hooker
-        self.mu.mem_map(HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE)
+        self.uc.mem_map(HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE)
         self.hooker = Hooker(self, HOOK_MEMORY_BASE, HOOK_MEMORY_SIZE)
 
         # JavaVM
@@ -72,7 +72,7 @@ class Emulator:
         self.native_hooks = NativeHooks(self, self.memory_manager, self.modules, self.hooker)
 
         # Tracer
-        self.tracer = Tracer(self.mu, self.modules)
+        self.tracer = Tracer(self.uc, self.modules)
 
         # Thread.
         self._setup_thread_register()
@@ -101,13 +101,13 @@ class Emulator:
         code_bytes = bytes.fromhex(code)
 
         try:
-            self.mu.mem_map(address, mem_size)
-            self.mu.mem_write(address, code_bytes)
-            self.mu.reg_write(UC_ARM_REG_SP, address + mem_size)
+            self.uc.mem_map(address, mem_size)
+            self.uc.mem_write(address, code_bytes)
+            self.uc.reg_write(UC_ARM_REG_SP, address + mem_size)
 
-            self.mu.emu_start(address | 1, address + len(code_bytes))
+            self.uc.emu_start(address | 1, address + len(code_bytes))
         finally:
-            self.mu.mem_unmap(address, mem_size)
+            self.uc.mem_unmap(address, mem_size)
 
     def _setup_thread_register(self):
         """
@@ -126,16 +126,16 @@ class Emulator:
         thread_info_5 = thread_info + (thread_info_size * 4)
 
         # Thread name
-        write_utf8(self.mu, thread_info_5, "AndroidNativeEmu")
+        write_utf8(self.uc, thread_info_5, "AndroidNativeEmu")
 
         # R4
-        self.mu.mem_write(thread_info_2 + 0x4, int(thread_info_5).to_bytes(4, byteorder='little'))
-        self.mu.mem_write(thread_info_2 + 0xC, int(thread_info_3).to_bytes(4, byteorder='little'))
+        self.uc.mem_write(thread_info_2 + 0x4, int(thread_info_5).to_bytes(4, byteorder='little'))
+        self.uc.mem_write(thread_info_2 + 0xC, int(thread_info_3).to_bytes(4, byteorder='little'))
 
         # R1
-        self.mu.mem_write(thread_info_1 + 0x4, int(thread_info_4).to_bytes(4, byteorder='little'))
-        self.mu.mem_write(thread_info_1 + 0xC, int(thread_info_2).to_bytes(4, byteorder='little'))
-        self.mu.reg_write(UC_ARM_REG_C13_C0_3, thread_info_1)
+        self.uc.mem_write(thread_info_1 + 0x4, int(thread_info_4).to_bytes(4, byteorder='little'))
+        self.uc.mem_write(thread_info_1 + 0xC, int(thread_info_2).to_bytes(4, byteorder='little'))
+        self.uc.reg_write(UC_ARM_REG_C13_C0_3, thread_info_1)
 
     def load_library(self, filename, do_init=True):
         libmod = self.modules.load_module(filename)
@@ -166,15 +166,15 @@ class Emulator:
 
         try:
             # Execute native call.
-            self.mu.reg_write(UC_ARM_REG_SP, STACK_ADDR + STACK_SIZE)
+            self.uc.reg_write(UC_ARM_REG_SP, STACK_ADDR + STACK_SIZE)
             native_write_args(self, *argv)
             stop_pos = randint(HOOK_MEMORY_BASE, HOOK_MEMORY_BASE + HOOK_MEMORY_SIZE) | 1
-            self.mu.reg_write(UC_ARM_REG_LR, stop_pos)
-            self.mu.emu_start(addr, stop_pos - 1)
+            self.uc.reg_write(UC_ARM_REG_LR, stop_pos)
+            self.uc.emu_start(addr, stop_pos - 1)
 
             # Read result from locals if jni.
             if is_jni and is_return_jobject:
-                result_idx = self.mu.reg_read(UC_ARM_REG_R0)
+                result_idx = self.uc.reg_read(UC_ARM_REG_R0)
                 result = self.java_vm.jni_env.get_local_reference(result_idx)
 
                 if result is None:
@@ -182,7 +182,7 @@ class Emulator:
 
                 return result.value
             else:
-                return self.mu.reg_read(UC_ARM_REG_R0)
+                return self.uc.reg_read(UC_ARM_REG_R0)
         finally:
             # Clear locals if jni.
             if is_jni:
@@ -191,8 +191,8 @@ class Emulator:
     def dump(self, out_dir):
         os.makedirs(out_dir)
 
-        for begin, end, prot in [reg for reg in self.mu.mem_regions()]:
+        for begin, end, prot in [reg for reg in self.uc.mem_regions()]:
             filename = "{:#010x}-{:#010x}.bin".format(begin, end)
             pathname = os.path.join(out_dir, filename)
             with open(pathname, "w") as f:
-                f.write(hexdump.hexdump(self.mu.mem_read(begin, end - begin), result='return'))
+                f.write(hexdump.hexdump(self.uc.mem_read(begin, end - begin), result='return'))
