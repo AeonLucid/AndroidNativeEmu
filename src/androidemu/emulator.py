@@ -138,7 +138,7 @@ class Emulator:
         self.uc.reg_write(UC_ARM_REG_C13_C0_3, thread_info_1)
 
     def load_library(self, filename, do_init=True):
-        libmod = self.modules.load_module(filename, do_init)
+        libmod = self.modules.load_module(filename)
         if do_init:
             logger.debug("Calling init for: %s " % filename)
             for fun_ptr in libmod.init_array:
