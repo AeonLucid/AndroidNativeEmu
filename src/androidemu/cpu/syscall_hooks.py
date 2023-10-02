@@ -44,6 +44,7 @@ class SyscallHooks:
         self._syscall_handler.set_handler(0x72, "wait4", 4, self._handle_wait4)
         self._syscall_handler.set_handler(0xAC, "prctl", 5, self._handle_prctl)
         self._syscall_handler.set_handler(0xE0, "gettid", 0, self._gettid)
+        self._syscall_handler.set_handler(0xa2, "nanosleep", 0, self._null)
         self._syscall_handler.set_handler(0xAF, "sigprocmask", 3, self._null)
         self._syscall_handler.set_handler(0xBE, "vfork", 0, self._handle_vfork)
         self._syscall_handler.set_handler(0xF0, "futex", 6, self._handle_futex)
@@ -58,7 +59,9 @@ class SyscallHooks:
         self._syscall_handler.set_handler(0x14, "getpid", 0, self._getpid)
         self._syscall_handler.set_handler(0xe0, "gettid", 0, self._gettid)
         # self._syscall_handler.set_handler(0x180,"null1",0, self._null)
+        self._syscall_handler.set_handler(0x10c, "tgkill", 3, self._tgkill)
         self._syscall_handler.set_handler(0x180, "getrandom", 3, self._getrandom)
+        self._syscall_handler.set_handler(0xf0002, "cacheflush", 0, self._null)
         self._modules = modules
         self._clock_start = time.time()
         self._clock_offset = randint(1000, 2000)
@@ -145,8 +148,13 @@ class SyscallHooks:
         - https://sourceforge.net/p/strace/mailman/message/34329772/
         """
 
-        if option == PR_SET_VMA:
+        if option == PR_SET_NAME:
+            # arg2 contains ptr to a name.
+            logger.debug('prctl PR_SET_NAME: %s' % memory_helpers.read_cString(uc, arg2)[0])
+            return 0
+        elif option == PR_SET_VMA:
             # arg5 contains ptr to a name.
+            logger.debug('prctl PR_SET_VMA: %s' % memory_helpers.read_cString(uc, arg5)[0])
             return 0
         else:
             raise NotImplementedError("Unsupported prctl option %d (0x%x)" % (option, option))
@@ -269,6 +277,12 @@ class SyscallHooks:
         
         # return 0
         raise NotImplementedError()
+
+    def _tgkill(self, uc, tgid, tid, sig):
+        """
+        The tgkill() system call can be used to send any signal to any thread in the same thread group.
+        """
+        return 0
 
     def _getrandom(self, uc, buf, count, flags):
         uc.mem_write(buf, b"\x01" * count)

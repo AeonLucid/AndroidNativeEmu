@@ -142,7 +142,7 @@ class Emulator:
         if do_init:
             logger.debug("Calling init for: %s " % filename)
             for fun_ptr in libmod.init_array:
-                logger.debug("Calling Init function: %x " % fun_ptr)
+                logger.debug("Calling init function: %x " % fun_ptr)
                 self.call_native(fun_ptr, 0, 0, 0)
         return libmod
 

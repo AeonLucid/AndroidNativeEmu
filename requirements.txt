@@ -1,4 +1,4 @@
-unicorn==1.0.3
-pyelftools==0.27
+unicorn==2.0.1.post1
+pyelftools==0.30
 hexdump==3.3
 keystone-engine==0.9.2

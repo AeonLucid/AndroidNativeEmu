@@ -421,8 +421,25 @@ class JNIEnv:
             return Method(clazz.value, method)
 
     @native_method
-    def get_superclass(self, uc, env):
-        raise NotImplementedError()
+    def get_superclass(self, uc, env, clazz_idx):
+        """
+        If clazz represents any class other than the class Object, then this function returns the object that represents the superclass of the class specified by clazz.
+
+        If clazz specifies the class Object, or clazz represents an interface, this function returns NULL.
+        """
+        logger.debug("JNIEnv->GetSuperClass(%d) was called" % clazz_idx)
+
+        clazz = self.get_reference(clazz_idx)
+
+        if not isinstance(clazz, jclass):
+            raise ValueError('Expected a jclass.')
+
+        clazzez = clazz.value.__mro__
+
+        if len(clazzez) < 2:
+            return None
+
+        return self.add_local_reference(jclass(clazzez[1]))
 
     @native_method
     def is_assignable_from(self, uc, env):
@@ -1810,5 +1827,21 @@ class JNIEnv:
         raise NotImplementedError()
 
     @native_method
-    def get_object_ref_type(self, uc, env):
-        raise NotImplementedError()
+    def get_object_ref_type(self, uc, env, obj_ref):
+        """
+        Returns the type of the object referred to by the obj argument. The argument obj can either be a local, global or weak global reference.
+
+        JNIInvalidRefType = 0,
+        JNILocalRefType = 1,
+        JNIGlobalRefType = 2,
+        JNIWeakGlobalRefType = 3
+        """
+        logger.debug("JNIEnv->GetObjectRefType(%d) was called" % obj_ref)
+
+        if self._locals.in_range(obj_ref):
+            return 1
+
+        if self._globals.in_range(obj_ref):
+            return 2
+
+        raise NotImplementedError('Unhandled object ref type')

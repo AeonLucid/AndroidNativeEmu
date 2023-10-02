@@ -39,6 +39,7 @@ class VirtualFileSystem:
         syscall_handler.set_handler(0x3, "read", 3, self._handle_read)
         syscall_handler.set_handler(0x5, "open", 3, self._handle_open)
         syscall_handler.set_handler(0x6, "close", 1, self._handle_close)
+        syscall_handler.set_handler(0x13, "lseek", 3, self._handle_lseek)
         syscall_handler.set_handler(0x21, "access", 2, self._handle_access)
         syscall_handler.set_handler(0x92, "writev", 3, self._handle_writev)
         syscall_handler.set_handler(0xC3, "stat64", 2, self._handle_stat64)
@@ -168,6 +169,14 @@ class VirtualFileSystem:
             logger.info("File closed '%s'" % '/dev/urandom')
 
         return 0
+
+    def _handle_lseek(self, uc, fd, offset, whence):
+        if fd not in self._file_descriptors:
+            raise NotImplementedError("Unknown fd")
+
+        file = self._file_descriptors[fd]
+
+        return os.lseek(file.descriptor, offset, whence)
 
     def _handle_access(self, uc, filename_ptr, flags):
         filename = memory_helpers.read_utf8(uc, filename_ptr)
