@@ -7,7 +7,7 @@ project_dir = Path(__file__).parent
 
 setup(
     name="androidemu",
-    version="0.0.2",
+    version="0.0.3",
     description="Allows you to partly emulate an Android native library.",
     long_description=project_dir.joinpath("README.md").read_text(encoding="utf-8"),
     long_description_content_type="text/markdown",

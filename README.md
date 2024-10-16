@@ -1,6 +1,6 @@
 # AndroidNativeEmu
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/AeonLucid/AndroidNativeEmu/Python%20Package?style=for-the-badge)](https://github.com/AeonLucid/AndroidNativeEmu/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/AeonLucid/AndroidNativeEmu/main.yml?style=for-the-badge)](https://github.com/AeonLucid/AndroidNativeEmu/actions)
 [![PyPI](https://img.shields.io/pypi/v/androidemu?style=for-the-badge)](https://pypi.org/project/androidemu/)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/androidemu?style=for-the-badge)
 
