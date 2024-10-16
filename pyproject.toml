@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools", "build"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "androidemu"
+version = "0.0.3"
+requires-python = ">=3.7, <3.12"
+authors = [
+    { name = "AeonLucid", email = "aeonlucid@gmail.com" },
+]
+description = "Allows you to partly emulate an Android native library."
+readme = "README.md"
+license = { text = "GPLv3" }
+keywords = ["emulation", "android"]
+classifiers = [
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Topic :: System :: Emulators",
+    "Intended Audience :: Developers",
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
+dependencies = [
+    "unicorn==2.1.0",
+    "pyelftools==0.31",
+    "hexdump==3.3",
+    "keystone-engine==0.9.2"
+]
+
+[project.urls]
+Repository = "https://github.com/AeonLucid/AndroidNativeEmu"
+"Bug Tracker" = "https://github.com/AeonLucid/AndroidNativeEmu/issues"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov",
+]
