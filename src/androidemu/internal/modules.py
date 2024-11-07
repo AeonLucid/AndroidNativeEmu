@@ -6,6 +6,8 @@ from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
 from elftools.elf.sections import SymbolTableSection
 from elftools.elf.sections import StringTableSection
+from elftools.elf.constants import SH_FLAGS
+from elftools.construct import Container
 import elftools.elf.sections
 from unicorn import UC_PROT_ALL
 
@@ -47,12 +49,24 @@ class Modules:
             if module.base == addr:
                 return module
         return None
-
-    def find_section_index(self, elf, addr):
+    
+    @staticmethod
+    def find_section_index(elf, addr):
         for idx, section in enumerate(elf.iter_sections()):
             if section.header['sh_addr'] <= addr < (section.header['sh_addr'] + section.header['sh_size']):
                 return idx
         return 0
+
+    @staticmethod
+    def calculate_sh_offset(elf, vaddr):
+        for segment in elf.iter_segments():
+            if segment.header.p_type == 'PT_LOAD':
+                p_vaddr = segment.header.p_vaddr
+                p_offset = segment.header.p_offset
+                p_filesz = segment.header.p_filesz
+                if p_vaddr <= vaddr < (p_vaddr + p_filesz):
+                    return p_offset + (vaddr - p_vaddr)
+        raise Exception(f"Cannot find segment containing address {vaddr:#x}")
 
     def load_module(self, filename):
         logger.debug("Loading module '%s'." % filename)
@@ -174,18 +188,18 @@ class Modules:
 
                     if has_reloc_info and active_rel['addr'] and active_rel['size'] and active_rel['entsize']:
                         is_rela = rel_info['type'] == 'RELA'
-                        fake_rel_header = {
-                            'sh_name': 0, # we don't know the name
-                            'sh_type': 'SHT_RELA' if is_rela else 'SHT_REL',
-                            'sh_flags': 2,
-                            'sh_addr': active_rel['addr'],
-                            'sh_offset': active_rel['addr'],
-                            'sh_size': active_rel['size'],
-                            'sh_link': rel_info['sym'], # link to dynsym
-                            'sh_info': 0,
-                            'sh_addralign': 8 if elf.elfclass == 64 else 4,
-                            'sh_entsize': active_rel['entsize']
-                        }
+                        fake_rel_header = Container(
+                            sh_name=0, # we don't know the name
+                            sh_type='SHT_RELA' if is_rela else 'SHT_REL',
+                            sh_flags=SH_FLAGS.SHF_ALLOC,
+                            sh_addr=active_rel['addr'],
+                            sh_offset=self.calculate_sh_offset(elf, active_rel['addr']),
+                            sh_size=active_rel['size'],
+                            sh_link=rel_info['sym'], # link to dynsym
+                            sh_info = 0,
+                            sh_addralign=8 if elf.elfclass == 64 else 4,
+                            sh_entsize=active_rel['entsize']
+                        )
                         rel_section = RelocationSection(fake_rel_header, 
                                                     '.rela.dyn' if is_rela else '.rel.dyn',
                                                     elf)
@@ -197,34 +211,34 @@ class Modules:
                         sym_info['dynsym']['size'] = sym_info['dynstr']['addr'] - sym_info['dynsym']['addr']
 
                     if dynstr is None and sym_info['dynstr']['addr'] and sym_info['dynstr']['size']:
-                        fake_str_header = {
-                            'sh_name': 0,
-                            'sh_type': 'SHT_STRTAB',
-                            'sh_flags': 2,
-                            'sh_addr': sym_info['dynstr']['addr'],
-                            'sh_offset': sym_info['dynstr']['addr'],
-                            'sh_size': sym_info['dynstr']['size'],
-                            'sh_link': 0,
-                            'sh_info': 0,
-                            'sh_addralign': 1,
-                            'sh_entsize': 0
-                        }
+                        fake_str_header = Container(
+                            sh_name=0,
+                            sh_type='SHT_STRTAB',
+                            sh_flags=SH_FLAGS.SHF_ALLOC,
+                            sh_addr=sym_info['dynstr']['addr'],
+                            sh_offset=self.calculate_sh_offset(elf, sym_info['dynstr']['addr']),
+                            sh_size=sym_info['dynstr']['size'],
+                            sh_link=0,
+                            sh_info = 0,
+                            sh_addralign=1,
+                            sh_entsize=0
+                        )
                         dynstr = StringTableSection(fake_str_header, '.dynstr', elf)
 
                     if dynsym is None and dynstr is not None and \
                     sym_info['dynsym']['addr'] and sym_info['dynsym']['size']:
-                        fake_sym_header = {
-                            'sh_name': 0,
-                            'sh_type': 'SHT_DYNSYM',
-                            'sh_flags': 2,
-                            'sh_addr': sym_info['dynsym']['addr'],
-                            'sh_offset': sym_info['dynsym']['addr'],
-                            'sh_size': sym_info['dynsym']['size'],
-                            'sh_link': self.find_section_index(elf, sym_info['dynstr']['addr']), # link to dynstr
-                            'sh_info': 0, # we don't know the index of the first non-local symbol
-                            'sh_addralign': 8 if elf.elfclass == 64 else 4,
-                            'sh_entsize': sym_info['dynsym']['entsize']
-                        }
+                        fake_sym_header = Container(
+                            sh_name=0,
+                            sh_type='SHT_DYNSYM',
+                            sh_flags = SH_FLAGS.SHF_ALLOC,
+                            sh_addr=sym_info['dynsym']['addr'],
+                            sh_offset=self.calculate_sh_offset(elf, sym_info['dynsym']['addr']),
+                            sh_size=sym_info['dynsym']['size'],
+                            sh_link=self.find_section_index(elf, sym_info['dynstr']['addr']), # link to dynstr
+                            sh_info=0, # we don't know the index of the first non-local symbol
+                            sh_addralign=8 if elf.elfclass == 64 else 4,
+                            sh_entsize=sym_info['dynsym']['entsize']
+                        )
                         dynsym = SymbolTableSection(fake_sym_header, '.dynsym', elf, dynstr)
 
             # Find init array.
