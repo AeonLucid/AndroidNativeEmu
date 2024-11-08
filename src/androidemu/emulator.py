@@ -141,8 +141,12 @@ class Emulator:
         libmod = self.modules.load_module(filename)
         if do_init:
             logger.debug("Calling init for: %s " % filename)
+            # DT_INIT should be called before DT_INIT_ARRAY if both are present
+            if libmod.init is not None:
+                logger.debug("Calling DT_INIT: %x " % libmod.init)
+                self.call_native(libmod.init, 0, 0, 0)
             for fun_ptr in libmod.init_array:
-                logger.debug("Calling init function: %x " % fun_ptr)
+                logger.debug("Calling DT_INIT_ARRAY function: %x " % fun_ptr)
                 self.call_native(fun_ptr, 0, 0, 0)
         return libmod
 
