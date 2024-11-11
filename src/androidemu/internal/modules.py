@@ -349,7 +349,7 @@ class Modules:
                             init = tag.entry.d_val
 
             # DT_INIT should be called before DT_INIT_ARRAY if both are present
-            if init:
+            if init and init != 0:
                 init = load_base + init
 
             # Read init_array after relocations have been applied
