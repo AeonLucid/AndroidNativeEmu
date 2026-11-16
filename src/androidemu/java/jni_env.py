@@ -420,6 +420,18 @@ class JNIEnv:
         else:
             return Method(clazz.value, method)
 
+    @staticmethod
+    def _java_superclass(clazz_value):
+        """
+        Java superclass via jvm_super (a JavaClassDef-based class).
+        None / non-type means no Java parent -> JNI NULL.
+        """
+        super_cls = getattr(clazz_value, 'jvm_super', None)
+        # jvm_super must point to a class (JavaClassDef-based), not an arbitrary object.
+        if super_cls is not None and isinstance(super_cls, type):
+            return super_cls
+        return None
+
     @native_method
     def get_superclass(self, uc, env, clazz_idx):
         """
@@ -434,12 +446,12 @@ class JNIEnv:
         if not isinstance(clazz, jclass):
             raise ValueError('Expected a jclass.')
 
-        clazzez = clazz.value.__mro__
-
-        if len(clazzez) < 2:
+        # Use jvm_super (Java hierarchy), not Python __mro__.
+        super_cls = self._java_superclass(clazz.value)
+        if super_cls is None:
             return None
 
-        return self.add_local_reference(jclass(clazzez[1]))
+        return self.add_local_reference(jclass(super_cls))
 
     @native_method
     def is_assignable_from(self, uc, env):
